@@ -4,8 +4,8 @@
 
 # Site
 title: Datacruiser
-subtitle:
-description:
+subtitle: 浪人雨轩
+description: 记录Java Web及大数据分析的学习心得
 author: Datacruiser
 language: zh-Hans
 timezone:
@@ -78,5 +78,5 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git 
-  repo: https://github.com/datacruiser/datacruiser.github.io.git    
+  repo: git@github.com:datacruiser/datacruiser.github.io.git    
   branch: master
