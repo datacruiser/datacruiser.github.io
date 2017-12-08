@@ -37,10 +37,10 @@ rss:
 footer:
   # Specify the date when the site was setup.
   # If not defined, current year will be used.
- since: 2017
+since: 2017
 
   # Icon between year and copyright info.
-  icon: user
+  icon: user 
 
   # If not defined, will be used `author` from Hexo main config.
   copyright:
@@ -127,7 +127,6 @@ scheme: Muse
 social:
   GitHub: https://github.com/datacruiser || github
   知乎: https://zhuanlan.zhihu.com/datacruiser || 知乎
-  #E-Mail: mailto:phy.zju@gmail.com || Gmail
   微博: https://weibo.com/jijiwhywhy || 微博
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
