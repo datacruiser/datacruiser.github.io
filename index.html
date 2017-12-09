@@ -81,16 +81,16 @@
 
 
 
-<meta name="description" content="记录Java Web及大数据分析的学习心得">
+<meta name="description" content="Achieving what I want in light of what is true.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Datacruiser&#39;s Blog">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Datacruiser&#39;s Blog">
-<meta property="og:description" content="记录Java Web及大数据分析的学习心得">
+<meta property="og:description" content="Achieving what I want in light of what is true.">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Datacruiser&#39;s Blog">
-<meta name="twitter:description" content="记录Java Web及大数据分析的学习心得">
+<meta name="twitter:description" content="Achieving what I want in light of what is true.">
 
 
 
@@ -100,7 +100,7 @@
     root: '/',
     scheme: 'Muse',
     version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":true,"scrollpercent":true,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -162,7 +162,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">浪人雨轩</p>
+        <p class="site-subtitle">数海拾荒</p>
       
   </div>
 
@@ -231,16 +231,6 @@
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
-          </a>
-        </li>
-      
 
       
     </ul>
@@ -279,7 +269,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Datacruiser">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/uploads/avatar.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -337,6 +327,37 @@
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
           
 
           
@@ -427,8 +448,12 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Datacruiser" />
+            
               <p class="site-author-name" itemprop="name">Datacruiser</p>
-              <p class="site-description motion-element" itemprop="description">记录Java Web及大数据分析的学习心得</p>
+              <p class="site-description motion-element" itemprop="description">Achieving what I want in light of what is true.</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -469,15 +494,15 @@
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="https://www.zhihu.com/people/realphy" target="_blank" title="知乎">
+                  <a href="https://www.zhihu.com/people/realphy" target="_blank" title="Zhihu">
                     
-                      <i class="fa fa-fw fa-知乎"></i>知乎</a>
+                      <i class="fa fa-fw fa-知乎"></i>Zhihu</a>
                 </span>
               
                 <span class="links-of-author-item">
-                  <a href="https://weibo.com/jijiwhywhy" target="_blank" title="微博">
+                  <a href="https://weibo.com/jijiwhywhy" target="_blank" title="Weibo">
                     
-                      <i class="fa fa-fw fa-微博"></i>微博</a>
+                      <i class="fa fa-fw fa-微博"></i>Weibo</a>
                 </span>
               
             
@@ -496,6 +521,13 @@
 
       
 
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
       
 
     </div>
@@ -543,11 +575,6 @@
       </div>
     </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
     
 
     
