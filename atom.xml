@@ -5,9 +5,9 @@
   <subtitle>数海拾荒</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="http://datacruiser.io/"/>
   <updated>2017-12-09T11:26:40.910Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>http://datacruiser.io/</id>
   
   <author>
     <name>Datacruiser</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2017/12/07/hello-world/"/>
-    <id>http://yoursite.com/2017/12/07/hello-world/</id>
+    <link href="http://datacruiser.io/2017/12/07/hello-world/"/>
+    <id>http://datacruiser.io/2017/12/07/hello-world/</id>
     <published>2017-12-07T14:22:40.185Z</published>
     <updated>2017-12-09T11:26:40.910Z</updated>
     
