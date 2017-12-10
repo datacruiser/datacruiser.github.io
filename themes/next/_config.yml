@@ -90,7 +90,7 @@ menu:
   categories: /categories/ || th
   archives: /archives/ || archive
   #schedule: /schedule/ || calendar
-  #sitemap: /sitemap.xml || sitemap
+  sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
 
 # Enable/Disable menu icons.
@@ -127,8 +127,8 @@ scheme: Muse
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
   GitHub: https://github.com/datacruiser || github
-  Zhihu: https://www.zhihu.com/people/realphy || 知乎
-  Weibo: https://weibo.com/jijiwhywhy || 微博
+  Zhihu: https://www.zhihu.com/people/realphy || zhihu
+  Weibo: https://weibo.com/jijiwhywhy || weibo
   #E-Mail: mailto:yourname@gmail.com || envelope
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
@@ -578,7 +578,7 @@ busuanzi_count:
 
 
 # Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO
-baidu_push: false
+baidu_push: true 
 
 # Google Calendar
 # Share your recent schedule to others via calendar page
