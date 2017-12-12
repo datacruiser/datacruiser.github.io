@@ -91,10 +91,10 @@ deploy:
 indexgenerator:
     per_page: 5
 
-archive_dir:
-    per_page: 5
-    yearly: true 
-    monthly: true 
+    #archive_dir:
+    #per_page: 5
+    #yearly: true 
+    #monthly: true 
 
 tag_generator:
     per_page: 10
