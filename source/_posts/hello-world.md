@@ -1,7 +1,7 @@
 ---
 title: Hello World
 date: 2017-12-12 14:55:00
-updated: 2017-12-30 15:27:00:
+updated: 2017-12-30 15:27:00
 categories: blog
 tags: [hello world]
 description: [blog开篇语]
