@@ -84,7 +84,7 @@ ln -sf /usr/local/Cellar/openblas/0.2.20_1//lib/libopenblas.dylib libRblas.dylib
 
 **R**包的安装在**Mac**系统下面通常有三种方法：
 
-* 最常规的方法就是在**R**的**console**窗口下面调用**install.packages()**命令，比如要安装**ggplot2**包则命令如下：
+- 最常规的方法就是在**R**的**console**窗口下面调用**install.packages()**命令，比如要安装**ggplot2**包则命令如下：
 
 ```r
 > install.packages("ggplot2")
@@ -101,7 +101,7 @@ The downloaded binary packages are in
 **install.packages()**命令会默认从你设定好的**CRAN**镜像地址下载已经被收录的包，比如上面[The Comprehensive R Archive Network](https://mirrors.ustc.edu.cn/CRAN)就是我设定的镜像地址。
 
 
-* 在实际的工作中，也许我们还会用到还没有被**CRAN**收入的包，比如来自**Github**的包，这就需要用到**devtools**包了，**devtools**包提供了从**CRAN**以外安装**R**的工作命令，以下以构建评分卡中关键的分箱步骤所需要用到的**WOE**包为例演示下**devtools**包的使用方法。
+- 在实际的工作中，也许我们还会用到还没有被**CRAN**收入的包，比如来自**Github**的包，这就需要用到**devtools**包了，**devtools**包提供了从**CRAN**以外安装**R**的工作命令，以下以构建评分卡中关键的分箱步骤所需要用到的**WOE**包为例演示下**devtools**包的使用方法。
 
 ```r
 #首先需要安装载入devtools包
@@ -141,7 +141,7 @@ Username parameter is deprecated. Please use tomasgreif/riv
 > 
 ```
 
-* 在**Mac**系统下面还有一种在命令行下面直接从源代码安装的方法，首先从**CRAN**下载打包后的源代码，比如你要安装**foo_0.1.tar.gz**包，可以用以下命令：
+- 在**Mac**系统下面还有一种在命令行下面直接从源代码安装的方法，首先从**CRAN**下载打包后的源代码，比如你要安装**foo_0.1.tar.gz**包，可以用以下命令：
 
 ```bash
 R CMD INSTALL foo_0.1.tar.gz
@@ -256,7 +256,7 @@ $$\begin{eqnarray} \widehat{y}&=&\frac{1}{1+e^{-z}} =&\frac{1}{1+e^{-(\boldsymbo
 上式的 $\widehat{y}$ 可视为事件发生的概率 $p(y=1|\boldsymbol{x})$ ，变换后得到： $$\ln\frac{p}{1-p}=z=\boldsymbol{w}^T\boldsymbol{x}+b$$ 其中， $p/(1-p)$ 为比率(odds)，即违约概率与正常概率的比值。 $\ln{p/(1-p)}$ 为logit函数，即比率的自然对数。因此，逻辑回归实际上是用比率的自然对数作为因变量的线性回归模型。
 
 ### 逻辑回归代价函数(cost function)
-单个样本的损失函数(loss function): $$\ell(\widehat{y},y)=-(y\ln{\hat{y}} + (1-y)\ln{(1-\hat{y})})$$ 对于整个训练集的代价函数(cost function): $$\begin{eqnarray} J(\boldsymbol{w},b)&=&\frac{1}{m}\sum_i{\ell(\widehat{y}^{(i)},y^{(i)})} \&=&-\frac{1}{m}\sum_i{[y^{(i)}\ln{\widehat{y}^{(i)}}+(1-y^{(i)})\ln{(1-\widehat{y}^{(i)})}]} \end{eqnarray}$$ 其中, $\hat{y}$ 为拟合值, $y$ 为实际标签, $m$ 为样本数量
+单个样本的损失函数(loss function): $$\ell(\widehat{y},y)=-(y\ln{\widehat{y}} + (1-y)\ln{(1-\widehat{y})})$$ 对于整个训练集的代价函数(cost function): $$\begin{eqnarray} J(\boldsymbol{w},b)&=&\frac{1}{m}\sum_i{\ell(\widehat{y}^{(i)},y^{(i)})} \&=&-\frac{1}{m}\sum_i{[y^{(i)}\ln{\widehat{y}^{(i)}}+(1-y^{(i)})\ln{(1-\widehat{y}^{(i)})}]} \end{eqnarray}$$ 其中, $\hat{y}$ 为拟合值, $y$ 为实际标签, $m$ 为样本数量
 
 使用`梯度下降(gradient descent)`, 找到合适的参数 $(\boldsymbol{w}, b)$ , 使得 $J(\boldsymbol{w},b)$ 尽可能小。
 
