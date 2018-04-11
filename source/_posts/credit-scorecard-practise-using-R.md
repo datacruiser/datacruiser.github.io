@@ -24,16 +24,20 @@ description: [本文主要将作者2个月来用R进行数据挖掘构建信用�
 
 Mac系统下安装有很多种方法，可以使用[**HomeBrew**](https://brew.sh/index_zh-cn)进行安装。
 
-**HomeBrew**是**Mac**系统下的一个包管理工具，类似**Debian**系统下的```apt-get```命令，不过通常不是默认安装的，需要用以下命令进行安装：
+**HomeBrew**是**Mac**系统下的一个包管理工具，类似**Debian**系统下的`apt-get`命令，不过通常不是默认安装的，需要用以下命令进行安装：
 
-```
+```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
+
+
 
 然后安装**R**的命令如下：
 
 
-```
+
+
+```bash
 brew install R
 ```
 另外也可以直接去**R**的官方网站直接下载安装包进行安装，并且同步安装**GUI**工具，虽然比较鸡肋。针对**Mac**系统主要相关的下载及文档如下：
