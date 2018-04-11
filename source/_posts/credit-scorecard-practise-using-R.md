@@ -24,7 +24,7 @@ description: [本文主要将作者2个月来用R进行数据挖掘构建信用�
 
 Mac系统下安装有很多种方法，可以使用[**HomeBrew**](https://brew.sh/index_zh-cn)进行安装。
 
-**HomeBrew**是**Mac**系统下的一个包管理工具，类似**Debian**系统下的`apt-get`命令，不过通常不是默认安装的，需要用以下命令进行安装：
+**HomeBrew**是**Mac**系统下的一个包管理工具，类似**Debian**系统下的**apt-get**命令，不过通常不是默认安装的，需要用以下命令进行安装：
 
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -40,11 +40,13 @@ Mac系统下安装有很多种方法，可以使用[**HomeBrew**](https://brew.s
 ```bash
 brew install R
 ```
+
+
 另外也可以直接去**R**的官方网站直接下载安装包进行安装，并且同步安装**GUI**工具，虽然比较鸡肋。针对**Mac**系统主要相关的下载及文档如下：
 
-* **R**安装包：[R for Mac OS X](https://cran.r-project.org/bin/macosx/)
-* **R for Mac-FAQ**： [R Mac OS X-FAQ](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html)
-* 画图所需要的**xquartz**软件包：[Xquartz](https://www.xquartz.org/)
+- **R**安装包：[R for Mac OS X](https://cran.r-project.org/bin/macosx/)
+- **R for Mac-FAQ**： [R Mac OS X-FAQ](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html)
+- 画图所需要的**xquartz**软件包：[Xquartz](https://www.xquartz.org/)
 
 
 
@@ -61,7 +63,7 @@ brew install R
 ```bash
 cd /Library/Frameworks/R.framework/Resources/lib
 ```
-找到文件```libRblas.dylib```，它是一个**symlink**，默认指向同文件夹中的```libRblas.0.dylib```，这个就是**R**自带的**BLAS**库文件了。我们现在需要做的就是把这个**symlink**文件指向其他的**BLAS**库文件(**Accelerate framework**或者**OpenBLAS**)：
+找到文件**libRblas.dylib**，它是一个**symlink**，默认指向同文件夹中的**libRblas.0.dylib**，这个就是**R**自带的**BLAS**库文件了。我们现在需要做的就是把这个**symlink**文件指向其他的**BLAS**库文件(**Accelerate framework**或者**OpenBLAS**)：
 
 
 ```bash
@@ -82,7 +84,7 @@ ln -sf /usr/local/Cellar/openblas/0.2.20_1//lib/libopenblas.dylib libRblas.dylib
 
 **R**包的安装在**Mac**系统下面通常有三种方法：
 
-* 最常规的方法就是在**R**的**console**窗口下面调用```install.packages()``命令，比如要安装**ggplot2**包则命令如下：
+* 最常规的方法就是在**R**的**console**窗口下面调用**install.packages()**命令，比如要安装**ggplot2**包则命令如下：
 
 ```r
 > install.packages("ggplot2")
@@ -96,7 +98,7 @@ The downloaded binary packages are in
 	/var/folders/t0/csmkjx2s3cn0dgsd2t4zmf_w0000gn/T//RtmpTVfycx/downloaded_packages
 > 
 ```
-```install.packages()```命令会默认从你设定好的**CRAN**镜像地址下载已经被收录的包，比如上面[The Comprehensive R Archive Network](https://mirrors.ustc.edu.cn/CRAN)就是我设定的镜像地址。
+**install.packages()**命令会默认从你设定好的**CRAN**镜像地址下载已经被收录的包，比如上面[The Comprehensive R Archive Network](https://mirrors.ustc.edu.cn/CRAN)就是我设定的镜像地址。
 
 
 * 在实际的工作中，也许我们还会用到还没有被**CRAN**收入的包，比如来自**Github**的包，这就需要用到**devtools**包了，**devtools**包提供了从**CRAN**以外安装**R**的工作命令，以下以构建评分卡中关键的分箱步骤所需要用到的**WOE**包为例演示下**devtools**包的使用方法。
