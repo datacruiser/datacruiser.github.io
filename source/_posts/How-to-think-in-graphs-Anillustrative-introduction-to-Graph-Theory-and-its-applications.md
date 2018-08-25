@@ -514,6 +514,125 @@ private:
 };
 ```
 
+对于实现图的遍历算法（DFS/BFS）,自然而然地会采用类树的表示。确实能够带来很多帮助。然后，高效地路径跟踪可能需要不同的表示方式。还记得欧拉图吗？要跟踪一张图的“欧拉性”，我们需要在途中找一个欧拉路径。那意味着遍历每条边一次来访问所有节点，且当完成跟踪时还有未遍历的边时则该图没有一条欧拉路径，因此不是一张欧拉图。
+
+还有一种更快的方法，我们可以检查节点的度（假设每个节点保存它的度），正如定义所说，假如一张图包含有奇数度的节点并且不是只有两个这样的节点，那么它不是一张欧拉图。这样的检查的复杂度是O(|V|)，其中|V|是图中节点的个数。我们可以跟踪记录奇数/偶数度，确保在插入新的边的时候讲奇数/偶数度的检查提高到O(1)。没关系，我们只是跟踪记录一张图，就这样。下面是图的表示和返回路径的Trace()函数。
+
+```cpp
+// A representation of a graph with both vertex and edge tables
+// Vertex table is a hashtable of edges (mapped by label)
+// Edge table is a structure with 4 fields
+// VELO = Vertex Edge Label Only (e.g. no vertex payloads)
+
+class ConnectedVELOGraph {
+public:
+    struct Edge {
+        Edge(const std::string& f, const std::string& t)
+            : from(f)
+            , to(t)
+            , used(false)
+            , next(nullptr)
+        {}
+        std::string ToString() {
+            return (from + " - " + to + " [used:" + (used ? "true" : "false") + "]");
+        }
+
+        std::string from;
+        std::string to;
+        bool used;
+        Edge* next;
+    };
+
+    ConnectedVELOGraph() {}
+    ~ConnectedVELOGraph() {
+        vertices_.clear();
+        for (std::size_t ix = 0; ix < edges_.size(); ++ix) {
+            delete edges_[ix];
+        }
+    }
+
+public:
+    void InsertEdge(const std::string& from, const std::string& to) {
+        Edge* e = new Edge(from, to);
+        InsertVertexEdge_(from, e);
+        InsertVertexEdge_(to, e);
+        edges_.push_back(e);
+    }
+
+public:
+    void Print() {
+        for (auto elem : edges_) {
+            std::cout << elem->ToString() << std::endl;
+        }
+    }
+
+    std::vector<std::string> Trace(const std::string& v) {
+        std::vector<std::string> path;
+        Edge* e = vertices_[v];
+        while (e != nullptr) {
+            if (e->used) {
+                e = e->next;
+            } else {
+                e->used = true;
+                path.push_back(e->from + ":-:" + e->to);
+                e = vertices_[e->to];
+            }
+        }
+        return path;
+    }
+
+private:
+    void InsertVertexEdge_(const std::string& label, Edge* e) {
+        if (vertices_.count(label) == 0) {
+            vertices_[label] = e;
+        } else {
+            vertices_[label]->next = e;
+        }
+    }
+
+private:
+    std::unordered_map<std::string, Edge*> vertices_;
+    std::vector<Edge*> edges_;
+};
+```
+
+注意bugs，bugs无处不在。这段代码包含很多假设，比如，标签，对于节点我们理解为字符串标签。当然，你可以简单地将它修改为任何你想要的东西。在这个例子当中是什么内容不重要。下一个，命名，在注释中提到过，VELOGraph是节点边标签唯一图的简称。需要指出的是，这个图包含一个用关联到各自顶点的边来映射顶点标签的表，以及包含节点对（由特定边连接）和由Trace()函数使用的标志的边的列表。看一眼Trace()的实现。它采用边的变迁来标志一个已经遍历过的边（每一次Trace()的调用会重置所有标志）。
+
+## Twitter Example: Tweet Delivery Problem
+
+这里有另外一个叫做邻接矩阵的实现，在有向图中非常有用，像我们在Twitter的关注者网络中所用的一样。
+
+![Directed graph](https://cdn-images-1.medium.com/max/800/1*NogzJ2ZbrTrwh43ph-XAIQ.png)
+
+在这个Twitter例子当中有8个节点。因此，我们需要用|V|x|V|矩阵来表示这张图。如果有一个从**v**到**u**的有向边，则matrix[v][u]元素是`true`，否则为`false`。
+
+![Twitter's example](https://cdn-images-1.medium.com/max/800/1*s--uEeTmQg9f8LhHHGFKtA.png)
+
+正如你所看到的，这个矩阵太过于稀疏，但是却能够快速访问。看看Patrick是否关注了Sponge Bob，我们只要检查一下`matrix["Patrick"]["Sponge Bob"]`的值即可。为了得到Ann的关注者列表，我们只要执行整个“Ann”列（黄色的标题）。为了寻找谁被Sponge Bob关注，我们只要执行“Sponge Bob”行就可以了。邻接矩阵也可以用于无向图，如果有一条边连接**v**和**u**，我们将adj\_matrix[v][u] = 1,adj\_matrix[u][v] = 1。无向图的邻接矩阵是对称的。
+
+注意，与其在邻接矩阵当中保存0和1，我们可以保存一些“更有价值的东西”，比如**边的权重**。最好的一个例子就是带有距离信息的图。
+
+![distance](https://cdn-images-1.medium.com/max/600/1*gMt-tHRL-FeRk-P2-OYprg.png)
+
+![distance 2](https://cdn-images-1.medium.com/max/600/1*zH3p8q22YGh-UfzsrJ4VDA.png)
+
+上图表示Patrick， Sponge Bob和其它人的家之间的距离（**权重图**）。我们在无直接相连的节点之间使用“无限符号”。那并不意味着它们之间根本没有路径，同时也不意味着必须有路径。当需要应该一个寻找不同节点之间路径的算法的时候可以进行定义（甚至还有更好的方法来存储事件和顶点，称为关联矩阵）。
+
+![82000Tb](https://cdn-images-1.medium.com/max/800/1*mXDa1tFIZi5ohpamzVz-cQ.jpeg)
+
+邻接矩阵看起来是一个很好的Twitter关注者网络的解决方案，为将近3亿（月活用户）的用户保留方矩阵需要3亿 * 3亿 * 1字节（保存布尔值）。需要将近~82000Tb的空间，大小相当于1024 * 82000Gb，不知道你的集群如何，反正我的笔记本是没有那么多的内存。字节集呢？[BitBoard](https://github.com/vardanator/ultron/blob/master/src/arrays/bitboard.h)可以帮助我们一些，将所需空间减少到~10000Tb。可是依然很大。正如之前提起过，邻接矩阵太过于稀疏了。它强迫我们使用了比实际多更多地空间。这也是使用边事件到节点的列表有价值的原因。关键是，邻接矩阵允许我们同事保存“关注”和“未关注”的信息，但是我们所想要的信息是关注，看起来像下面这个样子：
+
+<figure class="half">
+    <img src="https://cdn-images-1.medium.com/max/600/1*jtt7z3iHFr7xSFSKX95DTA.png">
+    <img src="https://cdn-images-1.medium.com/max/600/1*qqTFXXc44_2aqx4dEhPkQw.png">
+</figure>
+
+
+
+
+
+
+
 
 
 
