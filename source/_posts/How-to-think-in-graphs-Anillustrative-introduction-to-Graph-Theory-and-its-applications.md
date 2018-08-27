@@ -649,14 +649,417 @@ private:
 
 ![followers](https://cdn-images-1.medium.com/max/800/1*axs6Z0F87LcnxtHJXoNPKw.png)
 
+因此基于这张插入，当Liz发tweet的时候，Sponge Bob和Ann在他们的时间线上看到相应的内容。为每一位用户的时间线保存单独的结构可以实现这样的功能。考虑到Twitter3亿+的用户，我们假设至少有3亿+的时间线。基本上，当一个用户发tweet的时候，我应该拿到该用户的关注者列表，然后更新他们的时间线（在每一个用户的时间线当中插入相同的内容）。一个时间线可以用链表来表示，或者平衡树也可以（以发tweet的日期来作为节点的键）。
 
+```cpp
+// 'author' represents the User object, at this point we are interested only in author.id
+//
+// 'tw' is a Tweet object, at this point we are interested only in 'tw.id' 
 
+void DeliverATweet(User* author, Tweet* tw)
+{
+  // we assume that 'tw' object is already stored in a database
+  
+  // 1. Get the list of user's followers (author of the tweet)
+  vector<User*> user_followers = GetUserFollowers(author->id);
+  
+  // 2. insert tweet into each timeline
+  for (auto follower : user_followers) {
+    InsertTweetIntoUserTimeline(follower->id, tw->id);
+  }
+}
+```
 
+这是一个从实际时间线表示方面进行简单抽象的注意，当然，如果我们采用多线程可以将实际的推送变得更快。这对于一些“重型案例”非常关键，因为对于数以百万计的关注者来说，排在最末尾的那些关注者比排在列表最前面的那些关注者被处理得晚。
 
+下面的伪代码试着阐明多线程推送主意：
 
+```cpp
+// Warning: a bunch of pseudocode ahead
 
+void RangeInsertIntoTimelines(vector<long> user_ids, long tweet_id)
+{
+  for (auto id : user_ids) {
+    InsertIntoUserTimeline(id, tweet_id);
+  }
+}
 
+void DeliverATweet(User* author, Tweet* tw)
+{
+  // we assume that 'tw' object is already stored in a database
+  
+  // 1. Get the list of user's (tweet author's) followers's ids
+  vector<long> user_followers = GetUserFollowers(author->id);
+  
+  // 2. Insert tweet into each timeline in parallel
+  const int CHUNK_SIZE = 4000; // saw this somewhere
+  for (each CHUNK_SIZE elements in user_followers) {
+    Thread t = ThreadPool.GetAvailableThread(); // somehow
+    t.Run(RangeInsertIntoTimelines, current_chunk, tw->id);
+  }
+}
+```
 
+因此，当关注者刷新他们的时间线的时候，他们会收到新的tweet。
 
+公平地讲，我们只是触及Airbnb和Twitter实际问题的冰山一角。实际上需要天才工程师花很长的时间努力工程才能够在像Twitter，Google，Facebook，Amazon，Airbnb以及其它的复杂系统当中完成如此伟大的工作。读这篇文章的时候要记住这一点。
 
+![tip of the iceberg](https://cdn-images-1.medium.com/max/1000/1*28Qw4dWbrh3kljvxOuLgjw.png)
+
+验证Twitter tweet推送问题的关键是图的应用，即使我们还没有用任何图算法，我们只是用了图的表示。确实，我们编了一个伪代码的tweet推送函数，但那是我们在寻找解决方案的过程中产生的。
+
+我提到“任何图算法”是指在[这个列表](https://en.wikipedia.org/wiki/List_of_algorithms#Graph_algorithms)中出现的任何算法。作为一件足以让程序员哭泣的大事，稍微一看就会发现，图论和图算法应用稍有不同。在最后结束图展示之前我们讨论Airbnb房间和有效过滤，最明显地一点是无法使用一个以上的过滤条件还能够高效地过滤房间。有没有什么可以用图算法完成呢？嗯，我们不能肯定地告诉你，但至少我们可以试试。如果我们把每个过滤条件设置为一个单独的节点如何呢？
+
+字面上，每个过滤条件，甚至所有从10美元到1000+美元的价格，所有的城市名字，国家代码，辅助设施（电视，Wi-Fi以及其它），成人的数量，和每个数字都当作一个单独的图节点。
+
+![Excerpt of Airbnb filters](https://cdn-images-1.medium.com/max/800/1*R756x_xP1VA-vlQu6lElJQ.png)
+
+我们甚至可以让这个节点集合更加“友好”假如我们加入“类型”节点的话，比如“Amenities”与所有表示设施过滤条件的节点链接。
+
+![Airbnb filters with types](https://cdn-images-1.medium.com/max/800/1*K4SFmofsfg-V2yu6zbwwXw.png)
+
+现在，如果我们将Airbnb房间表示为节点然后将每一个房间与“过滤条件”节点相连接如果那间房间支持对应的过滤条件（举个例子，将“家1”与“厨房”联系起来，如果“家1”在其设施中有“厨房”）。
+
+![Looks messy](https://cdn-images-1.medium.com/max/800/1*SozJ2RceNg1CA-hua1324w.png)
+
+一个微小的改变，可以将这张插图看起来更像另外一种特殊的图，叫做**偶图（bipartite graph）**。
+
+![Number of vertices are more than it may appear](https://cdn-images-1.medium.com/max/800/1*rJDMNi0VK44XoIWIEqem-A.png) 
+
+偶图是其节点可以分为两个不相交的独立集合，使得每一条边将一个集合的节点连接到另外一个集合中的节点的图。-[Wikipedia](https://en.wikipedia.org/wiki/Bipartite_graph)
+
+在我们的例子当中，一个集合表示过滤条件（我们用F表示），另外一个集合表示房间（我们用H表示）。比如，假如价格为62美元的房间有10万间，然后标价为“62美元”的价格节点将会有10万条边与每个家庭节点相连。如果我们评估最差情况的空间复杂度，每个房间拥有满足所有过滤条件的特殊，那么总共需要存储的边的数量是70000 * 4百万。如果我们用一个ids对来表示每条边的话{filter_id;home_id}且我们重新考虑使用4字节的整型数据来表示过滤条件IDs，8字节长整型数据来表示房间IDs，那么每一条边至少需要12字节。因此，存储70000 * 4百万 12字节数据最终需要大约3Tb的内存空间。你看，我们犯了一个小错误。
+
+在Airbnb当中大约有6.5万的城市处于激活状态，因此过滤条件大约7万多。好消息是同样的房间不可能在两个及以上个城市中出现。这样的结果是我们关于城市的边对的实际数字是4百万（每一个房间位于一个城市）。于是我们需要计算70k-65k = 5千的过滤条件，这意味着我们需要5000 * 4百万 * 12 字节的内存，不到0.3Tb。非常好的一个 结果。但是什么给了我们这个对偶图呢？最常见的网站/手机客户端都会有一些过滤条件组成，比如下面这个例子所示：
+
+```cpp
+house_type: "entire_place",
+adults_number: 2,
+price_range_start: 56,
+price_range_end: 80,
+beds_number: 2,
+amenities: ["tv", "wifi", "laptop friendly workspace"],
+facilities: ["gym"]
+```
+
+然后我们所需要的就是找到上述的所有“过滤节点”，然后处理链接这些“过滤节点”的所有“房间节点”。这让我们想到了一个可怕的话题……
+
+## Graph Algorithms: Intro
+
+任何处理图的过程可能会被归类为“图算法”。从字面上，你可以实现一个函数打印一张图的所有节点然后命名为“<你的名字> 的节点打印算法”。大部分人对[教科书](https://en.wikipedia.org/wiki/List_of_algorithms#Graph_algorithms)中所罗列的图算法有所恐惧。让我们试着去应用一个对偶图的匹配算法，比如对Airbnb房间问题而言的[Hopcroft-Karp算法](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)
+
+> 假设一个包含AIrbnb房间（H）和过滤条件（F）的对偶图，其中每个H节点可以拥有一个以上邻接F节点（共享公共边）。找到一个由与F的子集中的节点邻近的节点组合的H的子集。 
+
+非常复杂的问题定义，然后，目前我们还无法确定[Hopcroft-Karp算法](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)是否可以解决我们的问题。但我可以保证这个探索的过程可以教会我们很多图算法背后很多的重要知识点。当然，这个过程并不断，请耐心往前。
+
+[Hopcroft-Karp算法](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)以一个对偶图为输入，最大基数匹配为输出-一组没有每条边共用一个端点的尽可能多的边-[Wikipedia](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)。
+
+熟悉这个算法的读者肯定已经知道它解决不了我们的问题，因为匹配需要没有两条边共用一个节点。
+
+让我们看一个插图案例，为了简化问题，这里只有4个过滤条件和8个房间。
+
+- 房间以A到H表示，过滤条件随机选择
+- 房间A有一个价格（50美元），和一张床
+- 所有的房间都有50美元/晚的价格标签和一张床，但是少部分有“Wi-Fi”和/或“电视”
+
+下面的插图试着表明按照满足所有4种过滤条件的需求哪些房间需要“返回”（比如，50美元/晚，一张床，同事有Wi-Fi和电视）。
+
+![Small example](https://cdn-images-1.medium.com/max/1000/1*r2G1A2OoG8KeTmqImr4SXQ.png)
+
+我们的问题的解决方案需要共用节点的边连到拥有相同过滤节点子集的去重房间节点，而[Hopcroft-Karp算法](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)排除了拥有相同端点的边且在两个子集当中产生到节点的边事件。
+
+看一眼上面的插图，我们需要的是房间D和G，两者都能够满足所有的4个过滤条件。我们实际上所需要的诗获取共享端点所有匹配的边。
+
+我们可以为这种方法设计一种算法，但是它的处理时间无法满足用户的需求 (users needs = lightning fast, right here, right now)。可能创建一个含有多个排序主键的平衡BST会更快，几乎类似数据索引文件，将主/外键用一个满意记录集合来映射。
+
+[Hopcroft-Karp算法](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)（大部分的其它算法）都是基于**DFS**（Depth-First Search）和**BFS**（Breadth-First Search）图遍历算法。诚实地讲，这里介绍[Hopcroft-Karp算法](https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm)的原因是为了偷偷地切换到最后从二叉树开始讲的图遍历。
+
+二叉树的遍历非常优美，主要是因为其内在的递归特性。主要有三种基本的遍历方法，in-order, post-order and pre-order，你可以设计你自己的遍历算法。如果你遍历过链表的话他们都很好理解。在链表当中你只是打印当前节点的值（在下面的代码当中用`item`命名）然后继续到下一个节点。
+
+```cpp
+// struct ListNode {
+//   ListNode* next;
+//   T item;
+// }; 
+
+void TraverseRecursive(ListNode* node) // starting node, most commonly the list 'head'
+{
+  if (!node) return; // stop
+  std::cout << node->item;
+  TraverseRecursive(node->next); // recursive call
+}
+
+void TraverseIterative(ListNode* node)
+{
+  while (node) {
+    std::cout << node->item;
+    node = node->next;
+  }
+}
+```
+
+对于二叉树来说基本上也是一样，你打印节点的值或者任何其它你需要做的事情，然后继续下一个节点，但是在这个案例当中，这里有**两个**下一节点，左节点和右节点。因此你需要对左右节点做同样的事情。但是你有三个不同的选择：
+
+- 打印节点值然后到左节点，然后再到右节点，或者
+- 先到左节点，打印节点值，然后到右节点，或者
+- 先到左节点，然后到右节点，最后打印当前节点的值。
+
+```cpp
+// struct TreeNode {
+//   T item;
+//   TreeNode* left;
+//   TreeNode* right;
+// }
+
+// you cann pass a callback function to do whatever you want to do with the node's value
+// in this particular example we are just printing its value.
+
+// node is the "starting point", basically the first call is done with the "root" node
+void PreOrderTraverse(TreeNode* node)
+{
+  if (!node) return; // stop
+  std::cout << node->item;
+  PreOrderTraverse(node->left); // do the same for the left sub-tree
+  PreOrderTraverse(node->right); // do the same for the right sub-tree
+}
+
+void InOrderTraverse(TreeNode* node)
+{
+  if (!node) return; // stop
+  InOrderTraverse(node->left);
+  std::cout << node->item;
+  InOrderTraverse(node->right);
+}
+
+void PostOrderTraverse(TreeNode* node)
+{
+  if (!node) return; // stop
+  PostOrderTraverse(node->left);
+  PostOrderTraverse(node->right);
+  std::cout << node->item;
+}
+```
+
+![Detailed tracing of pre-order traversal](https://cdn-images-1.medium.com/max/1000/1*_REEYbWyGAcxUOg91NpfDQ.png)
+
+![Inorder VS Postorder](https://cdn-images-1.medium.com/max/800/1*b8dFEEr0iKEs0ogkCR5mdQ.png)
+
+显而易见，递归函数虽然使用成本很高，但是非常优雅。每一次我们递归地调用一个函数，意味着我们调用一个完全“全新”的函数。“全新”的意思是另外一个内存栈会“分配”给函数参数和局部变量。这是递归调用成本高和危险的原因，需要分配额外的栈空间并且需要管理很多的函数调用，并且要防止栈溢出，显然，建议进行迭代实现。在关键任务系统编程当中（飞机，NASA飞行器等），递归是完全禁止的（这只是一个传言）。
+
+## Netflix and Amazon: Inverted Index Example
+
+让我们假设我们要以电影名字为主键将Netflix中所有的电影存储在一个BST当中。当用户输入“Inter”，我们会返回一个标题以“Inter”开头的电影列表（比如，“Interstellar”, “Interceptor”, “Interrogation of Walter White”）。
+
+现在，如果我们返回的电影列表除了标题以“Inter”开头，还按照电影的评分进行排序，或者一些与特定用户相关的东西，比如惊恐多过于剧情等等。这个例子的要点是对BST进行有效的范围查询。
+
+但像往常一样，我们不会深入到深水区中去寻找冰山的其余部分。基本上，我们需要通过搜索关键字进行快速查找，然后获得按某个键排序的结果列表，这很可能是电影评级和/或基于用户的个人数据的一些个性化排名。我们将尽可能地坚持KISK原则（Keep It Simple, Karl）。
+
+> “KISK” or “let’s keep it simple” or “for the sake of simplicity”, a super excuse for tutorial writers to abstract from the real problem and make tons of assumptions by bringing an “abc” easy example and its solution in pseudocode that works even on your grandma’s laptop.
+>
+> “KISK”或“让我们保持简单”或“为了简单起见”，是教程作者从实际问题中抽象出来并作出大量假设的终极口号，它提供了一个“abc”简单示例及其伪代码解决方案，即使在你奶奶的笔记本电脑上也能工作。
+
+这个问题可以简单地应用到Amazon的产品搜索当中，因为我们大部分情况下通过输入一些能够形容我们兴趣的文本，比如“Graph Algorithms”，在Amazon中进行搜索然后获得通过产品评分进行排序的产品列表。在Amazon的搜索结果当中我还没有经历过个性化的结果。但我非常肯定Amazon也会做那样的事情。因此将这个子标题改为以下...更加合适
+
+### Netflix and Amazon
+
+Netflix提供电影，Amazon提供产品，我们将他们都命名为“items”，所以当你看到一个“item”的时候可以想象一下Netflix当中的电影和Amazon当中的产品。
+
+关于items最常规的事情就是对items的标题和描述进行句法分析，我们暂且仅考虑items的标题，加入一个操作员（通常是人工通过管理面板在Netflix/Amazon的数据库当中插入item数据）在数据库当中插入一个新的item，它的标题将会有一些“ItemTitleProessor”处理产生一些关键词。
+
+![Not the best illustration, I know](https://cdn-images-1.medium.com/max/800/1*sHk85QLf7UBbV3fv0tEpqw.png)
+
+每一个item都有其对应的识别ID，链接到标题当中找到的关键字。这就是搜索引擎在世界各地爬取网站时所做的事情。他们分析每个文档的内容，标记它然后将它添加到表当中，当标记可见时，这会将每个记号映射到对于的文档ID（网站）。
+
+因此，当你搜索“hello”，搜索引擎抓取所有能够匹配关键字“hello”的文档（实际上更为复杂，因为最重要的诗搜索的相关性，这也是为什么google搜索如此好的原因）。Netflix/Amazon类似的表看起来是这样的：
+
+![Inverted index](https://cdn-images-1.medium.com/max/800/1*fpEI4aYnsQh8weU2sdcOAg.png)
+
+哈希表，对，我们会为这个**反转索引（inverted index）**保存一个哈希表。哈希表会映射一个关键字到一个items的BST。为什么采用BST？因为我们希望在有序保存的同时也能够以部分顺序排序响应前端的请求。并不是真正显示BST强大的地方。但是，让我们假装我们还需要在搜索结果当中还能够快速的查找，假设你需要有关键字“machine”的所有三星的电影。
+
+![item's BST](https://cdn-images-1.medium.com/max/1000/1*dInMLLVJp8dFKYJ4iUhGcQ.png)
+
+注意，在不同的树当中存在重复的items是允许的，因为一个item通常可以通过一个以上的关键字查询到。
+
+我们将items定义如下：
+
+```cpp
+// Cached representation of an Item
+// Full Item object (with title, description, comments etc.) 
+// could be fetched from the database
+struct Item
+{
+  // ID_TYPE is the type of Item's unique id, might be an integer, or a string
+  ID_TYPE id;
+  int rating;
+};
+```
+
+每次新的Item插入数据库的时候，标题会被处理然后加入到大的索引表当中，映射一个关键词到一个item。可以有很多items共有相同的关键词，因此，我们在BST当中按照这些items的评分来保存它们。
+
+用用户搜索某个关键词的时候，它们获得按评分排序的一个items列表。我们怎么从一棵树获得一个排好序的列表呢？通过一个in-order遍历。
+
+```cpp
+// this is a pseudocode, that's why I didn't bother with "const&"'s and "std::"'s
+// though it could have look better, forgive me C++ fellows
+
+vector<Item*> GetItemsByKeywordInSortedOrder(string keyword)
+{
+  // assuming IndexTable is a big hashtable mapping keywords to Item BSTs
+  BST<Item*> items = IndexTable[keyword]; 
+  
+  // suppose BST has a function InOrderProduceVector(), which creates a vector and 
+  // inserts into it items fetched via in-order traversing the tree
+  vector<Item*> sorted_result = items.InOrderProduceVector();
+  return sorted_result;
+}
+```
+
+这里是一个`InOrderProduceVector()`的一个实现可能看起来的样子：
+
+```cpp
+template <typename BlaBla>
+class BST
+{
+public:
+  // other code ...
+  vector<BlaBla*> InOrderProduceVector()
+  {
+    vector<BlaBla*> result;
+    result.reserve(1000); // magic number, reserving a space to avoid reallocation on inserts
+    InOrderProduceVectorHelper_(root_, result); // passing vector by reference
+    return result;
+  }
+  
+protected:
+  // takes a reference to vector
+  void InOrderProduceVectorHelper_(BSTNode* node, vector<BlaBla*>& destination)
+  {
+    if (!node) return;
+    InOrderProduceVectorHelper_(node->left, destination);
+    destination.push_back(node->item);
+    InOrderProduceVectorHelper_(node->right, destination);
+  }
+  
+private:
+  BSTNode* root_;
+};
+```
+
+但是，但是。。。我们首先需要最高评分的item，而我们的in-order遍历却首先产生了最低评分的item。这是由它自身的特性决定的。In-order遍历自下向上，从最低的到最高的item。为了获得你想要的，需要将列表降序而非升序，我们应该更进一步地看一下In-order遍历的实现方式。 
+
+我们现在做的诗通过左边的节点，然后打印当前节点的值，接着到右边的点。最左边的点是值最小的点。因此，简单的实现改变可以先通过右边的的节点就可以让我们获得一个降序的列表，就像其他人做的一样，我们将它命名为反向in-order遍历。
+
+让我们更新上面的代码：(注意可能出现的bug)
+
+```cpp
+// Reminder: this is pseudocode, no bother with "const&", "std::" or others
+// forgive me C++ fellows
+
+template <typename BlaBla>
+class BST
+{
+public:
+  // other code ...
+  
+  vector<BlaBla*> ReverseInOrderProduceVector(int offset, int limit)
+  {
+    vector<BlaBla*> result;
+    result.reserve(limit);
+    // passing result vector by reference
+    // and passing offset and limit
+    ReverseInOrderProduceVectorHelper_(root_, result, offset, limit);
+    return result;
+  }
+  
+protected:
+  // takes a reference to vector
+  // skips 'offset' nodes and inserts up to 'limit' nodes
+  void ReverseInOrderProduceVectorHelper_(BSTNode* node, vector<BlaBla*>& destination, int offset, int limit)
+  {
+    if (!node) return;
+    if (limit == 0) return;
+    --offset; // skipping current element
+    ReverseInOrderProduceVectorHelper_(node->right, destination, offset, limit);
+    if (offset <= 0) { // if skipped enough, insert
+      destination.push_back(node->value);
+      --limit; // keep the count of insertions
+    }
+    ReverseInOrderProduceVectorHelper_(node->left, destination, offset, limit);
+  }
+  
+private:
+  BSTNode* root_;
+};
+
+// ... other possibly useful code
+
+// this is a pseudocode, that's why I didn't bother with "const&"'s and "std::"'s
+// though it could have look better, forgive me C++ fellows
+
+vector<Item*> GetItemsByKeywordInSortedOrder(string keyword, offset, limit) // pagination using offset and limit
+{
+  // assuming IndexTable is a big hashtable mapping keywords to Item BSTs
+  BST<Item*> items = IndexTable[keyword]; 
+  
+  // suppose BST has a function InOrderProduceVector(), which creates a vector and 
+  // inserts into it items fetched via reverse in-order traversing the tree
+  // to get items in descending order (starting from the highest rated item)
+  vector<Item*> sorted_result = items.ReverseInOrderProduceVector(offset, limit);
+  return sorted_result;
+}
+```
+
+就是这样。我们可以可以提供很快的item搜索服务。如上所述，反向索引主要用于搜索引擎，比如Google。虽然Google搜索引擎是一个非常复杂的系统，但它确实使用了一些简单的想法来将搜索查询词与文档匹配来快速的提供结果。
+
+我们使用树遍历来提供排序后的结果。从这个角度，看起来pre/in/post-order遍历可以满足现实所需，但是有时候也需要另外一个类型的遍历方式。
+
+让我们来解决这个非常著名的编程面试题目，“如何逐级打印二叉树？”
+
+![level-by-level traversal](https://cdn-images-1.medium.com/max/800/1*N8LEoIDShv0s5jeSdLwccw.png)
+
+### Traversals: DFS and BFS
+
+如果你对这个问题不熟悉的话，可以考虑一下一些当你遍历树的时候你可以用来存储节点的数据结构。当我们用上述提到的算法一层一层比较树的遍历，我们最终会设计出两种图的遍历，那就是深度优先算法（DFS）和广度优先算法（BFS）。
+
+![Depth-first](https://cdn-images-1.medium.com/max/1000/1*BINJY5Q9c9x0OPchErAqTg.png)
+
+深度优先搜索寻找最远的节点，广度优先搜索首先探索最近的节点。
+
+- **DFS** - 行动更多，思考更少
+- **BFS** - 在走远之前先看看周边的情况
+
+![Breadth first](https://cdn-images-1.medium.com/max/1000/1*wEftMOewfDW2ZLjsenZNUg.png)
+
+DFS更像是pre，in，post-order遍历。如果我们需要逐级打印树的节点时BFS正是我们的所想要的。
+
+为了实现这一点，我们需要一个队列（数据结构）来存储图的“级别”，同时打印（访问）它的“父级别”。在前面的说明中，放置在队列中的节点是浅蓝色的。
+
+基本上，逐级地，从队列中提取每个级别上的节点，在访问每个所提取的节点时，我们还应该将其子节点插入队列中（对于下一级别）。下面的代码足够简单以获得BFS的主要思想。基于图是连通的假设，当然，它可以被修改以应用于未连通图。
+
+```cpp
+// Assuming graph is connected 
+// and a graph node is defined by this structure
+// struct GraphNode {
+//   T item;
+//   vector<GraphNode*> children;
+// }
+
+// WARNING: untested code
+void BreadthFirstSearch(GraphNode* node) // start node
+{
+  if (!node) return;
+  queue<GraphNode*> q;
+  q.push(node);
+  while (!q.empty()) {
+    GraphNode* cur = q.front(); // doesn't pop
+    q.pop();
+    for (auto child : cur->children) {
+      q.push(child);
+    }
+    
+    // do what you want with current node
+    cout << cur->item;
+  }
+}
+```
 
