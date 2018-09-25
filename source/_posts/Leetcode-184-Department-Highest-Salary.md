@@ -35,7 +35,7 @@ description: 没什么，最近刷了一遍Leetcode上面数据库的免费题�
 | 2  | Sales    |
 +----+----------+
 </pre>
-写一条SQL查询语句找出每一个系当中薪酬最高的员工。对于上面的表格，在IT部门当中Max的薪酬最高，Sales部门当中Henry的薪酬最高。
+写一条SQL查询语句找出每一个部门当中薪酬最高的员工。对于上面的表格，在IT部门当中Max的薪酬最高，Sales部门当中Henry的薪酬最高。
 <pre>
 +------------+----------+--------+
 | Department | Employee | Salary |
