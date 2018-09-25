@@ -50,7 +50,6 @@ FROM Employee AS a, Employee AS b
 
 > 注意：关键字'AS'是可选的。
 
-
 <table>
 <thead>
 <tr>
@@ -237,6 +236,8 @@ FROM Employee AS a, Employee AS b
 </tr>
 </tbody>
 </table>
+
+
 从两个表格提数可以获得两个表格的笛卡尔积。在这种案例当中，输出会有 4*4 = 16条记录。但是，我们所感兴趣的是员工薪水高于他/她的直接经理的记录。因此，我们需要在一个`WHERE`语句当中加入两个条件。
 
 相应的SQL代码如下：
