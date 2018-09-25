@@ -49,6 +49,8 @@ FROM Employee AS a, Employee AS b
 ```
 
 > 注意：关键字'AS'是可选的。
+
+
 <table>
 <thead>
 <tr>
