@@ -20,19 +20,19 @@ description: 最近在使用matplotlib库进行画图的时候遇到中文显示
 - 找到matplotlib 字体存放目录
     - ~/matplotlib/mpl-data/fonts/ttf
     - 将下载好的字体文件cp到对应目录并修改文件权限
-        - ```chmod 664 *.ttf```
+        - `chmod 664 *.ttf`
 
 
 - 找到matplotlib格式配置文件
-    - ```matplotlib.matplotlib_fname()```
+    - `matplotlib.matplotlib_fname()`
 
 
-    - 修改```matplotlibrc```配置文件
+    - 修改`matplotlibrc`配置文件
         - **font.family**: sans-serif
         - **font.sans-serif** : 增加 SimHei, MicroSoft YaHei 
         - **axes.unicode_minus**: False #作用就是解决负号'-'显示为方块的问题
         - 该配置文件是一份模板，相关参数的修改生效需要将前面的注释号 # 去除，另外，修改生效以后最后复制一份到mtplotlib的缓存文件夹，不然下次升级matplotlib时文件会被覆盖，Mac系统当中这个缓存文件夹可以通过以下命令获得
-    - ```matplotlib.get_cachedir()```
+    - `matplotlib.get_cachedir()`
 
 
 - 代码配置
