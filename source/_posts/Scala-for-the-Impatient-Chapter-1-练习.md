@@ -5,7 +5,7 @@ categories: Scala
 tags:
 - 函数式编程
 - 大数据
-- Scala
+- Scala for the Impatient
 ---
 
 
