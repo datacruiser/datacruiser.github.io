@@ -71,7 +71,7 @@ scala> probablePrime(100, Random)
 res9: scala.math.BigInt = 847489671473680176573889558451
 ```
 
-####8 创建随机文件的方式之一是生成一个随机的` BigInt`，然后将它转换成三十六进制，输出类似"qsnvbevtomcjo06kul"这样的字符串。查阅 Scaladoc，找到在Scala中实现该逻辑的办法。
+#### 8 创建随机文件的方式之一是生成一个随机的` BigInt`，然后将它转换成三十六进制，输出类似"qsnvbevtomcjo06kul"这样的字符串。查阅 Scaladoc，找到在Scala中实现该逻辑的办法。
 
 ```scala
 scala> val x: BigInt = probablePrime(100, Random)
@@ -83,7 +83,7 @@ res10: String = 2lfjsf9m1f7bhi294iigd
 ```
 首先，通过` probablePrime(100,Random)`获得一个随机数，然后通过调用 `toString()`方法进行进制转换。
 
-####9 在 Scala 中如何获取字符串的首字符和尾字符。
+#### 9 在 Scala 中如何获取字符串的首字符和尾字符。
 
 ```scala
 scala> val string: String = "Hello, World"
@@ -95,7 +95,7 @@ res11: Char = H
 scala> string.last
 res13: Char = d
 ```
-####10 take、drop、takeRight 和dropRight这些字符串函数式做什么用的？和 substring 相比，他们的优点和缺点都有哪些？
+#### 10 take、drop、takeRight 和dropRight这些字符串函数式做什么用的？和 substring 相比，他们的优点和缺点都有哪些？
 
 ```scala
 abstract def take(n: Int): Repr
