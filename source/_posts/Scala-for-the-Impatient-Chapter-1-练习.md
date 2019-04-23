@@ -6,6 +6,7 @@ tags:
 - 函数式编程
 - 大数据
 - Scala for the Impatient
+description: 《Scala for the Impatient》第一章练习。
 ---
 
 

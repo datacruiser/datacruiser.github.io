@@ -6,6 +6,7 @@ tags:
 - 函数式编程
 - 大数据
 - Scala for the Impatient
+description: 《Scala for the Impatient》第二章练习。
 ---
 
 #### 1 一个数字如果为正数，则它的` signum`为1；如果是负数，则` signum`为-1；如果是0，则` signum`为0。编写一个函数来计算这个值。

@@ -6,6 +6,7 @@ tags:
 - 函数式编程
 - 大数据
 - Scala for the Impatient
+description: 《Scala for the Impatient》第三章练习。
 ---
 
 #### 1 编写一段代码，将 a 设置为一个 n 个随机整数的数组，要求随机数介于0（包含）和 n（不包含）之间。
@@ -349,6 +350,7 @@ the receiver object.
 Exceptions thrown
 ClassCastException if the receiver object is not an instance of the erasure of type T0.
 //然后，将对象的创建和asInstanceOf方法调用分两步执行就可以了
+
 scala> val flavors = SystemFlavorMap.getDefaultFlavorMap()
 flavors: java.awt.datatransfer.FlavorMap = java.awt.datatransfer.SystemFlavorMap@30364216
 
