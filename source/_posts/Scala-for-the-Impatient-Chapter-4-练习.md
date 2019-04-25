@@ -8,7 +8,8 @@ tags:
 - Scala for the Impatient
 description: 《Scala for the Impatient》第四章练习。
 ---
-#### 1 设置一个映射，其中包含你想要的一些装备，以及他们的价格。然后构建另一个映射，采用同一组键，但在价格上打9折。
+#### 第1题 
+设置一个映射，其中包含你想要的一些装备，以及他们的价格。然后构建另一个映射，采用同一组键，但在价格上打9折。
 代码如下：
 
 ```scala
@@ -29,7 +30,8 @@ res0: scala.collection.immutable.Map[String,Int] = Map(MacBook -> 9888, MacBook 
 scala> for ((k, v) <- items) yield (k, v * 0.9)
 res1: scala.collection.immutable.Map[String,Double] = Map(MacBook -> 8899.2, MacBook Pro -> 18799.2, Iphone XS Max -> 9799.2)
 ```
-#### 2 编写一段程序，从文件中读取单词。用一个可变映射来清点每一个单词出现的频率。读取这些单词的操作可以使用` java.util.Scanner`:
+#### 第2题
+编写一段程序，从文件中读取单词。用一个可变映射来清点每一个单词出现的频率。读取这些单词的操作可以使用` java.util.Scanner`:
 
 ```scala
 val in = new java.util.Scanner(new java.io.File("myfile.txt"))
@@ -205,7 +207,8 @@ scala> maps.foreach(println)
 (python,3)
 (C++,2)
 ```
-#### 3 重复前一个练习，这次用不可变的映射。
+#### 第3题 
+重复前一个练习，这次用不可变的映射。
 代码如下：
 
 ```scala
@@ -260,7 +263,8 @@ scala> maps.foreach(println)
 - 在定义 maps 变量时需要使用 var 关键字声明为可变变量
 - 在对 key 进行计数时需要采用`+=`操作符，且需要用`->`指向key 所对应的原来的 value
 
-#### 4 重复前一个练习，这次用已排序的映射，以便单词可以按顺序打印出来。
+#### 第4题 
+重复前一个练习，这次用已排序的映射，以便单词可以按顺序打印出来。
 代码如下：
 
 ```scala
@@ -311,7 +315,8 @@ scala> sortedMaps.foreach(println)
 ```
 需要注意的是，`SortedMap`的基本性质和` Map`相同。
 
-#### 5 重复前一个练习，这次用 `java.util.TreeMap`并使之适用于 Scala API。
+#### 第5题 
+重复前一个练习，这次用 `java.util.TreeMap`并使之适用于 Scala API。
 代码如下：
 
 ```scala
@@ -360,7 +365,8 @@ scala> treeMaps.foreach(println)
 (world,2)
 
 ```
-#### 6 定义一个链式哈希映射，将"Monday"映射到`java.util.Calendar.MONDAY`，依次类推加入其它日期。展示元素是以插入顺序被访问的。
+#### 第6题 
+定义一个链式哈希映射，将"Monday"映射到`java.util.Calendar.MONDAY`，依次类推加入其它日期。展示元素是以插入顺序被访问的。
 代码如下：
 
 ```scala
@@ -421,7 +427,9 @@ scala> maps foreach println
 (Sunday,1)
 
 ```
-#### 7 打印出所有Java系统属性的表格，类似这样：
+#### 第7题 
+打印出所有Java系统属性的表格，类似这样：
+
  属性名称 | 属性值 
  :-: | :-: 
  java.rutime.name | Java(TM) SE Runtime Environment 
@@ -498,7 +506,8 @@ java.io.tmpdir               |/var/folders/t0/csmkjx2s3cn0dgsd2t4zmf_w0000gn/T/
 line.separator               |
 ...
 ```
-#### 8 编写一个函数` minmax(values: Array[Int])`，返回数组中最小值和最大值的对偶。
+#### 第8题 
+编写一个函数` minmax(values: Array[Int])`，返回数组中最小值和最大值的对偶。
 - 版本一，采用HashMap，代码如下：
 
 ```scala
@@ -557,7 +566,8 @@ ab: Array[Int] = Array(1, 2, 3, 4, 5, 7, 9)
 scala> minmax(ab)
 res42: scala.collection.immutable.Map[Int,Int] = Map(1 -> 9)
 ```
-#### 9 编写一个函数 `lteqgt(values: Array[Int], v: Int)`，返回数组中小于v、 等于 v和大于 v 的数量，要求三个值一起返回。
+#### 第9题 
+编写一个函数 `lteqgt(values: Array[Int], v: Int)`，返回数组中小于v、 等于 v和大于 v 的数量，要求三个值一起返回。
 代码如下：
 
 ```scala
@@ -596,7 +606,8 @@ returns
 the number of elements satisfying the predicate p.
 ```
 
-#### 10 当你将两个字符串拉链在一起，比如`“Hello”.zip("World")`，会是什么结果，想出一个讲得通的用例。
+#### 第10题 
+当你将两个字符串拉链在一起，比如`“Hello”.zip("World")`，会是什么结果，想出一个讲得通的用例。
 测试结果如下：
 
 ```scala

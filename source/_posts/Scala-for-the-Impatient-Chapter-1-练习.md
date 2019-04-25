@@ -10,7 +10,8 @@ description: 《Scala for the Impatient》第一章练习。
 ---
 
 
-#### 1 在 Scala REPL 中键入3.，然后按 Tab 键。有哪些方法可以被应用？
+#### 第1题
+在 Scala REPL 中键入3.，然后按 Tab 键。有哪些方法可以被应用？
 ```scala
 scala> 3.
 !=   +   <<   >=    abs         compareTo     getClass     isNaN           isValidChar    isWhole     round        to               toDegrees     toInt           toShort   underlying   
@@ -18,7 +19,8 @@ scala> 3.
 &    /   ==   >>>   ceil        floatValue    isInfinite   isPosInfinity   isValidLong    max         shortValue   toByte           toFloat       toOctalString   unary_-   |            
 *    <   >    ^     compare     floor         isInfinity   isValidByte     isValidShort   min         signum       toChar           toHexString   toRadians       unary_~                 
 ```
-#### 2 在 Scala REPL 中，计算3的平方根，然后再对该值求平方。现在，这个结果与3相差多少？（提示：res 变量是你的朋友）
+#### 第2题 
+在 Scala REPL 中，计算3的平方根，然后再对该值求平方。现在，这个结果与3相差多少？（提示：res 变量是你的朋友）
 ```scala
 scala> import scala.math._
 import scala.math._
@@ -32,7 +34,8 @@ res2: Double = 2.9999999999999996
 scala> 3 - res2
 res3: Double = 4.440892098500626E-16
 ```
-#### 3 res 变量是 val 还是 var？
+#### 第3题 
+res 变量是 val 还是 var？
 ```scala
 scala> res2 = 10
 <console>:15: error: reassignment to val
@@ -40,7 +43,8 @@ scala> res2 = 10
             ^
 ```
 显然，根据提示，显然 res 变量是 val 变量。
-#### 4 Scala 允许你用数字去乘字符串--去 REPL 中试一下`“crazy” * 3`。这个操作做什么?在Scaladoc如何找到这个操作？
+#### 第4题
+Scala 允许你用数字去乘字符串--去 REPL 中试一下`“crazy” * 3`。这个操作做什么?在Scaladoc如何找到这个操作？
 ```scala
 scala> "crazy" * 3
 res4: String = crazycrazycrazy
@@ -48,18 +52,21 @@ res4: String = crazycrazycrazy
 这个操作将会将`crazy`重复3次，然后连接起来形成一个新的字符串。
 这个操作在`StringOps`类当中。
 ![StringOps](https://i.imgur.com/xG5Ibpo.png)
-#### 5 10 max 2的含义是什么？max 方法定义在哪个类当中？
+#### 第5题 
+10 max 2的含义是什么？max 方法定义在哪个类当中？
 ```scala
 scala> 10 max 2
 res5: Int = 10
 ```
 这段表达式的含义是比较两个参数，求最大值的方法。这个方法定义在`Int`的文档当中。
-#### 6 用 BigInt 计算2的1024次方。
+#### 第6题 
+用 BigInt 计算2的1024次方。
 ```scala
 scala> BigInt(2).pow(1024)
 res6: scala.math.BigInt = 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216
 ```
-#### 7 为了在使用`probablePrime(100, Random)`获取随机素数时不在 `probablePrime` 和 `Random` 之前使用任何限定符，你需要引入什么？
+#### 第7题 
+为了在使用`probablePrime(100, Random)`获取随机素数时不在 `probablePrime` 和 `Random` 之前使用任何限定符，你需要引入什么？
 首先，`Random`在`scala.util`当中，所以需要引入` scala.util`；其次，`probablePrime`在`scala.math.BigInt`当中，所以需要引入`scala.math.BigInt`。代码如下：
 ```scala
 scala> import scala.util._
@@ -72,7 +79,8 @@ scala> probablePrime(100, Random)
 res9: scala.math.BigInt = 847489671473680176573889558451
 ```
 
-#### 8 创建随机文件的方式之一是生成一个随机的` BigInt`，然后将它转换成三十六进制，输出类似"qsnvbevtomcjo06kul"这样的字符串。查阅 Scaladoc，找到在Scala中实现该逻辑的办法。
+#### 第8题 
+创建随机文件的方式之一是生成一个随机的` BigInt`，然后将它转换成三十六进制，输出类似"qsnvbevtomcjo06kul"这样的字符串。查阅 Scaladoc，找到在Scala中实现该逻辑的办法。
 
 ```scala
 scala> val x: BigInt = probablePrime(100, Random)
@@ -84,8 +92,8 @@ res10: String = 2lfjsf9m1f7bhi294iigd
 ```
 首先，通过` probablePrime(100,Random)`获得一个随机数，然后通过调用 `toString()`方法进行进制转换。
 
-#### 9 在 Scala 中如何获取字符串的首字符和尾字符。
-
+#### 第9题 
+在 Scala 中如何获取字符串的首字符和尾字符。
 ```scala
 scala> val string: String = "Hello, World"
 string: String = Hello, World
@@ -96,7 +104,8 @@ res11: Char = H
 scala> string.last
 res13: Char = d
 ```
-#### 10 take、drop、takeRight 和dropRight这些字符串函数式做什么用的？和 substring 相比，他们的优点和缺点都有哪些？
+#### 第10题 
+take、drop、takeRight 和dropRight这些字符串函数式做什么用的？和 substring 相比，他们的优点和缺点都有哪些？
 
 ```scala
 abstract def take(n: Int): Repr

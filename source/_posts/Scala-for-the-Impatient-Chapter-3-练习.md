@@ -9,7 +9,8 @@ tags:
 description: 《Scala for the Impatient》第三章练习。
 ---
 
-#### 1 编写一段代码，将 a 设置为一个 n 个随机整数的数组，要求随机数介于0（包含）和 n（不包含）之间。
+#### 第1题 
+编写一段代码，将 a 设置为一个 n 个随机整数的数组，要求随机数介于0（包含）和 n（不包含）之间。
 
 代码如下：
 
@@ -36,7 +37,8 @@ scala> createArray(10)
 res57: Array[Int] = Array(1, 3, 7, 9, 5, 9, 9, 1, 5, 6)
 ```
 
-#### 2 编写一个循环，将整数数组中相邻的元素置换。例如，`Array(1, 2, 3, 4, 5)`置换后变为`Array(2, 1, 4, 3, 5)`。
+#### 第2题 
+编写一个循环，将整数数组中相邻的元素置换。例如，`Array(1, 2, 3, 4, 5)`置换后变为`Array(2, 1, 4, 3, 5)`。
 
 
 代码如下：
@@ -74,7 +76,8 @@ scala> swap(ts)
 scala> ts
 res64: Array[Int] = Array(2, 1, 4, 3, 6, 5)
 ```
-#### 3 重复前一个练习，不过这一次生成一个新的值交换过的数组。用 for/yield。
+#### 第3题 
+重复前一个练习，不过这一次生成一个新的值交换过的数组。用 for/yield。
 
 实现代码如下：
 
@@ -113,7 +116,8 @@ res85: scala.collection.immutable.IndexedSeq[AnyVal] = Vector(3, 2, 7, 5, 111)
 scala> swapYield(e)
 res86: scala.collection.immutable.IndexedSeq[AnyVal] = Vector(2, 1, 4, 3, 6, 5, 8, 7)
 ```
-#### 4 给定一个整数数组，产出一个新的数组，包含原数组中的所有正值，以原有顺序排列，之后的元素是所有0或负值，以原有顺序排列。
+#### 第4题 
+给定一个整数数组，产出一个新的数组，包含原数组中的所有正值，以原有顺序排列，之后的元素是所有0或负值，以原有顺序排列。
 
 代码如下：
 
@@ -145,7 +149,8 @@ t: Array[Int] = Array(3, 5, 6, -10, 0, 9, 10, 12, 13, -100)
 scala> signArr(t)
 res87: Array[Int] = Array(3, 5, 6, 9, 10, 12, 13, 0, -10, -100)
 ```
-#### 5 如何计算 Array[Double]的平均值？
+#### 第5题 
+如何计算 Array[Double]的平均值？
 计算平均值可以分两步，首先使用` sum`函数进行求和，然后将求和的值除以` Array.length`，代码如下：
 
 ```scala
@@ -167,7 +172,8 @@ arr: Array[Double] = Array(10.0, 100.0, 20.0, 15.0, 25.0)
 scala> arrAvg(arr)
 res90: Double = 34.0
 ```
-#### 6 如果重新组织 Array[Int]的元素将它们以反序排列？对于 ArrayBuffer[Int]你又会怎么做呢？
+#### 第6题 
+如果重新组织 Array[Int]的元素将它们以反序排列？对于 ArrayBuffer[Int]你又会怎么做呢？
 对于 Array 的反转可以将 Array 头尾的元素互换，对于 ArrayBuffer 的反转，查询了ScalaDoc，可以直接调用` reverse`函数。
 
 ```scala
@@ -237,7 +243,8 @@ scala> revertBuf(ab)
 res101: scala.collection.mutable.ArrayBuffer[Int] = ArrayBuffer(2, 3, 5, 7, 111)
 ```
 
-#### 7 编写一段代码，产生数组中的所有值，去掉重复项。（提示：查看 Scaladoc）
+#### 第7题 
+编写一段代码，产生数组中的所有值，去掉重复项。（提示：查看 Scaladoc）
 
 查看 Scaladoc，发现有一个去重函数` distinct`：
 
@@ -279,7 +286,8 @@ res102: Array[Int] = Array(1, 2, 3, 4, 5, 7, 10, 11)
 
 不过从 ScalaDoc 来看，`distinct`函数是支持泛型的，但是我们写的` removeDuplicate`只支持` Int`类型，后面还需要改进。
 
-#### 8 重新编写3.4节结尾的示例。收集负值元素的下标，反序，去掉最后一个下标，然后对每一个下标调用` a.remove(i)`。比较这样做的效率和3.4节中另外两种方法的效率。
+#### 第8题 
+重新编写3.4节结尾的示例。收集负值元素的下标，反序，去掉最后一个下标，然后对每一个下标调用` a.remove(i)`。比较这样做的效率和3.4节中另外两种方法的效率。
 
 代码如下：
 
@@ -312,7 +320,8 @@ rrl: Array[Int] = Array(-1, -2, -3, 3, 2, 1, 23)
 scala> removeRevLast(rrl)
 res103: Array[Int] = Array(-1, 3, 2, 1, 23)
 ```
-#### 9 创建一个用` java.TimeZone.getAvailableIDs`返回的时区集合，判断条件是他们在美洲。去掉"America/" 前缀并排序。
+#### 第9题 
+创建一个用` java.TimeZone.getAvailableIDs`返回的时区集合，判断条件是他们在美洲。去掉"America/" 前缀并排序。
 
 代码如下：
 
@@ -333,7 +342,8 @@ filteredTimeZone: Array[String] = Array(America/Adak, America/Anchorage, America
 scala> val sortedTimeZone = filteredTimeZone.map(_.drop("America/".length)).sorted
 sortedTimeZone: Array[String] = Array(Adak, Anchorage, Anguilla, Antigua, Araguaina, Argentina/Buenos_Aires, Argentina/Catamarca, Argentina/ComodRivadavia, Argentina/Cordoba, Argentina/Jujuy, Argentina/La_Rioja, Argentina/Mendoza, Argentina/Rio_Gallegos, Argentina/Salta, Argentina/San_Juan, Argentina/San_Luis, Argentina/Tucuman, Argentina/Ushuaia, Aruba, Asuncion, Atikokan, Atka, Bahia, Bahia_Banderas, Barbados, Belem, Belize, Blanc-Sablon, Boa_Vista, Bogota, Boise, Buenos_Aires, Cambridge_Bay, Campo_Grande, Cancun, Caracas, Catamarca, Cayenne, Cayman, Chicago, Chihuahua, Coral_Harbour, Cordoba, Costa_Rica, Creston, Cuiaba, Curacao, Danmarkshavn, Dawson, Dawson_Creek, Denver, Detroit, Dominica, Edmonton, Eirunepe, El_Salvador, Ensenada, Fort_Nelson, Fort_Wayne,...
 ```
-#### 10 引入` java.awt.datatransfer._`并构建一个类型为` SystemFlavorMap`类型的对象，然后以DataFlavor.imageFlavor为参数调用getNativesForFlavor方法，以Scala缓冲保存返回值。 (为什么用这样一个晦涩难懂的类？因为在Java标准库中很难找到使用java.util.List的代码) 
+#### 第10题 
+引入` java.awt.datatransfer._`并构建一个类型为` SystemFlavorMap`类型的对象，然后以DataFlavor.imageFlavor为参数调用getNativesForFlavor方法，以Scala缓冲保存返回值。 (为什么用这样一个晦涩难懂的类？因为在Java标准库中很难找到使用java.util.List的代码) 
 ```scala
 scala> val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstancesOf[SystemFlavorMap]
 <console>:14: error: value asInstancesOf is not a member of java.awt.datatransfer.FlavorMap
