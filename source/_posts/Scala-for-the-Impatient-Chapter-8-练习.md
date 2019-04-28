@@ -6,7 +6,7 @@ tags:
 - 函数式编程
 - 大数据
 - Scala for the Impatient
-description: 《Scala for the Impatient》第七章练习。
+description: 《Scala for the Impatient》第八章练习。
 ---
 #### 第1题 
 扩展如下的 BankAccount 类，新类 ChekingAccount 对每次存款和取款都收取1美元的手续费。
