@@ -165,7 +165,9 @@ $$后值=(前值 *a+b)mod2^2$$其中，$a=1664525,b=1013904223,n=32,$前值的�
 在编码之前先了解下线性同余法，随机数的求解步骤如下：
 $$
 \begin{cases}
-X_0 = SEED, & \text{设定初始值}\\X_n = (A * X_{n-1} + B) (Mod M)\\ R_n = X_n/M, & \text{取模}
+X_0 = SEED, & \text{设定初始值}
+\\X_n = (A * X_{n-1} + B) (Mod M)
+\\R_n = X_n/M, & \text{取模}
 \end{cases}
 $$
 
