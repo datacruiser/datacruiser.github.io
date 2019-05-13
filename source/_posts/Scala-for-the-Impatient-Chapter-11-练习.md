@@ -6,7 +6,7 @@ tags:
 - 函数式编程
 - 大数据
 - Scala for the Impatient
-description: 《Scala for the Impatient》第十章练习。
+description: 《Scala for the Impatient》第十一章练习。
 ---
 #### 第1题 
 
@@ -596,3 +596,5 @@ object Ex10 extends App {
 [info] Running excercises.chapter11.Ex10 
 WrappedArray(, home, cay, readme.txt)
 [success] Total time: 7 s, completed May 13, 2019 2:29:13 PM
+```
+
