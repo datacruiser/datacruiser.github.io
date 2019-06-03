@@ -11,7 +11,7 @@ description: 《Scala for the Impatient》第十六章练习。
 #### 第1题 
 
 
-\<fred/>(0)得到什么？\<fred/>(0)(0)呢？为什么？
+`<fred/>(0)`得到什么？`<fred/>(0)(0)`呢？为什么？
 
 
 ```scala
@@ -42,21 +42,24 @@ object Ex01 extends App {
 
 如下代码的值是什么？
 
-\<ul>
+```xml
+<ul>
 
-\<li>Opening Bracket: [\</li>
+<li>Opening Bracket: [</li>
 
-\<li>Closing Bracket: ]\</li>
+<li>Closing Bracket: ]</li>
 
-\<li>Opening Brace: {\</li>
+<li>Opening Brace: {</li>
 
-\<li>Closing Brace: }\</li>
+<li>Closing Brace: }</li>
 
-\</ul>
+</ul>
+
+```
 
 你如何修复它？
 
-以上代码将会报错，在XML语法当中，当大括号作为字面量时需要用'} }' （中间其实不需要空格，为了避免hexo编译错误，下同）来表示'}'，用'{ {'表示'}'。修复后的代码如下：
+以上代码将会报错，在XML语法当中，当大括号作为字面量时需要用`}}` 来表示`}`，用`{{`表示`}`。修复后的代码如下：
 
 
 ```scala
@@ -66,8 +69,8 @@ object Ex02 extends App {
   val xml = <ul>
               <li>Opening bracket: [</li>
               <li>Closing bracket: ]</li>
-              <li>Opening brace: { {</li>
-              <li>Closing brace: } }</li>
+              <li>Opening brace: {{</li>
+              <li>Closing brace: }}</li>
               </ul>
 
   println(xml)
@@ -93,11 +96,11 @@ object Ex02 extends App {
 
 对比
 
-\<li>Fred\</li> match { case \<li>{Text(t)}\</li> => t }
+```<li>Fred</li> match { case <li>{Text(t)}</li> => t }```
 
 和
 
-\<li>{"Fred"}\</li> match { case \<li>{Text(t)}\</li> => t }
+```<li>{"Fred"}</li> match { case <li>{Text(t)}</li> => t }```
 
 为什么他们的行为不同？
 
@@ -299,10 +302,16 @@ https://www.tmall.com
 编写一个函数，带一个类型为Map[String,String]的参数，返回一个dl元素，其中针对映射中每个键对应有一个dt，每个值对应有一个dd，例如：
 
 
+```scala
 Map(“A”->”1”,”B”->”2”)
+
+```
 应产出
 
-\<dl>\<dt>A\</dt>\<dd>l\</dd>\<dt>B\</dt>\<dd>2\</dd>\</dl>
+```xml
+<dl><dt>A</dt><dd>l</dd><dt>B</dt><dd>2</dd></dl>
+
+```
 
 
 
@@ -522,7 +531,6 @@ object Ex10 extends App {
   }
   
  imgTodo(doc)
-
 
 }
 ```
