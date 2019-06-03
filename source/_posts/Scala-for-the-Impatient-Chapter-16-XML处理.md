@@ -96,11 +96,17 @@ object Ex02 extends App {
 
 对比
 
-```<li>Fred</li> match { case <li>{Text(t)}</li> => t }```
+```xml
+<li>Fred</li> match { case <li>{Text(t)}</li> => t }
+
+```
 
 和
 
-```<li>{"Fred"}</li> match { case <li>{Text(t)}</li> => t }```
+```xml
+<li>{"Fred"}</li> match { case <li>{Text(t)}</li> => t }
+
+```
 
 为什么他们的行为不同？
 
