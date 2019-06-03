@@ -59,7 +59,7 @@ object Ex01 extends App {
 
 你如何修复它？
 
-以上代码将会报错，在XML语法当中，当大括号作为字面量时需要用`}}` 来表示`}`，用`{{`表示`}`。修复后的代码如下：
+以上代码将会报错，在XML语法当中，当大括号作为字面量时需要用`} }` （为了避免在hexo当中编译失败，在两个大括号当中加入空格，下同，实际上是不需要空格的）来表示`}`，用`{ {`表示`}`。修复后的代码如下：
 
 
 ```scala
@@ -69,8 +69,8 @@ object Ex02 extends App {
   val xml = <ul>
               <li>Opening bracket: [</li>
               <li>Closing bracket: ]</li>
-              <li>Opening brace: {{</li>
-              <li>Closing brace: }}</li>
+              <li>Opening brace: { {</li>
+              <li>Closing brace: } }</li>
               </ul>
 
   println(xml)
