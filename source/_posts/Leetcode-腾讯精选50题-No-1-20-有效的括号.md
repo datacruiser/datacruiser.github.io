@@ -1,5 +1,5 @@
 ---
-title: Leetcode 腾讯精选50题 No.1 20 有效的括号
+title: Leetcode 腾讯精选50题 No.2 20 有效的括号
 date: 2019-08-04 11:11:17
 categories: LeetCode 腾讯精选50题
 tags:
