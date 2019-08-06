@@ -6,7 +6,7 @@ tags:
 - 数据结构
 - 贪心算法
 - C语言
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task34。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task4。
 ---
 # 描述
 
