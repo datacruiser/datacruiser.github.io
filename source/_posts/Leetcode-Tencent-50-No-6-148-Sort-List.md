@@ -82,40 +82,58 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task5。
 
 ## 快速排序
 
+需要注意的是，在一般实现的快排单中，我们通过首尾指针来对元素进行切分，正如上面的示意图所示。但是本题是单链表，只能够单向遍历，下面采用快排的另外一种方法来对元素进行切分，思路是一样的，实现细节略有不同。
+
 ```c
-void swap(int *a,int *b)
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+//指针交换辅助函数
+void swap(int *a, int *b)
 {
     int t=*a;
     *a=*b;
     *b=t;
 }
 
-struct ListNode *partion(struct ListNode *pBegin,struct ListNode *pEnd)
+struct ListNode *partion(struct ListNode *left,struct ListNode *right)
 {
-    if(pBegin==pEnd||pBegin->next==pEnd)    
-        return pBegin;
-    int key=pBegin->val;    //选择pBegin作为基准元素
-    struct ListNode *p=pBegin,*q=pBegin;
-    while(q!=pEnd)
-    {   //从pBegin开始向后进行一次遍历
-        if(q->val<key)
+    if(left == right || left->next == right)    //如果只有一个元素或者两个元素，则直接返回第一个指针
+        return left;
+    int pivot = left->val;    //选择头节点作为基准元素
+    struct ListNode *p1 = left ,*p2 = left->next; 
+    /*定义两个辅助指针p1，p2,这两个指针均往next方向移动，移动的过程中保持p1之前的值都小于选定的pivot，
+    p1和p2之间的值都大于选定的pivot，那么当p2走到末尾时交换p1的值与pivot便完成了一次切分*/
+    
+    while(p2 != right)
+    {   
+    //从left开始向后进行一次遍历，大于pivot值时，p1向前走一步，交换p1与p2的值
+        if(p2->val < pivot)
         {
-            p=p->next;
-            swap(&p->val,&q->val);
+            p1 = p1->next;
+            swap(&p1->val, &p2->val);
         }
-        q=q->next;
+        p2 = p2->next;
     }
-    swap(&p->val,&pBegin->val);
-    return p;
+    swap(&p1->val, &left->val);
+    return p1;
+    free(p2); //释放p2指针的内存
+
 }
     
-void quick_sort(struct ListNode *pBegin,struct ListNode *pEnd)
+void quick_sort(struct ListNode *left,struct ListNode *right)
 {
-    if(pBegin==pEnd||pBegin->next==pEnd)    
+    if(left == right||left ->next == right)    
         return;
-    struct ListNode *mid=partion(pBegin,pEnd);
-    quick_sort(pBegin,mid);
-    quick_sort(mid->next,pEnd);
+    struct ListNode *mid = partion(left, right);
+    quick_sort(left, mid);
+    quick_sort(mid->next, right);
 }
    
 struct ListNode* sortList(struct ListNode* head) 
