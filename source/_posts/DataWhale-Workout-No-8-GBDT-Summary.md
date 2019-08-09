@@ -192,17 +192,24 @@ $$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
 - 对$m=1,2,...,M$
 	- 对$i=1,2,...,N$，计算损失函数在当前模型的负梯度：
 
-
 	$$r_{mi}=-[\frac{\partial L(y_i,\,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}$$
 
 	- 利用$(x_i,r_{mi})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。	
 	- 对$j=1,2,...,J$，在损失函数极小化条件下，估计出相应叶节点区域的最佳拟合值：
+
+
 	$$c_{mj}=\mathop{\arg\min}_{c}\sum_{x_j\in R_{mj}}^{N}L(y_i,f_{m-1}(x_i)+c)$$
 
 
 	- 更新强学习器：
+
+
 	$$f_m(x)=f_{m-1}(x)+\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
+
+
 - 得到强学习器$f(x)$的表达式：
+
+
 $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
 # 分类
@@ -228,20 +235,29 @@ $$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
 - 对$m=1,2,...,M$
 	- 对$i=1,2,...,N$，计算损失函数在当前模型的负梯度：
 
-
 	$$r_{mi}=-[\frac{\partial L(y_i,\,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}=\frac{y_i}{1+e^{(y_i\,f(x_i))}}$$
 
 	- 利用$(x_i,r_{ti})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。	
 	- 对$j=1,2,...,J$，在损失函数极小化条件下，估计出相应叶节点区域的最佳拟合值：
+
+
 	$$c_{mj}=\mathop{\arg\min}_{c}\sum_{x_j\in R_{mj}}^{N}log\left(1+e^{(-y_i(f_{t-1}(x_i)+c))}\right)$$
 
 	- 由于上式比较难优化，我们一般使用近似值代替：
+
+
 	$$c_{mj}=\sum_{x_j\in R_{mj}}/\sum_{x_j\in R_{mj}}|r_{mi}|(1-|r_{mi}|)$$
 
 
 	- 更新强学习器：
+
+
 	$$f_m(x)=f_{m-1}(x)+\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
+
+
 - 得到强学习器$f(x)$的表达式：
+
+
 $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
 不难发现，除了负梯度计算和叶子节点的最佳负梯度拟合的线性搜索，二元GBDT分类和GBDT回归算法过程相同。
@@ -652,14 +668,20 @@ staged_predict(self, X)|	Predict regression target at each stage for X.
 
 # 应用场景
 
+
+
 GBDT应用场景广泛，几乎可用于所有回归问题（线性/非线性），相对logistic regression仅能用于线性回归，GBDT的适用面非常广。亦可用于二分类问题（设定阈值，大于阈值为正例，反之为负例）。
 
 此外，GBDT能够起到特征组合和特征选择的作用，可以作为终端学习器的前置作为特征工程的工具之一，比如Facebook就利用GBDT的这一特性，在GBDT后面接一个LR模型构建CRT模型来预测广告点击率，具体参阅相关论文[Practical Lessons from Predicting Clicks on Ads at
 Facebook](https://quinonero.net/Publications/predicting-clicks-facebook.pdf)。这也是GBDT在推荐系统场景的应用。
 
-另外，在金融领域中的需求如欺诈检测、信用评级等，GBDT算法也能够发挥巨大的作用，有着大量基于GBDT算法的反欺诈模型、信用评分卡模型等。
+另外，在金融领域中的需求如欺诈检测、信用评级等，GBDT算法也能够发挥巨大的作用，有着大量基于GBDT算法的反欺诈模型、信用评分卡模型案例。
+
+
 
 # 参考
+
+
 
 - [《机器学习》，周志华](https://book.douban.com/subject/26708119/)
 
