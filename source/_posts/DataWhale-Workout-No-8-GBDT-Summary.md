@@ -329,7 +329,7 @@ class GradientBoostingClassifier(BaseGradientBoosting, ClassifierMixin):
 
 #### 参数（parameters）
 
-- **oss : {‘deviance’, ‘exponential’}, optional (default=’deviance’)**
+- **loss : {‘deviance’, ‘exponential’}, optional (default=’deviance’)**
 
 	- 需要优化的损失函数
 
