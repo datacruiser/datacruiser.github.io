@@ -323,7 +323,7 @@ class GradientBoostingClassifier(BaseGradientBoosting, ClassifierMixin):
 
 # sklearn中的参数解释
 
-在sklearn当中按学习任务的不同一共有两个与随机森林相关的类：[GradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier)应用于分类学习任务，[GradientBoostingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor)应用于回归学习任务。
+在sklearn当中按学习任务的不同一共有两个（暂不考虑其它对GBDT优化的框架）与GBDT相关的类：[GradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier)应用于分类学习任务，[GradientBoostingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor)应用于回归学习任务。
 
 ### GradientBoostingClassifier
 

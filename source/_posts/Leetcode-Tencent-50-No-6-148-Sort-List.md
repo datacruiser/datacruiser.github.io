@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 No.6 148. Sort List
+title: Leetcode Tencent 50 No.5 148. Sort List
 date: 2019-08-07 15:19:27
 categories: LeetCode 腾讯精选50题
 tags:
