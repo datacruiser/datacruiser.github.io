@@ -82,10 +82,10 @@ $$f(x)=\sum_{n=0}^\infty\frac{f^{(n)}x_0}{n!}(x-x_o)^n$$
 
 假设$x^t=x^(t-1)+\Delta	x$，将$f(x^t)$在$x^{t-1}$处进行泰勒展开：
 	$$
-	\begin{align\*}
+	\begin{align}
    f(x^t) &=f(x^{t-1}+\Delta x) \\\\ 
 	& \approx f(x_0)+f'(x_0)(x-x_0)+f''(x_0)\frac{(x-x_0)^2}{2}
-	\end{align\*}
+	\end{align}
 $$
 ## 梯度下降法
 
@@ -93,10 +93,10 @@ $$
 
 - 迭代公式： $\theta^t=\theta^{t-1}+\Delta\theta$
 - 将 $L(\theta^t)$ 在 $\theta^{t-1}$ 处进行一阶泰勒展开： $$
-	\begin{align\*}
+	\begin{align}
    L(\theta^t) &=L(\theta^{t-1}+\Delta \theta\,) \\\\ 
 	& \approx L(\theta^{t-1})+L'(\theta^{t-1})\,\Delta\theta
-	\end{align\*}
+	\end{align}
 $$
 
 - 要使得  $L(\theta^t) <L(\theta^{t-1}$ ，可取： $\Delta\theta=-\alpha L'(\theta^{t-1})$ ，则：  $\theta^t=\theta^{t-1}-\alpha L'(\theta^{t-1})$ ，这里 $\alpha$ 是步长，一般直接赋值一个小的数。
@@ -180,34 +180,24 @@ $$
 - **输入：**
 
 	- 训练数据集$T=\{(x_1,y_1),(x_2,y_2),...,(x_N,y_N)\},x_i\in X\subseteq R^n,y_i \in Y\subseteq R$；损失函数$L(Y,f(X))$；最大迭代次数 $M$。
+
 - **输出：**
 
 	- 回归树 $f(x)$
 
-- 初始化弱学习器
-
-$$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
-
-
+- 初始化弱学习器 $$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
 - 对$m=1,2,...,M$
 	- 对$i=1,2,...,N$，计算损失函数在当前模型的负梯度：
-
 	$$r_{mi}=-[\frac{\partial L(y_i,\,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}$$
-
-	- 利用$(x_i,r_{mi})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。	
+	- 利用$(x_i,r_{mi})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。
 	- 对$j=1,2,...,J$，在损失函数极小化条件下，估计出相应叶节点区域的最佳拟合值：
-
 	$$c_{mj}=\mathop{\arg\min}_{c}\sum_{x_j\in R_{mj}}^{N}L(y_i,f_{m-1}(x_i)+c)$$
-
 	- 更新强学习器：
-
 	$$f_m(x)=f_{m-1}(x)+\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
-
-
 - 得到强学习器$f(x)$的表达式：
-
-
 $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
+
+
 
 # 分类
 
@@ -224,31 +214,18 @@ $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
 	- 分类树 $f(x)$
 
-- 初始化弱学习器
-
-$$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
-
-
+- 初始化弱学习器 $$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
 - 对$m=1,2,...,M$
 	- 对$i=1,2,...,N$，计算损失函数在当前模型的负梯度：
-
 	$$r_{mi}=-[\frac{\partial L(y_i,\,f(x_i))}{\partial f(x_i)}]_{f(x)=f_{m-1}(x)}=\frac{y_i}{1+e^{(y_i\,f(x_i))}}$$
-
-	- 利用$(x_i,r_{ti})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。	
+	- 利用$(x_i,r_{mi})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。
 	- 对$j=1,2,...,J$，在损失函数极小化条件下，估计出相应叶节点区域的最佳拟合值：
-
 	$$c_{mj}=\mathop{\arg\min}_{c}\sum_{x_j\in R_{mj}}^{N}log\left(1+e^{(-y_i(f_{t-1}(x_i)+c))}\right)$$
-
 	- 由于上式比较难优化，我们一般使用近似值代替：
-
 	$$c_{mj}=\sum_{x_j\in R_{mj}}/\sum_{x_j\in R_{mj}}|r_{mi}|(1-|r_{mi}|)$$
-
 	- 更新强学习器：
-
 	$$f_m(x)=f_{m-1}(x)+\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
-
 - 得到强学习器$f(x)$的表达式：
-
 $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
 不难发现，除了负梯度计算和叶子节点的最佳负梯度拟合的线性搜索，二元GBDT分类和GBDT回归算法过程相同。
@@ -295,7 +272,7 @@ $$f_m(x)=f_{m-1}(x)+T(x;\gamma_m)$$
 
 加上正则化项，则有
 
-$$f_m(x)=f_{m-1}(x)+\alpha T(x;\gamma_m)$$
+$$f_m(x)=f_{m-1}(x)+\alpha\, T(x;\gamma_m)$$
 
 此处，$\alpha$的取值范围为(0,1]。对于同样的训练集学习效果，较小$\alpha$的意味着需要更多的弱学习器的迭代次数。通常我们用步长和迭代最大次数一起决定算法的拟合效果。
 
