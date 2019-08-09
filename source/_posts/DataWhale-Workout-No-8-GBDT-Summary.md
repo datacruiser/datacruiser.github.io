@@ -82,10 +82,10 @@ $$f(x)=\sum_{n=0}^\infty\frac{f^{(n)}x_0}{n!}(x-x_o)^n$$
 
 假设$x^t=x^(t-1)+\Delta	x$，将$f(x^t)$在$x^{t-1}$处进行泰勒展开：
 	$$
-	\begin{align}
-   f(x^t) &=f(x^{t-1}+\Delta x) \\ 
+	\begin{align\*}
+   f(x^t) &=f(x^{t-1}+\Delta x) \\\\ 
 	& \approx f(x_0)+f'(x_0)(x-x_0)+f''(x_0)\frac{(x-x_0)^2}{2}
-	\end{align}
+	\end{align\*}
 $$
 ## 梯度下降法
 
@@ -93,10 +93,10 @@ $$
 
 - 迭代公式： $\theta^t=\theta^{t-1}+\Delta\theta$
 - 将 $L(\theta^t)$ 在 $\theta^{t-1}$ 处进行一阶泰勒展开： $$
-	\begin{align}
-   L(\theta^t) &=L(\theta^{t-1}+\Delta \theta\,) \\ 
+	\begin{align\*}
+   L(\theta^t) &=L(\theta^{t-1}+\Delta \theta\,) \\\\ 
 	& \approx L(\theta^{t-1})+L'(\theta^{t-1})\,\Delta\theta
-	\end{align}
+	\end{align\*}
 $$
 
 - 要使得  $L(\theta^t) <L(\theta^{t-1}$ ，可取： $\Delta\theta=-\alpha L'(\theta^{t-1})$ ，则：  $\theta^t=\theta^{t-1}-\alpha L'(\theta^{t-1})$ ，这里 $\alpha$ 是步长，一般直接赋值一个小的数。
@@ -197,12 +197,9 @@ $$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
 	- 利用$(x_i,r_{mi})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。	
 	- 对$j=1,2,...,J$，在损失函数极小化条件下，估计出相应叶节点区域的最佳拟合值：
 
-
 	$$c_{mj}=\mathop{\arg\min}_{c}\sum_{x_j\in R_{mj}}^{N}L(y_i,f_{m-1}(x_i)+c)$$
 
-
 	- 更新强学习器：
-
 
 	$$f_m(x)=f_{m-1}(x)+\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
@@ -240,23 +237,17 @@ $$f_0(x)=\mathop{\arg\min}_{c}\sum_{i=1}^{N}L(y_i,c)$$
 	- 利用$(x_i,r_{ti})\,(i=1,2,...,N)$，拟合一棵CART树，得到第$m$棵树，其对应的叶子节点区域为$R_{mj},\,j=1,2,...,J$。其中$J$为树$m$的叶子节点的个数。	
 	- 对$j=1,2,...,J$，在损失函数极小化条件下，估计出相应叶节点区域的最佳拟合值：
 
-
 	$$c_{mj}=\mathop{\arg\min}_{c}\sum_{x_j\in R_{mj}}^{N}log\left(1+e^{(-y_i(f_{t-1}(x_i)+c))}\right)$$
 
 	- 由于上式比较难优化，我们一般使用近似值代替：
 
-
 	$$c_{mj}=\sum_{x_j\in R_{mj}}/\sum_{x_j\in R_{mj}}|r_{mi}|(1-|r_{mi}|)$$
-
 
 	- 更新强学习器：
 
-
 	$$f_m(x)=f_{m-1}(x)+\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
-
 - 得到强学习器$f(x)$的表达式：
-
 
 $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
