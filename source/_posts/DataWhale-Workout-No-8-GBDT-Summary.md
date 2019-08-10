@@ -669,4 +669,4 @@ Facebook](https://quinonero.net/Publications/predicting-clicks-facebook.pdf)ã€‚è
 - [1.11. Ensemble methods](https://scikit-learn.org/stable/modules/ensemble.html#ensemble-methods)
 
 
-- [Seeing the Forest for the Trees: An Introduction to Random Forest](https://community.alteryx.com/t5/Alteryx-Designer-Knowledge-Base/Seeing-the-Forest-for-the-Trees-An-Introduction-to-Random-Forest/ta-p/158062)
+
