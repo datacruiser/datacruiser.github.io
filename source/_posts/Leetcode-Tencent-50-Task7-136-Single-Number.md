@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 位运算
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task6。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task7。
 ---
 # 描述
 
