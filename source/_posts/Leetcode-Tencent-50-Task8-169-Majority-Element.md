@@ -134,7 +134,7 @@ int majorityElement(int* nums, int numsSize){
     
     for(int i = 0; i<32; i++)
     {
-		int count_1 = 0, count_0 = 0;    
+		  int count_1 = 0, count_0 = 0;    
         for(int j = 0; j<numsSize; j++)
         {
             if((nums[j] & (UINT32_C(1) << i)) != 0)
