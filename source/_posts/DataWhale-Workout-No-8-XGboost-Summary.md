@@ -47,7 +47,7 @@ XGBoost是在Gradient Boosting框架下面对GBDT的优化，是一种GBDT的工
 # 损失函数
 
 XGBoost的损失函数在GBDT$L(y,\,f_{m-1}(x)+h_m(x))$的基础上，加入了如下的正则化：$$\Omega(h_m)=\gamma J+\frac{\lambda}{2}\sum_{j=1}^{J}\omega_{mj}^2$$
-这里的$J$是叶子节点的个数，而 $\omega_{mj}$ 是第$j$个叶子节点的最优值。这里的 $\omega_{mj}$ 和在GBDT里面使用的 $\c_{mj}$ 其实是一个意思，只是[XGBoost论文](https://arxiv.org/pdf/1603.02754.pdf)里面使用$\omega$符号表示叶子区域的值，这里为了和论文保持一致。
+这里的 $J$ 是叶子节点的个数，而 $\omega_{mj}$ 是第 $j$ 个叶子节点的最优值。这里的 $\omega_{mj}$ 和在GBDT里面使用的 $c_{mj}$ 其实是一个意思，只是[XGBoost论文](https://arxiv.org/pdf/1603.02754.pdf)里面使用 $\omega$ 符号表示叶子区域的值，这里为了和论文保持一致。
 
 最终，XGBoost的损失函数可以表示为：$$L_m=\sum_{i=1}^{N}L(y_i, f_{m-1}(x_i)+h_m(x_i))+\gamma J+\frac{\lambda}{2}\sum_{j=1}^{J}\omega_{mj}^2$$
 
