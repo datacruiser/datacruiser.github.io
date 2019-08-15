@@ -47,7 +47,9 @@ LightGBM起源于微软亚洲研究院在NIPS发表的系列论文：
 
 首先需要指出的是，XGBoost在寻找树的分裂节点的也是支持直方图算法的，就是论文中提到的近视搜索算法（Approximate Algorithm）。只是，无论特征值是否为0，直方图算法都需要对特征的分箱值进行索引，因此对于大部分实际应用场景当中的稀疏数据优化不足。
 
-而过头来，为了能够发挥直方图算法的优化威力，LightGBM提出了另外两个新技术：单边梯度采样（Gradient-based One-Side Sampling）和互斥特征合并（Exclusive Feature Bundling），在减少维度和下采样上面做了优化以后才能够将直方图算法发挥得淋漓尽致。下面依次介绍直方图算法、GOSS和EFB。
+回过头来，为了能够发挥直方图算法的优化威力，LightGBM提出了另外两个新技术：单边梯度采样（Gradient-based One-Side Sampling）和互斥特征合并（Exclusive Feature Bundling），在减少维度和下采样上面做了优化以后才能够将直方图算法发挥得淋漓尽致。下面依次介绍直方图算法、GOSS和EFB。
+
+
 
 
 ### 直方图算法
@@ -232,61 +234,33 @@ LightGBM使用的直方图算法能很好的解决这类问题。首先。对梯
 
 `sklearn`本身的文档当中并没有LightGBM的描述，[Github](https://github.com/microsoft/LightGBM/blob/master/python-package/lightgbm/sklearn.py)上面看到主要参数如下：
 
-- `boosting_type` : string, optional (default=`gbdt`)
-    - `gbdt`, traditional Gradient Boosting Decision Tree.
-    - `dart`, Dropouts meet Multiple Additive Regression Trees.
-    - `goss`, Gradient-based One-Side Sampling.
-    - `rf`, Random Forest.
-- `num_leaves` : int, optional (default=31)
-Maximum tree leaves for base learners.
-- `max_depth` : int, optional (default=-1)
-Maximum tree depth for base learners, <=0 means no limit.
-- `learning_rate` : float, optional (default=0.1)
-Boosting learning rate.
-You can use ``callbacks`` parameter of ``fit`` method to shrink/adapt learning rate in training using ``reset_parameter`` callback.
-Note, that this will ignore the ``learning_rate`` argument in training.
-- `n_estimators` : int, optional (default=100)
-Number of boosted trees to fit.
-- `subsample_for_bin` : int, optional (default=200000)
-Number of samples for constructing bins.
-- `objective` : string, callable or None, optional (default=None)
-Specify the learning task and the corresponding learning objective or a custom objective function to be used (see note below). Default: `regression` for LGBMRegressor, `binary` or `multiclass` for LGBMClassifier, `lambdarank` for LGBMRanker.
-- class_weight : dict, `balanced` or None, optional (default=None)
-Weights associated with classes in the form ``{class_label: weight}``.
-Use this parameter only for multi-class classification task;
-for binary classification task you may use ``is_unbalance`` or ``scale_pos_weight`` parameters.
-Note, that the usage of all these parameters will result in poor estimates of the individual class probabilities.
-You may want to consider performing probability calibration
-(https://scikit-learn.org/stable/modules/calibration.html) of your model.The `balanced` mode uses the values of y to automatically adjust weightsinversely proportional to class frequencies in the input data as ``n_samples / (n_classes * np.bincount(y))``.
-If None, all classes are supposed to have weight one.
-Note, that these weights will be multiplied with ``sample_weight`` (passed through the ``fit`` method) if ``sample_weight`` is specified.
-- `min_split_gain` : float, optional (default=0.)
-Minimum loss reduction required to make a further partition on a leaf node of the tree.
-- `min_child_weight` : float, optional (default=1e-3)
-Minimum sum of instance weight (hessian) needed in a child (leaf).
-- `min_child_samples` : int, optional (default=20)
-Minimum number of data needed in a child (leaf).
-- `subsample` : float, optional (default=1.)
-Subsample ratio of the training instance.
-- `subsample_freq` : int, optional (default=0)
-Frequence of subsample, <=0 means no enable.
-- `colsample_bytree` : float, optional (default=1.)
-Subsample ratio of columns when constructing each tree.
-- `reg_alpha` : float, optional (default=0.)
- L1 regularization term on weights.
-- `reg_lambda` : float, optional (default=0.)
-L2 regularization term on weights.
-- `random_state` : int or None, optional (default=None)
-Random number seed. If None, default seeds in C++ code will be used.
-- `n_jobs` : int, optional (default=-1)
-Number of parallel threads.
-- `silent` : bool, optional (default=True)
-Whether to print messages while running boosting.
-- `importance_type` : string, optional (default=`split`)
-The type of feature importance to be filled into ``feature_importances_``. 
-If `split`, result contains numbers of times the feature is used in a model. 
-If `gain`, result contains total gains of splits which use the feature.
-
+- `boosting_type` : 提升类型，字符串，可选项 (default=`gbdt`)
+    - `gbdt`, 传统梯度提升树
+    - `dart`, 带Dropout的MART
+    - `goss`, 单边梯度采样
+    - `rf`, 随机森林
+- `num_leaves` : 基学习器的最大叶子树，整型，可选项 (default=31)
+- `max_depth` : 基学习器的最大树深度，小于等于0表示没限制，整型，可选项 (default=-1)
+- `learning_rate` : 提升学习率，浮点型，可选项 (default=0.1)
+- `n_estimators` : 提升次数，整型，可选项 (default=100)
+- `subsample_for_bin` : 构造分箱的样本个数，整型，可选项 (default=200000)
+- `objective` : 指定学习任务和相应的学习目标或者用户自定义的需要优化的目标损失函数，字符串， 可调用的或者None, 可选项 (default=None)，若不为None，则有:
+    - `regression` for LGBMRegressor
+    -`binary` or `multiclass` for LGBMClassifier
+    - `lambdarank` for LGBMRanker
+- `class_weight` : 该参数仅在多分类的时候会用到，多分类的时候各个分类的权重，对于二分类任务，你可以使用``is_unbalance`` 或 ``scale_pos_weight``，字典数据, `balanced` or None, 可选项 (default=None)
+- `min_split_gain` : 在叶子节点上面做进一步分裂的最小损失减少值，浮点型，可选项 (default=0.)
+- `min_child_weight` : 在树的一个孩子或者叶子所需的最小样本权重和，浮点型，可选项 (default=1e-3)
+- `min_child_samples` : 在树的一个孩子或者叶子所需的最小样本，整型，可选项 (default=20)
+- `subsample` : 训练样本的子采样比例，浮点型，可选项 (default=1.)
+- `subsample_freq` : 子采样频率，小于等于0意味着不可用，整型，可选项 (default=0)
+- `colsample_bytree` : 构建单棵树时列采样比例，浮点型，可选项 (default=1.)
+- `reg_alpha` : $L_1$正则项，浮点型，可选项 (default=0.)
+- `reg_lambda` :$L_2$正则项，浮点型，可选项 (default=0.)
+- `random_state` : 随机数种子，整型或者None, 可选项 (default=None)
+- `n_jobs` : 线程数，整型，可选项 (default=-1)
+- `silent` : 运行时是否打印消息，布尔型，可选项 (default=True)
+- `importance_type` : 填入到`feature_importances_`的特征重要性衡量类型，如果是`split`，则以特征被用来分裂的次数，如果是`gain`，则以特征每次用于分裂的累积增益，字符串，可选项 (default=`split`)
 
 
 除了以上参数，LightGBM原生接口当中参数众多，主要有以下八大类：
@@ -304,6 +278,19 @@ If `gain`, result contains total gains of splits which use the feature.
 
 
 # CatBoost（了解）
+
+CatBoost也是Boosting族的算法，由俄罗斯科技公司Yandex于2017年提出，主要在两方面做了优化，一个是对于类别变量的处理，另外一个是对于预测偏移（prediction shift）的处理。
+
+其中对于类别变量在传统的Greedy TBS方法的基础上添加先验分布项，这样可以减少减少噪声和低频率数据对于数据分布的影响：
+$$\hat{x}_k^i=\frac{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}*y_j+a\,P}{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}+a}$$
+
+其中 $P$ 是添加的先验项，$a$ 通常是大于 0 的权重系数。
+
+对于第二个问题，CatBoost采用了排序提升（Ordered Boosting）的方式，首先对所有的数据进行随机排列，然后在计算第 $i$ 步残差时候的模型只利用了随机排列中前 $i-1$ 个样本。具体算法描述请参阅论文[CatBoost: unbiased boosting with categorical features](https://papers.nips.cc/paper/7898-catboost-unbiased-boosting-with-categorical-features.pdf)
+
+时间有限，下次有机会再详细消化下CatBoost的论文。
+
+总之，CatBoost大大简化了前期数据处理过程，特别是类别特征的数值化，调参也相对容易。近来在数据竞赛领域已经大规模采用。
 
 
 
@@ -331,4 +318,7 @@ If `gain`, result contains total gains of splits which use the feature.
 
 
 - [Introduction to LightGBM](https://v.qq.com/x/page/k0362z6lqix.html)
+- [Catboost](https://catboost.ai/)
+- [CatBoost: unbiased boosting with categorical features](https://papers.nips.cc/paper/7898-catboost-unbiased-boosting-with-categorical-features.pdf)
+- [CatBoost: gradient boosting with categorical features support](http://learningsys.org/nips17/assets/papers/paper_11.pdf)
 
