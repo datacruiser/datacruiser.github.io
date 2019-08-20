@@ -60,6 +60,6 @@ n = 9 因为 9 = 1 + 8, 胜
 
 ```c
 bool canWinNim(int n){
-    return  n % 4 != 0; //如果n不能被4整除 返回True，否则返回false
+    return  n % 4; //如果n不能被4整除 返回True，否则返回false
 }
 ``` 
