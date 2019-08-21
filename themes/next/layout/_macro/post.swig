@@ -93,6 +93,23 @@
 
           {% if post.categories and post.categories.length and theme.post_meta.categories %}
             <span class="post-category" >
+            <span class="post-time">
+              &nbsp; | &nbsp;
+            <span class="post-meta-item-icon">
+             <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">字数统计:</span>
+            <span class="post-count">{{ wordcount(post.content) }}(字)</span>
+            </span>
+
+            <span class="post-time">
+                 &nbsp; | &nbsp;
+            <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">阅读时长≈</span>
+            <span class="post-count">{{ min2read(post.content) }}(分)</span>
+            </span>
             {% if theme.post_meta.created_at or theme.post_meta.updated_at %}
               <span class="post-meta-divider">|</span>
             {% endif %}

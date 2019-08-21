@@ -130,7 +130,7 @@ social:
   GitHub: https://github.com/datacruiser || github
   Zhihu: https://www.zhihu.com/people/realphy || group
   Weibo: https://weibo.com/jijiwhywhy || weibo
-  #E-Mail: mailto:yourname@gmail.com || envelope
+  E-Mail: mailto:phy.zju@gmail.com || envelope
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
@@ -239,7 +239,7 @@ post_wordcount:
   item_text: true
   wordcount: true
   min2read: true
-  totalcount: false
+  totalcount: true
   separated_meta: true
 
 # Wechat Subscriber
