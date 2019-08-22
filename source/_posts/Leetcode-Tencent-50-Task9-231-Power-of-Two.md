@@ -60,12 +60,19 @@ int count(int num) {
     }
     return count;
 }
-
+/*
 bool isPowerOfTwo(int n)
 {
 	if (n > 0 && count(n) == 1)
 		return true;
 	else 
 	   return false;
+}
+*/
+
+bool isPowerOfTwo(int n)
+{
+	return (n > 0 && count(n) == 1);
+
 }
 ``` 
