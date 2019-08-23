@@ -123,99 +123,135 @@ cache.put(1, 4);
  * lRUCacheFree(obj);
 */
 
+//定义哈希函数求余被除数与哈希表容量的倍数关系
 #define scale 2
 
-typedef struct node {
-    int value;
-    int key;
-    struct node *last;
-    struct node *next;
-    bool deleted;
+//定义双链表
+typedef struct node 
+{
+    int value; //节点值
+    int key;   //节点hash值
+    struct node *last;  //指向前向节点
+    struct node *next;  //指向后续节点
+    bool deleted;       //是否删除标记
 } Node;
 
-typedef struct {
-    Node **cache;
-    Node *head;
-    Node *tail;
-    int capacity;
-    int count;
+//用二级指针变量cache来保存链表节点从而实现哈希表
+typedef struct
+{
+    Node **cache;  //保存链表节点
+    Node *head;    //头节点
+    Node *tail;    //未节点
+    int capacity;  //哈希表容量
+    int count;     //节点数目
 } LRUCache;
 
-Node* cacheGet(LRUCache *obj, int key) {
+
+//返回参数key对应hash值所在的节点，若cache变量当中无该key所对应的hash值，返回NULL
+Node* cacheGet(LRUCache *obj, int key) 
+{
     int m = obj->capacity * scale;
-    for (int a = 0; a < m; a++) {
+    for (int a = 0; a < m; a++) 
+    {
         int hash = (key + a) % m;
         Node *nd = obj->cache[hash];
-        if (nd != NULL) {
-            if (nd->key == key) {
+        if (nd != NULL) 
+        {
+            if (nd->key == key)
+            {
                 return nd;
             }
-        }else{
+        }
+        else
+        {
             return NULL;
         }
     }
     return NULL;
 }
 
-int cacheIndex(LRUCache *obj, int key) {
+//返回参数key对应的节点的hash，若cache变量当中无该key所对应的节点，返回NULL
+int cacheIndex(LRUCache *obj, int key)
+{
     int m = obj->capacity * scale;
-    for (int a = 0; a < m; a++) {
+    for (int a = 0; a < m; a++) 
+    {
         int hash = (key + a) % m;
         Node *nd = obj->cache[hash];
-        if (nd != NULL) {
-            if (nd->key == key) {
+        if (nd != NULL)
+        {
+            if (nd->key == key)
+            {
                 return hash;
             }
-        }else{
+        }
+        else
+        {
             return hash;
         }
     }
     return -1;
 }
 
-Node * newNode(int key, int value) {
+//根据key，value健值对初始化一个节点
+Node * newNode(int key, int value)
+{
     Node *node = calloc(1, sizeof(Node));
     node->key = key;
     node->value = value;
     return node;
 }
 
-void moveToTail(LRUCache *obj, Node *node) {
-    if (obj->tail != NULL) {
+//将节点移动到哈希链表的末尾
+void moveToTail(LRUCache *obj, Node *node) 
+{
+    if (obj->tail != NULL) 
+    {
         Node *tail = obj->tail;
-        if (node != tail) {
-            Node *last = node->last;
-            if (last != NULL) {
-                last->next = node->next;
+        if (node != tail)   //判断当前节点是不是在哈希链表的尾部节点
+        {
+            Node *last = node->last; //保存存入节点的之前一个节点指针
+            if (last != NULL) 
+            {
+                last->next = node->next; //
             }
             Node *next = node->next;
-            if (next != NULL) {
+            if (next != NULL) 
+            {
                 next->last = last;
                 node->next = NULL;
             }
             tail->next = node;
             obj->tail = node;
-            if (obj->head == node) {
+            if (obj->head == node) 
+            {
                 obj->head = next;
             }
             node->last = tail;
         }
-    }else{
+    }
+    else
+    {
         obj->tail = node;
     }
 }
 
-LRUCache* lRUCacheCreate(int capacity) {
+//哈希链表初始化
+LRUCache* lRUCacheCreate(int capacity) 
+{
     LRUCache *cache = calloc(1, sizeof(LRUCache));
     cache->cache = calloc(capacity * scale, sizeof(Node *));
     cache->capacity = capacity;
     return cache;
 }
 
-int lRUCacheGet(LRUCache* obj, int key) {
+int lRUCacheGet(LRUCache* obj, int key) 
+{
     Node *node = cacheGet(obj, key);
-    if (node != NULL) {
-        if (node->deleted) {
+    if (node != NULL) 
+    {
+        if (node->deleted) 
+        {
             return -1;
         }
         moveToTail(obj, node);
@@ -224,15 +260,20 @@ int lRUCacheGet(LRUCache* obj, int key) {
     return -1;
 }
 
-void lRUCachePut(LRUCache* obj, int key, int value) {
+void lRUCachePut(LRUCache* obj, int key, int value) 
+{
     int index = cacheIndex(obj, key);
-    if (index >= 0) {
+    if (index >= 0) 
+    {
         Node *node = obj->cache[index];
-        if (node != NULL) {
-            if (node->deleted) {
+        if (node != NULL) 
+        {
+            if (node->deleted) 
+            {
                 node->deleted = false;
                 Node *next = obj->head->next;
-                if (next) {
+                if (next) 
+                {
                     next->last = NULL;
                     obj->head->next = NULL;
                     obj->head->deleted = true;
@@ -241,13 +282,17 @@ void lRUCachePut(LRUCache* obj, int key, int value) {
             }
             node->value = value;
             moveToTail(obj, node);
-        }else{
+        }
+        else
+        {
             node = newNode(key, value);
             obj->count++;
-            if (obj->count > obj->capacity) {
+            if (obj->count > obj->capacity) 
+            {
                 obj->head->deleted = true;
                 Node *next = obj->head->next;
-                if (next) {
+                if (next) 
+                {
                     next->last = NULL;
                     obj->head->next = NULL;
                     obj->head = next;
@@ -256,14 +301,18 @@ void lRUCachePut(LRUCache* obj, int key, int value) {
             }
             moveToTail(obj, node);
             obj->cache[index] = node;
-            if (obj->head == NULL) {
+            if (obj->head == NULL) 
+            {
                 obj->head = node;
             }
         }
-    }else{
+    }
+    else
+    {
         Node *node = obj->head;
         Node *next = node->next;
-        if (next != NULL) {
+        if (next != NULL) 
+        {
             obj->head = next;
             next->last = NULL;
         }
@@ -273,11 +322,14 @@ void lRUCachePut(LRUCache* obj, int key, int value) {
     }
 }
 
-void lRUCacheFree(LRUCache* obj) {
+void lRUCacheFree(LRUCache* obj) 
+{
     int m = obj->capacity * scale;
-    for (int a = 0; a < m; a++) {
+    for (int a = 0; a < m; a++) 
+    {
         Node *node = obj->cache[a];
-        if (node != NULL) {
+        if (node != NULL) 
+        {
             free(node);
         }
     }

@@ -8,6 +8,7 @@ tags:
 - Ordered boosting
 - Prediction shift
 - sklearn
+description: 这是DataWhale暑期学习小组-高级算法梳理的补充，是对目前最新的开源Boost族算法CatBoost的介绍，结合相关论文以及笔者的使用经验，对CatBoost的算法特性和适用场景做一些小结。
 ---
 
 # CatBoost
@@ -32,11 +33,11 @@ Catboost的主要算法原理可以参照以下两篇论文：
 - [Anna Veronika Dorogush, Vasily Ershov, Andrey Gulin "CatBoost: gradient boosting with categorical features support". Workshop on ML Systems at NIPS 2017](http://learningsys.org/nips17/assets/papers/paper_11.pdf)
 
 
-# CatBoost的起源
-
-
-
 # Categorical features
+
+所谓类别型变量，我们是不是
+
+
 # Gradient bias
 # Prediction shift
 # Ordered boosting
@@ -102,7 +103,7 @@ CatBoost也是Boosting族的算法，由俄罗斯科技公司Yandex于2017年提
 其中对于类别变量在传统的Greedy TBS方法的基础上添加先验分布项，这样可以减少减少噪声和低频率数据对于数据分布的影响：
 $$\hat{x}_k^i=\frac{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}*y_j+a\,P}{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}+a}$$
 
-其中 $P$ 是添加的先验项，$a$ 通常是大于 0 的权重系数。
+其中 $P$ 是添加的先验项，$a$ 通常是大于 0 的权重系数。  
 
 对于第二个问题，CatBoost采用了排序提升（Ordered Boosting）的方式，首先对所有的数据进行随机排列，然后在计算第 $i$ 步残差时候的模型只利用了随机排列中前 $i-1$ 个样本。具体算法描述请参阅论文[CatBoost: unbiased boosting with categorical features](https://papers.nips.cc/paper/7898-catboost-unbiased-boosting-with-categorical-features.pdf)
 
@@ -117,7 +118,6 @@ $$\hat{x}_k^i=\frac{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}*y_j+a\,P}{\sum_{j=1}^n I_{\
 
 
 - [《机器学习》，周志华](https://book.douban.com/subject/26708119/)
-
 - [《统计学习方法》（第二版），李航](https://book.douban.com/subject/33437381/)
 - [CatBoost Docs](https://catboost.ai/)
 - [Catboost](https://github.com/catboost/catboost)
