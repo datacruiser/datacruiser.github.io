@@ -151,12 +151,7 @@ $$
 
 对应的负梯度误差为：
 
-$$
-r(y_i,f(x_i))=\begin{cases}
-y_i-f(x_i),\quad &|y_i-f(x_i)|\leq \delta \\\\
-sign(y_i-f(x_i)),\quad &|y_i-f(x_i)|>0
-\end{cases}
-$$
+
 
 - 分位数损失，它对应的是分位数回归的损失函数，表达式为：
 
