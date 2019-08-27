@@ -1,5 +1,5 @@
 ---
-title: DataWhale Workout No.8 CatBoost Summary
+title: CatBoost算法梳理
 date: 2019-08-19 08:18:37
 categories: 机器学习
 tags:
