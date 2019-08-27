@@ -13,11 +13,12 @@ description: 这是DataWhale暑期学习小组-高级算法梳理的补充，是
 
 # CatBoost
 
-CatBoost是俄罗斯的搜索巨头Yandex在2017年开源的机器学习库，也是Boosting族算法的一种，同前面介绍过的XGBoost和LightGBM类似，依然是在GBDT算法框架下的一种改进实现，是一种基于对称决策树（oblivious trees）算法的参数少、支持类别型变量和高准确性的GBDT框架，主要说解决的痛点是高效合理地处理类别型特征，这个从它的名字就可以看得出来，Catboost是由catgorical和boost组成，另外是处理梯度偏差（Gradient bias）以及预测偏移（Prediction shift）问题，提高算法的准确性和泛化能力。
+CatBoost是俄罗斯的搜索巨头Y
+andex在2017年开源的机器学习库，也是Boosting族算法的一种，同前面介绍过的XGBoost和LightGBM类似，依然是在GBDT算法框架下的一种改进实现，是一种基于对称决策树（oblivious trees）算法的参数少、支持类别型变量和高准确性的GBDT框架，主要说解决的痛点是高效合理地处理类别型特征，这个从它的名字就可以看得出来，CatBoost是由catgorical和boost组成，另外是处理梯度偏差（Gradient bias）以及预测偏移（Prediction shift）问题，提高算法的准确性和泛化能力。
 
 ![集成学习](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/Catboost/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0.png)
 
-Catboost主要有以下五个特性：
+CatBoost主要有以下五个特性：
 
 - 无需调参即可获得较高的模型质量，采用默认参数就可以获得非常好的结果，减少在调参上面花的时间
 - 支持类别型变量，无需对非数值型特征进行预处理
@@ -25,7 +26,7 @@ Catboost主要有以下五个特性：
 - 提高准确性，提出一种全新的梯度提升机制来构建模型以减少过拟合
 - 快速预测，即便应对延时非常苛刻的任务也能够快速高效部署模型
 
-Catboost的主要算法原理可以参照以下两篇论文：
+CatBoost的主要算法原理可以参照以下两篇论文：
 
 - [Anna Veronika Dorogush, Andrey Gulin, Gleb Gusev, Nikita Kazeev, Liudmila Ostroumova Prokhorenkova, Aleksandr Vorobev "Fighting biases with dynamic boosting". arXiv:1706.09516, 2017](https://arxiv.org/pdf/1706.09516.pdf)
 
@@ -37,7 +38,7 @@ Catboost的主要算法原理可以参照以下两篇论文：
 
 所谓类别型变量（Categorical features）是指其值是离散的集合且相互比较并无意义的变量，比如用户的ID、产品ID、颜色等。因此，这些变量无法在二叉决策树当中直接使用。常规的做法是将这些类别变量通过预处理的方式转化成数值型变量再喂给模型，比如用一个或者若干个数值来代表一个类别型特征。
 
-目前广泛用于**低势**（一个有限集的元素个数是一个自然数）类别特征的处理方法是`One-hot encoding`：将原来的特征删除，然后对于每一个类别加一个0/1的用来指示是否含有该类别的数值型特征。`One-hot encoding`可以在数据预处理时完成，也可以在模型训练的时候完成，从训练时间的角度，后一种方法的实现更为高效，Catboost对于低势类别特征也是采用后一种实现。
+目前广泛用于**低势**（一个有限集的元素个数是一个自然数）类别特征的处理方法是`One-hot encoding`：将原来的特征删除，然后对于每一个类别加一个0/1的用来指示是否含有该类别的数值型特征。`One-hot encoding`可以在数据预处理时完成，也可以在模型训练的时候完成，从训练时间的角度，后一种方法的实现更为高效，CatBoost对于低势类别特征也是采用后一种实现。
 
 显然，在**高势**特征当中，比如 `user ID`，这种编码方式会产生大量新的特征，造成维度灾难。一种折中的办法是可以将类别分组成有限个的群体再进行 `One-hot encoding`。一种常被使用的方法是根据目标变量统计（Target Statistics，以下简称TS）进行分组，目标变量统计用于估算每个类别的目标变量期望值。甚至有人直接用TS作为一个新的数值型变量来代替原来的类别型变量。重要的是，可以通过对TS数值型特征的阈值设置，基于对数损失、基尼系数或者均方差，得到一个对于训练集而言将类别一分为二的所有可能划分当中最优的那个。在LightGBM当中，类别型特征用每一步梯度提升时的梯度统计（Gradient Statistics，以下简称GS）来表示。虽然为建树提供了重要的信息，但是这种方法有以下两个缺点：
 
@@ -90,14 +91,14 @@ $$\hat{x}_k^i=\frac{\sum_{X_j \in {\mathcal{D}_k}}\mathbb{I}_{\{x_j^i={x}_k^i\}}
 
 ### Ordered TS
 
-从在线学习按照时间序列获得样本得到的启发，Catboost依靠排序原则，采用了一种更为有效的策略。主要有以下几个步骤：
+从在线学习按照时间序列获得样本得到的启发，CatBoost依靠排序原则，采用了一种更为有效的策略。主要有以下几个步骤：
 
 - 产生一个随机排列顺序$\sigma$并对数据集进行编号
 - 对于训练样本：$\mathcal{D}_k=\{X_j: \sigma(j)<\sigma(k)\}$
 - 对于测试样本：$\mathcal{D}_k=\mathcal{D}$
 - 根据带先验概率的Greedy TS计算$\hat{x}_k^i$
 
-这样计算得到的 Ordered TS能够满足P1，同时也能够使用所有的训练样本。且比在线学习的划窗（sliding window）处理能够进一步减小$\hat{x}_k^i$的方差。需要注意的是，Catboost在不同的迭代上会采用不同的排列顺序。
+这样计算得到的 Ordered TS能够满足P1，同时也能够使用所有的训练样本。且比在线学习的划窗（sliding window）处理能够进一步减小$\hat{x}_k^i$的方差。需要注意的是，CatBoost在不同的迭代上会采用不同的排列顺序。
 
 下面是Ordered TS与其它各种TS在不同数据集上面在logloss/zero-one loss上面的效果比较：
 
@@ -122,7 +123,7 @@ CatBoost，和所有标准梯度提升算法一样，都是通过构建新树来
 
 值得注意的是${M_{i}}$模型的建立并没有样本${X_{i}}$ 的参与，并且CatBoost中所有的树${M_{i}}$的共享同样的结构。
 
-在CatBoost中，我们生成训练数据集的$s$个随机排列。采用多个随机排列是为了增强算法的鲁棒性，这在前面的Odered TS当中对于类别型特征的处理有介绍到：针对每一个随机排列，计算得到其梯度，为了与Ordered TS保持一致，这里的排列与用于计算Ordered TS时的排列相同。我们使用不同的排列来训练不同的模型，因此不会导致过拟合。对于每个排列$\sigma$，我们训练$n$个不同的模型${M_{i}}$，如上所示。这意味着为了构建一棵树，需要对每个排列存储并重新计算，其时间复杂度近似于$O(n^2)$：对于每个模型${M_{i}}$，我们必须更新${M_{1}}({X_{1}}),...,{M_{i}}({X_{i}})$。因此，时间复杂度变成$O(sn^2)$。当然，在具体实现当中，Catboost使用了其它的技巧，可以将构建一个树的时间复杂度降低到$O(sn)$。
+在CatBoost中，我们生成训练数据集的$s$个随机排列。采用多个随机排列是为了增强算法的鲁棒性，这在前面的Odered TS当中对于类别型特征的处理有介绍到：针对每一个随机排列，计算得到其梯度，为了与Ordered TS保持一致，这里的排列与用于计算Ordered TS时的排列相同。我们使用不同的排列来训练不同的模型，因此不会导致过拟合。对于每个排列$\sigma$，我们训练$n$个不同的模型${M_{i}}$，如上所示。这意味着为了构建一棵树，需要对每个排列存储并重新计算，其时间复杂度近似于$O(n^2)$：对于每个模型${M_{i}}$，我们必须更新${M_{1}}({X_{1}}),...,{M_{i}}({X_{i}})$。因此，时间复杂度变成$O(sn^2)$。当然，在具体实现当中，CatBoost使用了其它的技巧，可以将构建一个树的时间复杂度降低到$O(sn)$。
 
 # Prediction shift
 
@@ -165,20 +166,20 @@ CatBoost，和所有标准梯度提升算法一样，都是通过构建新树来
 
 为了克服上一节所描述的预测偏移问题，我们提出了一种新的叫做Ordered boosting的算法。假设用$I$棵树来学习一个模型，为了确保$r^{I-1}(X_k,y_k)$无偏，需要确保模型$F^{I-1}$的训练没有用到样本$X_k$。由于我们需要对所有训练样本计算无偏的梯度估计，乍看起来对于$F^{I-1}$的训练不能使用任何样本，貌似无法实现的样子，但是事实上可以通过一些技巧来进行克服，具体的算法在前面已经有所描述，而且是作者较新的论文当中的描述，这里不再赘述。本节主要讲讲Ordered boosting的具体实现。
 
-Ordered boosting算法好是好，但是在大部分的实际任务当中都不具备使用价值，因为需要训练$n$个不同的模型，大大增加的内存消耗和时间复杂度。在Catboost当中，我们实现了一个基于GBDT框架的修改版本。
+Ordered boosting算法好是好，但是在大部分的实际任务当中都不具备使用价值，因为需要训练$n$个不同的模型，大大增加的内存消耗和时间复杂度。在CatBoost当中，我们实现了一个基于GBDT框架的修改版本。
 
-前面提到过，在传统的GBDT框架当中，构建下一棵树分为两个阶段：选择树结构和在树结构固定后计算叶子节点的值。Catboost主要在第一阶段进行优化。
+前面提到过，在传统的GBDT框架当中，构建下一棵树分为两个阶段：选择树结构和在树结构固定后计算叶子节点的值。CatBoost主要在第一阶段进行优化。
 
 ## First phase
 
-在建树的阶段，Catboost有两种提升模式，Ordered和Plain。Plain模式是采用内建的ordered TS对类别型特征进行转化后的标准GBDT算法。Ordered则是对Ordered boosting算法的优化。
+在建树的阶段，CatBoost有两种提升模式，Ordered和Plain。Plain模式是采用内建的ordered TS对类别型特征进行转化后的标准GBDT算法。Ordered则是对Ordered boosting算法的优化。
 
 
 ### Ordered boosting mode
 
-一开始，Catboost对训练集产生$s+1$个独立的随机序列。序列$\sigma_1,...,\sigma_s$用来评估定义树结构的分裂，$\sigma_0$用来计算所得到的树的叶子节点的值。因为，在一个给定的序列当中，对于较短的序列，无论是TS的计算还是基于Ordered boosting的预测都会有较大的方差，所以仅仅用一个序列可能引起最终模型的方差，这里我们会有多个序列进行学习。
+一开始，CatBoost对训练集产生$s+1$个独立的随机序列。序列$\sigma_1,...,\sigma_s$用来评估定义树结构的分裂，$\sigma_0$用来计算所得到的树的叶子节点的值。因为，在一个给定的序列当中，对于较短的序列，无论是TS的计算还是基于Ordered boosting的预测都会有较大的方差，所以仅仅用一个序列可能引起最终模型的方差，这里我们会有多个序列进行学习。
 
-Catboost采用对称树作为基学习器，对称意味着在树的同一层，其分裂标准都是相同的。对称树具有平衡、不易过拟合并能够大大减少测试时间的特点。建树的具体算法如下伪码描述。
+CatBoost采用对称树作为基学习器，对称意味着在树的同一层，其分裂标准都是相同的。对称树具有平衡、不易过拟合并能够大大减少测试时间的特点。建树的具体算法如下伪码描述。
 
 ![Building a tree in CatBoost](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/Catboost/%2A%20CatBoost-%20unbiased%20boosting%20with%20categorical%20features%202019-08-26%2020-24-29%20Catboost%E5%BB%BA%E6%A0%91.png)
 
@@ -191,88 +192,367 @@ Plain boosting模式的算法与标准GBDT流程类似，但是如果出现了�
 
 ## Second phase
 
-当所有的树结构确定以后，最终模型的叶子节点值的计算与标准梯度提升过程类似。第$i$个样本与叶子$leaf_0(i)$进行匹配，我们用$\sigma_0$来计算这里的TS。当最终模型$F$在测试期间应用于新的样本，我们采用整个训练集来计算TS.
+当所有的树结构确定以后，最终模型的叶子节点值的计算与标准梯度提升过程类似。第$i$个样本与叶子$leaf_0(i)$进行匹配，我们用$\sigma_0$来计算这里的TS。当最终模型$F$在测试期间应用于新的样本，我们采用整个训练集来计算TS。
 
 # GPU加速
  
+就GPU内存使用而言，CatBoost至少与LightGBM一样有效，CatBoost的GPU实现可支持多个GPU，分布式树学习可以通过样本或特征进行并行化。
 
 
 # sklearn参数
 
-`sklearn`本身的文档当中并没有LightGBM的描述，[Github](https://github.com/microsoft/LightGBM/blob/master/python-package/lightgbm/sklearn.py)上面看到主要参数如下：
+`sklearn`本身的文档当中并没有CatBoost的描述，[CatBoost python-reference_parameters-list](https://catboost.ai/docs/concepts/python-reference_parameters-list.html)上面看到主要参数如下：
 
-- `boosting_type` : 提升类型，字符串，可选项 (default=`gbdt`)
-    - `gbdt`, 传统梯度提升树
-    - `dart`, 带Dropout的MART
-    - `goss`, 单边梯度采样
-    - `rf`, 随机森林
-- `num_leaves` : 基学习器的最大叶子树，整型，可选项 (default=31)
-- `max_depth` : 基学习器的最大树深度，小于等于0表示没限制，整型，可选项 (default=-1)
-- `learning_rate` : 提升学习率，浮点型，可选项 (default=0.1)
-- `n_estimators` : 提升次数，整型，可选项 (default=100)
-- `subsample_for_bin` : 构造分箱的样本个数，整型，可选项 (default=200000)
-- `objective` : 指定学习任务和相应的学习目标或者用户自定义的需要优化的目标损失函数，字符串， 可调用的或者None, 可选项 (default=None)，若不为None，则有:
-    - `regression` for LGBMRegressor
-    -`binary` or `multiclass` for LGBMClassifier
-    - `lambdarank` for LGBMRanker
-- `class_weight` : 该参数仅在多分类的时候会用到，多分类的时候各个分类的权重，对于二分类任务，你可以使用``is_unbalance`` 或 ``scale_pos_weight``，字典数据, `balanced` or None, 可选项 (default=None)
-- `min_split_gain` : 在叶子节点上面做进一步分裂的最小损失减少值，浮点型，可选项 (default=0.)
-- `min_child_weight` : 在树的一个孩子或者叶子所需的最小样本权重和，浮点型，可选项 (default=1e-3)
-- `min_child_samples` : 在树的一个孩子或者叶子所需的最小样本，整型，可选项 (default=20)
-- `subsample` : 训练样本的子采样比例，浮点型，可选项 (default=1.)
-- `subsample_freq` : 子采样频率，小于等于0意味着不可用，整型，可选项 (default=0)
-- `colsample_bytree` : 构建单棵树时列采样比例，浮点型，可选项 (default=1.)
-- `reg_alpha` : $L_1$正则项，浮点型，可选项 (default=0.)
-- `reg_lambda` :$L_2$正则项，浮点型，可选项 (default=0.)
-- `random_state` : 随机数种子，整型或者None, 可选项 (default=None)
-- `n_jobs` : 线程数，整型，可选项 (default=-1)
-- `silent` : 运行时是否打印消息，布尔型，可选项 (default=True)
-- `importance_type` : 填入到`feature_importances_`的特征重要性衡量类型，如果是`split`，则以特征被用来分裂的次数，如果是`gain`，则以特征每次用于分裂的累积增益，字符串，可选项 (default=`split`)
+- `iterations`: 迭代次数， 解决机器学习问题能够构建的最大树的数目，default=1000
+- `learning_rate`: 学习率，default=0.03
+- `depth`: 树的深度，default=6
+- `l2_leaf_reg`: $L_2$正则化数，default=3.0
+- `model_size_reg`:模型大小正则化系数，数值越到，模型越小，仅在有类别型变量的时候起作用，取值范围从0到$+\infty$，GPU计算时不可用， default=None
+- `rsm`: =None,
+- `loss_function`: 损失函数，字符串 (分类任务，default=`Logloss`，回归任务，default=`RMSE`)
+- `border_count`: 数值型变量的分箱个数
+    - CPU：1～65535的整数，default=254
+    - GPU：1～255的整数，default=128
+- `feature_border_type`: 数值型变量分箱个数的初始量化模式，default=GreedyLogSum
+    - Median
+    - Uniform
+    - UniformAndQuantiles
+    - MaxLogSum
+    - MinEntropy
+    - GreedyLogSum
+- `per_float_feature_quantization`: 指定特定特征的分箱个数，default=None,                         
+- `input_borders`=None,
+- `output_borders`=None,
+- `fold_permutation_block`: 对数据集进行随机排列之前分组的block大小，default=1
+- `od_pval`: 过拟合检测阈值，数值越大，越早检测到过拟合，default=0
+- `od_wait`: 达成优化目标以后继续迭代的次数，default=20
+- `od_type`: 过拟合检测类型，default=IncToDec
+    - IncToDec
+    - Iter
+- `nan_mode`: 缺失值的预处理方法，字符串类型，default=Min
+    - `Forbidden`: 不支持缺失值
+    - `Min`: 缺失值赋值为最小值 
+    - `Max`: 缺失值赋值为最大值
+- `counter_calc_method`: 计算Counter CTR类型的方法，default=None
+- `leaf_estimation_iterations`: 计算叶子节点值时候的迭代次数，default=None,
+- `leaf_estimation_method`: 计算叶子节点值的方法，default=Gradient
+    - Newton
+    - Gradient
+- `thread_count`: 训练期间的进程数，default=-1，进程数与部件的核心数相同
+- `random_seed`: 随机数种子，default=0
+- `use_best_model`: 如果有设置`eval_set`设置了验证集的话可以设为True，否则为False
+- `verbose`: 是否显示详细信息，default=1
+- `logging_level`: 打印的日志级别，default=None
+- `metric_period`: 计算优化评估值的频率，default=1
+- `ctr_leaf_count_limit`: 类别型特征最大叶子数，default=None
+- `store_all_simple_ctr`: 是否忽略类别型特征，default=False
+- `max_ctr_complexity`: 最大特征组合数，default=4
+- `has_time`: 是否采用输入数据的顺序，default=False
+- `allow_const_label`: 使用它为所有对象用具有相同标签值的数据集训练模型，default=None
+- `classes_count`: 多分类当中类别数目上限，defalut=None
+- `class_weights`: 类别权重，default=None
+- `one_hot_max_size`: one-hot编码最大规模，默认值根据数据和训练环境的不同而不同
+- `random_strength`: 树结构确定以后为分裂点进行打分的时候的随机强度，default=1
+- `name`: 在可视化工具当中需要显示的实验名字
+- `ignored_features`: 在训练当中需要排除的特征名称或者索引，default=None
+- `train_dir`: 训练过程当中文件保存的目录
+- `custom_loss`: 用户自定义的损失函数
+- `custom_metric`: 自定义训练过程当中输出的评估指标，default=None
+- `eval_metric`: 过拟合检测或者最优模型选择的评估指标
+    - [loss-functions](https://catboost.ai/docs/concepts/loss-functions.html#loss-functions)
+- `bagging_temperature`: 贝叶斯bootstrap强度设置，default=1
+- `save_snapshot`: 训练中断情况下保存快照文件
+- `snapshot_file`: 训练过程信息保存的文件名字
+- `snapshot_interval`: 快照保存间隔时间，单位秒
+- `fold_len_multiplier`: 改变fold长度的系数，default=2
+- `used_ram_limit`: 类别型特征使用内存限制，default=None
+- `gpu_ram_part`: GPU内存使用率，default=0.95
+- `allow_writing_files`: 训练过程当中允许写入分析和快照文件，default=True
+- `final_ctr_computation_mode`: Final CTR计算模式
+- `approx_on_full_history`: 计算近似值的原则，default=False
+- `boosting_type`: 提升模式
+    - Ordered
+    - Plain
+- `simple_ctr`: 单一类别型特征的量化设置
+    - CtrType
+    - TargetBorderCount
+    - TargetBorderType
+    - CtrBorderCount
+    - CtrBorderType
+    - Prior
+- `combinations_ctr`: 组合类别型特征的量化设置
+    - CtrType
+    - TargetBorderCount
+    - TargetBorderType
+    - CtrBorderCount
+    - CtrBorderType
+    - Prior
+- `per_feature_ctr`: 以上几个参数的设置具体可以细看下面的文档
+    - [Categorical features](https://catboost.ai/docs/concepts/algorithm-main-stages_cat-to-numberic.html#algorithm-main-stages_cat-to-numberic)
+- `task_type`: 任务类型，CPU或者GPU，default=CPU
+- `device_config`: =None
+- `devices`: 用来训练的GPU设备号，default=NULL
+- `bootstrap_type`: 自采样类型，default=Bayesian
+    - Bayesian
+    - Bernoulli
+    - MVS
+    - Poisson
+    - No
+- `subsample`: bagging的采样率，default=0.66
+- `sampling_unit`: 采样模式，default=Object
+    - Object
+    - Group
+- `dev_score_calc_obj_block_size`: =None,
+- `max_depth`: 树的最大深度
+- `n_estimators`: 迭代次数
+- `num_boost_round`: 迭代轮数
+- `num_trees`: 树的数目
+- `colsample_bylevel`: 按层抽样比例，default=None
+- `random_state`: 随机数状态
+- `reg_lambda`: 损失函数$L_2$范数，default=3.0
+- `objective`: =同损失函数
+- `eta`: 学习率
+- `max_bin`: =同`border_coucnt`
+- `scale_pos_weight`: 二分类任务当中1类的权重，default=1.0
+- `gpu_cat_features_storage`: GPU训练时类别型特征的存储方式，default=GpuRam
+    - CpuPinnedMemory
+    - GpuRam
+- `data_partition`: 分布式训练时数据划分方法
+    - 特征并行
+    - 样本并行
+- `metadata`: =None
+- `early_stopping_rounds`: 早停轮次，default=False
+- `cat_features`: =指定类别型特征的名称或者索引
+- `grow_policy`: 树的生长策略
+- `min_data_in_leaf`: 叶子节点最小样本数，default=1
+- `min_child_samples`: 叶子节点最小样本数，default=1
+- `max_leaves`: 最大叶子数，default=31
+- `num_leaves`: 叶子数
+- `score_function`: 建树过程当中的打分函数
+- `leaf_estimation_backtracking`: 梯度下降时回溯类型
+- `ctr_history_unit`: =None
+- `monotone_constraints`: =None
 
 
-除了以上参数，LightGBM原生接口当中参数众多，主要有以下八大类：
+如果有遗漏，具体可以参阅[CatBoost python-reference_parameters-list](https://catboost.ai/docs/concepts/python-reference_parameters-list.html)
 
-- 核心参数
-- 学习控制参数
-- IO参数
-- 目标参数
-- 度量参数
-- 网络参数
-- GPU参数
-- 模型参数
+区分具体的机器学习任务有：
 
-如果有遗漏，具体可以参阅[LightGBM Parameters](https://lightgbm.readthedocs.io/en/latest/Parameters.html)
+## CatBoostClassifier
+
+[CatBoostClassifier](https://catboost.ai/docs/concepts/python-reference_catboostclassifier.html)
+
+```python
+class CatBoostClassifier(iterations=None,
+                         learning_rate=None,
+                         depth=None,
+                         l2_leaf_reg=None,
+                         model_size_reg=None,
+                         rsm=None,
+                         loss_function=None,
+                         border_count=None,
+                         feature_border_type=None,
+                         per_float_feature_quantization=None,                         
+                         input_borders=None,
+                         output_borders=None,
+                         fold_permutation_block=None,
+                         od_pval=None,
+                         od_wait=None,
+                         od_type=None,
+                         nan_mode=None,
+                         counter_calc_method=None,
+                         leaf_estimation_iterations=None,
+                         leaf_estimation_method=None,
+                         thread_count=None,
+                         random_seed=None,
+                         use_best_model=None,
+                         verbose=None,
+                         logging_level=None,
+                         metric_period=None,
+                         ctr_leaf_count_limit=None,
+                         store_all_simple_ctr=None,
+                         max_ctr_complexity=None,
+                         has_time=None,
+                         allow_const_label=None,
+                         classes_count=None,
+                         class_weights=None,
+                         one_hot_max_size=None,
+                         random_strength=None,
+                         name=None,
+                         ignored_features=None,
+                         train_dir=None,
+                         custom_loss=None,
+                         custom_metric=None,
+                         eval_metric=None,
+                         bagging_temperature=None,
+                         save_snapshot=None,
+                         snapshot_file=None,
+                         snapshot_interval=None,
+                         fold_len_multiplier=None,
+                         used_ram_limit=None,
+                         gpu_ram_part=None,
+                         allow_writing_files=None,
+                         final_ctr_computation_mode=None,
+                         approx_on_full_history=None,
+                         boosting_type=None,
+                         simple_ctr=None,
+                         combinations_ctr=None,
+                         per_feature_ctr=None,
+                         task_type=None,
+                         device_config=None,
+                         devices=None,
+                         bootstrap_type=None,
+                         subsample=None,
+                         sampling_unit=None,
+                         dev_score_calc_obj_block_size=None,
+                         max_depth=None,
+                         n_estimators=None,
+                         num_boost_round=None,
+                         num_trees=None,
+                         colsample_bylevel=None,
+                         random_state=None,
+                         reg_lambda=None,
+                         objective=None,
+                         eta=None,
+                         max_bin=None,
+                         scale_pos_weight=None,
+                         gpu_cat_features_storage=None,
+                         data_partition=None
+                         metadata=None, 
+                         early_stopping_rounds=None,
+                         cat_features=None, 
+                         grow_policy=None,
+                         min_data_in_leaf=None,
+                         min_child_samples=None,
+                         max_leaves=None,
+                         num_leaves=None,
+                         score_function=None,
+                         leaf_estimation_backtracking=None,
+                         ctr_history_unit=None,
+                         monotone_constraints=None)
+```
+
+## CatBoostRegressor
+
+[CatBoostRegressor](https://catboost.ai/docs/concepts/python-reference_catboostregressor.html)
+
+```python
+class CatBoostRegressor(iterations=None,
+                        learning_rate=None,
+                        depth=None,
+                        l2_leaf_reg=None,
+                        model_size_reg=None,
+                        rsm=None,
+                        loss_function='RMSE',
+                        border_count=None,
+                        feature_border_type=None,
+                        per_float_feature_quantization=None,
+                        input_borders=None,
+                        output_borders=None,
+                        fold_permutation_block=None,
+                        od_pval=None,
+                        od_wait=None,
+                        od_type=None,
+                        nan_mode=None,
+                        counter_calc_method=None,
+                        leaf_estimation_iterations=None,
+                        leaf_estimation_method=None,
+                        thread_count=None,
+                        random_seed=None,
+                        use_best_model=None,
+                        best_model_min_trees=None,
+                        verbose=None,
+                        silent=None,
+                        logging_level=None,
+                        metric_period=None,
+                        ctr_leaf_count_limit=None,
+                        store_all_simple_ctr=None,
+                        max_ctr_complexity=None,
+                        has_time=None,
+                        allow_const_label=None,
+                        one_hot_max_size=None,
+                        random_strength=None,
+                        name=None,
+                        ignored_features=None,
+                        train_dir=None,
+                        custom_metric=None,
+                        eval_metric=None,
+                        bagging_temperature=None,
+                        save_snapshot=None,
+                        snapshot_file=None,
+                        snapshot_interval=None,
+                        fold_len_multiplier=None,
+                        used_ram_limit=None,
+                        gpu_ram_part=None,
+                        pinned_memory_size=None,
+                        allow_writing_files=None,
+                        final_ctr_computation_mode=None,
+                        approx_on_full_history=None,
+                        boosting_type=None,
+                        simple_ctr=None,
+                        combinations_ctr=None,
+                        per_feature_ctr=None,
+                        ctr_target_border_count=None,
+                        task_type=None,
+                        device_config=None,                        
+                        devices=None,
+                        bootstrap_type=None,
+                        subsample=None,                        
+                        sampling_unit=None,
+                        dev_score_calc_obj_block_size=None,
+                        max_depth=None,
+                        n_estimators=None,
+                        num_boost_round=None,
+                        num_trees=None,
+                        colsample_bylevel=None,
+                        random_state=None,
+                        reg_lambda=None,
+                        objective=None,
+                        eta=None,
+                        max_bin=None,
+                        gpu_cat_features_storage=None,
+                        data_partition=None,
+                        metadata=None,
+                        early_stopping_rounds=None,
+                        cat_features=None,
+                        grow_policy=None,
+                        min_data_in_leaf=None,
+                        min_child_samples=None,
+                        max_leaves=None,
+                        num_leaves=None,
+                        score_function=None,
+                        leaf_estimation_backtracking=None,
+                        ctr_history_unit=None,
+                        monotone_constraints=None)
+```
+
+
+
 
 # 应用场景
 
-作为GBDT框架内的算法，GBDT、XGBoost能够应用的场景LightGBM也都适用，并且考虑到其对于大数据、高维特征的诸多优化，在数据量非常大、维度非常多的场景更具优势。近来，有着逐步替代XGBoost成为各种数据挖掘比赛baseline的趋势。
+作为GBDT框架内的算法，GBDT、XGBoost、LightGBM能够应用的场景CatBoost也都适用，并且在处理类别型特征具备独有的优势，比如广告推进领域。
 
+# 优缺点
 
-# CatBoost（了解）
+## 优点
 
-CatBoost也是Boosting族的算法，由俄罗斯科技公司Yandex于2017年提出，主要在两方面做了优化，一个是对于类别变量的处理，另外一个是对于预测偏移（prediction shift）的处理。
+- 能够处理类别特征
+- 能够有效防止过拟合
+- 模型训练精度高
+- 调参时间相对较多
 
-其中对于类别变量在传统的Greedy TBS方法的基础上添加先验分布项，这样可以减少减少噪声和低频率数据对于数据分布的影响：
-$$\hat{x}_k^i=\frac{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}*y_j+a\,P}{\sum_{j=1}^n I_{\{x_j^i=x_k^i\}}+a}$$
+## 缺点
 
-其中 $P$ 是添加的先验项，$a$ 通常是大于 0 的权重系数。  
-
-对于第二个问题，CatBoost采用了排序提升（Ordered Boosting）的方式，首先对所有的数据进行随机排列，然后在计算第 $i$ 步残差时候的模型只利用了随机排列中前 $i-1$ 个样本。具体算法描述请参阅论文[CatBoost: unbiased boosting with categorical features](https://papers.nips.cc/paper/7898-catboost-unbiased-boosting-with-categorical-features.pdf)
-
-时间有限，下次有机会再详细消化下CatBoost的论文。
-
-总之，CatBoost大大简化了前期数据处理过程，特别是类别特征的数值化，调参也相对容易。近来在数据竞赛领域已经大规模采用。
-
-
+- 对于类别特征的处理需要大量的内存和时间
+- 不同随机数的设定对于模型预测结果有一定的影响
 
 # 参考
-
-
 
 - [《机器学习》，周志华](https://book.douban.com/subject/26708119/)
 - [《统计学习方法》（第二版），李航](https://book.douban.com/subject/33437381/)
 - [CatBoost Docs](https://catboost.ai/)
-- [Catboost](https://github.com/catboost/catboost)
+- [CatBoost](https://github.com/catboost/catboost)
 - [CatBoost: unbiased boosting with categorical features](https://papers.nips.cc/paper/7898-catboost-unbiased-boosting-with-categorical-features.pdf)
 - [CatBoost: gradient boosting with categorical features support](http://learningsys.org/nips17/assets/papers/paper_11.pdf)
 - [CatBoost: Python package training parameters](https://catboost.ai/docs/concepts/python-reference_parameters-list.html)
