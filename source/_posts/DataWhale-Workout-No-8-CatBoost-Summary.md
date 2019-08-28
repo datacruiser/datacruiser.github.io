@@ -211,7 +211,7 @@ Plain boosting模式的算法与标准GBDT流程类似，但是如果出现了�
 - `rsm`: =None,
 - `loss_function`: 损失函数，字符串 (分类任务，default=`Logloss`，回归任务，default=`RMSE`)
 - `border_count`: 数值型变量的分箱个数
-    - CPU：1～65535的整数，default=254
+    - CPU：1～65535的整数，default=254  
     - GPU：1～255的整数，default=128
 - `feature_border_type`: 数值型变量分箱个数的初始量化模式，default=GreedyLogSum
     - Median
@@ -231,7 +231,7 @@ Plain boosting模式的算法与标准GBDT流程类似，但是如果出现了�
     - Iter
 - `nan_mode`: 缺失值的预处理方法，字符串类型，default=Min
     - `Forbidden`: 不支持缺失值
-    - `Min`: 缺失值赋值为最小值 
+    - `Min`: 缺失值赋值为最小值
     - `Max`: 缺失值赋值为最大值
 - `counter_calc_method`: 计算Counter CTR类型的方法，default=None
 - `leaf_estimation_iterations`: 计算叶子节点值时候的迭代次数，default=None,

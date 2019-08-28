@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 Task18_2 26. Remove Duplicates from Sorted Array
+title: Leetcode Tencent 50 Task18 26. Remove Duplicates from Sorted Array
 date: 2019-08-28 10:36:39
 categories: LeetCode 腾讯精选50题
 tags:
