@@ -158,9 +158,9 @@ CatBoost，和所有标准梯度提升算法一样，都是通过构建新树来
 区分数据集是否独立，我们有以下两个推论：
 
 - 如果使用了规模为$n$的两个独立数据集$\mathcal{D}_1$和 $\mathcal{D}_2$来分别估算$h^1$ 和$h^2$，则对于任意$x \in {\{0,1\}}^2$，有：$\mathbb{E}_{\mathcal{D}_1,\mathcal{D}_2}\,F^2(X)=f^*(X)+O(\frac{1}{2^n})$
-- 如果使用了相同的数据集$\mathcal{D}$来估算$h^1$ 和$h^2$，则有：$\mathbb{E}_{\mathcal{D}_1,\mathcal{D}_2}\,F^2(X)=f^*(X)+O(\frac{1}{2^n})-\frac{1}{n-1}c_2(x^2-\frac{1}{2}$
+- 如果使用了相同的数据集$\mathcal{D}$来估算$h^1$ 和$h^2$，则有：$\mathbb{E}_{\mathcal{D}_1,\mathcal{D}_2}\,F^2(X)=f^*(X)+O(\frac{1}{2^n})-\frac{1}{n-1}c_2(x^2-\frac{1}{2})$
 
-显然，偏差部分$\frac{1}{n-1}c_2(x^2-\frac{1}{2}$与数据集的规模$n$成反比，与映射关系$f^*$也有关系，在我们的例子当中，与$c_2$成正比。
+显然，偏差部分$\frac{1}{n-1}c_2(x^2-\frac{1}{2})$与数据集的规模$n$成反比，与映射关系$f^*$也有关系，在我们的例子当中，与$c_2$成正比。
 
 # Ordered boosting
 
@@ -183,7 +183,7 @@ CatBoost采用对称树作为基学习器，对称意味着在树的同一层，
 
 ![Building a tree in CatBoost](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/Catboost/%2A%20CatBoost-%20unbiased%20boosting%20with%20categorical%20features%202019-08-26%2020-24-29%20Catboost%E5%BB%BA%E6%A0%91.png)
 
-在Ordered boosting模式的学习过程当中，我们维持一个模型$M_{r,j}$，其中$M_{r,j}(i)$表示基于在序列$\sigma_r$当中的前$j$个样本学习得到的模型对于第$i$个样本的预测。在算法的每一次迭代$t$，我们从$\{\sigma_1,...,\sigma_s\}$当中抽样一个随机序列$\sigma_r$，并基于此构建第$t$步的学习树$T_t$。然后，基于$M_{r,j}(i)$，计算相应的梯度$grad_{r,j}(i)=\frac{\partial L(y_i,s)}{\partial s}|_{s=M_{r,j}(i)}$。接下来，我们会用余弦相似度来近似梯度$G$，其中对于每一个样本$i$，我们取梯度$grad_{r,\sigma(i)-1}(i)$。在候选分裂评估过程当中，第$i$个样本的叶子节点的值$\delta(i)$由与$i$同属一个叶子的$leaf_r(i)$的所有样本的前$p$个样本的梯度值$grad_{r,\sigma(i)-1}$求平均得到。需要注意的是，$leaf_r(i)$取决于选定的序列$\sigma_r$，因为$\sigma_r$会影响第$i$个样本的Ordered TS。当树$T_t$的结构确定以后，我们用它来提升所有的模型$M_{r^',j}$，我们需要强调下，一个相同的树结构$T_t$会被用于所有的模型，但是会根据$r^'$和 $j$的不同设置不同的叶子节点的值以后应用于不同的模型。
+在Ordered boosting模式的学习过程当中，我们维持一个模型$M_{r,j}$，其中$M_{r,j}(i)$表示基于在序列$\sigma_r$当中的前$j$个样本学习得到的模型对于第$i$个样本的预测。在算法的每一次迭代$t$，我们从$\{\sigma_1,...,\sigma_s\}$当中抽样一个随机序列$\sigma_r$，并基于此构建第$t$步的学习树$T_t$。然后，基于$M_{r,j}(i)$，计算相应的梯度$grad_{r,j}(i)=\frac{\partial L(y_i,s)}{\partial s}|_{s=M_{r,j}(i)}$。接下来，我们会用余弦相似度来近似梯度$G$，其中对于每一个样本$i$，我们取梯度$grad_{r,\sigma(i)-1}(i)$。在候选分裂评估过程当中，第$i$个样本的叶子节点的值$\delta(i)$由与$i$同属一个叶子的$leaf_r(i)$的所有样本的前$p$个样本的梯度值$grad_{r,\sigma(i)-1}$求平均得到。需要注意的是，$leaf_r(i)$取决于选定的序列$\sigma_r$，因为$\sigma_r$会影响第$i$个样本的Ordered TS。当树$T_t$的结构确定以后，我们用它来提升所有的模型$M_{r^{`},j}$，我们需要强调下，一个相同的树结构$T_t$会被用于所有的模型，但是会根据$r^{`}$和 $j$的不同设置不同的叶子节点的值以后应用于不同的模型。
 
 ### Plain boosting mode 
 
@@ -531,7 +531,8 @@ class CatBoostRegressor(iterations=None,
 
 # 应用场景
 
-作为GBDT框架内的算法，GBDT、XGBoost、LightGBM能够应用的场景CatBoost也都适用，并且在处理类别型特征具备独有的优势，比如广告推进领域。
+作为GBDT框架内的算法，GBDT、XGBoost、LightGBM能够应用的场景CatBoost也都适用，并且在处理类别型特征具备独有的优势，比如广告推荐领域。
+
 
 # 优缺点
 
