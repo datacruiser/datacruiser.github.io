@@ -49,11 +49,10 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task19。
 - 每次比较 `sum` 和 `max`的大小，将最大值置为 `max`，遍历结束返回结果
 
 
-    
+
 具体代码如下：
 
 
-    
 # 代码
 
 

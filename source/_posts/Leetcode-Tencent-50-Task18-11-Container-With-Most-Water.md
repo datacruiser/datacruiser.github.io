@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 Task18 11. Container With Most Water
+title: Leetcode Tencent 50 Task20 11. Container With Most Water
 date: 2019-08-25 20:47:08
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task18。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task20。
 ---
 
 # 描述
