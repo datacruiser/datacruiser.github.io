@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 Task19 15. 3Sum
+title: Leetcode Tencent 50 Task21 15. 3Sum
 date: 2019-08-26 21:14:42
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task19。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task21。
 ---
 
 # 描述
