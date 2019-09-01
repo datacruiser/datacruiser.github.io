@@ -8,8 +8,9 @@ tags:
 - C语言
 - 设计
 description: DataWhale暑期学习小组-LeetCode刷题第八期Task0。
----    
-    
+---
+
+
 # 描述
     
 设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
@@ -19,7 +20,8 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task0。
 - top() -- 获取栈顶元素。
 - getMin() -- 检索栈中的最小元素。
 
-**示例:**    
+**示例:** 
+
 
 ```c
 MinStack minStack = new MinStack();
