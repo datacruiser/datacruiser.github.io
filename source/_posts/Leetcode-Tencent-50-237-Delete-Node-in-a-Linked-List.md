@@ -16,7 +16,7 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task21。
 
 现有一个链表 -- head = [4,5,1,9]，它可以表示为:
 
-![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/01/19/237_example.png)
+![图片](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/01/19/237_example.png)
  
 
 **示例 1:**

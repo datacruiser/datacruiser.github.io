@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期TaskXX。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task22。
 ---
 
 # 描述
