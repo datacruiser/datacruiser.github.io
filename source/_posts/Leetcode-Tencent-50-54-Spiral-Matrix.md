@@ -135,7 +135,7 @@ int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSi
 }
 ``` 
 
-## 解法二：递归解法
+## 解法二
 
 ```c
 int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize)
