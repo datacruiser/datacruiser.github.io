@@ -135,7 +135,9 @@ int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSi
 }
 ``` 
 
+
 ## 解法二
+
 
 ```c
 int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize)
@@ -214,3 +216,8 @@ int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSi
 }
 
 ```
+
+
+# 参考资料
+
+- [C++详细题解](https://leetcode-cn.com/problems/spiral-matrix/solution/cxiang-xi-ti-jie-by-youlookdeliciousc-3/)
