@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 Task19 53. Maximum Subarray
+title: Leetcode Tencent 50 Task24 53. Maximum Subarray
 date: 2019-08-29 21:35:28
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task19。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task24。
 ---
 
 # 描述
@@ -58,8 +58,10 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task19。
 
 ```c
 
-int maxSubArray(int* nums, int numsSize){
-     if(numsSize == 0) return 0;
+int maxSubArray(int* nums, int numsSize)
+{
+      
+    if(numsSize == 0) return 0;
     if(numsSize == 1) return nums[0];
     int max = nums[0];
     int sum = -1000;
@@ -67,7 +69,7 @@ int maxSubArray(int* nums, int numsSize){
     for (int i = 0; i < numsSize; i++)
     {
         if(sum < 0) 
-                sum = 0;
+            sum = 0;
         sum += nums[i];
         if(sum > max) 
             max = sum;
