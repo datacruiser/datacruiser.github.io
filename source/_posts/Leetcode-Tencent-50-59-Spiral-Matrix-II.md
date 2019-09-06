@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 59. Spiral Matrix II
+title: Leetcode Tencent 50 Task 25 59. Spiral Matrix II
 date: 2019-09-05 09:54:36
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task25。
 ---
 
 # 描述
