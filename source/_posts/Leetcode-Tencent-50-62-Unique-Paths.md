@@ -50,7 +50,7 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 
 刚刚在MOOC看了北京大学郭炜老师关于[数字三角形的题目](https://www.icourse163.org/learn/PKU-1001894005?tid=1206483202#/learn/content?type=detail&id=1211268465&cid=1213844097&replay=true)，这道题的思路基本类似。
 
-我们令`MaxPaths[i][j]`为到达`i,j`的最多路径，则动态方程为：`MaxPaths[i][j]=MaxPaths[i-1][j] + MaxPaths[i][j-1]`，考虑下边界条件，对于第一行或者第一列，根据移动的规则，只能够一直往右或者一直往下，只有一种可能的路径，即`MathPaths[0][j] = MaxPaths[i][0] = 1`
+我们令`MaxPaths[i][j]`为到达`i,j`的最多路径，则状态转移方程为：`MaxPaths[i][j]=MaxPaths[i-1][j] + MaxPaths[i][j-1]`，考虑下边界条件，对于第一行或者第一列，根据移动的规则，只能够一直往右或者一直往下，只有一种可能的路径，即`MathPaths[0][j] = MaxPaths[i][0] = 1`
 
 代码可以有两个写法，一种递归的写法，一种是迭代的写法。不过提交以后递归的写法超时了……
 
