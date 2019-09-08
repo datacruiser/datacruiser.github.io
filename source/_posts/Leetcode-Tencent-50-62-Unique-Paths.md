@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 62. Unique Paths
+title: Leetcode Tencent 50 Task 26 62. Unique Paths
 date: 2019-09-06 19:15:03
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,12 +7,12 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task26。
 ---
 
 # 描述
 
-一个机器人位于一个 $m x n$ 网格的左上角 （起始点在下图中标记为“Start” ）。
+一个机器人位于一个 $m \times n$ 网格的左上角 （起始点在下图中标记为“Start” ）。
 
 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
 

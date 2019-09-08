@@ -6,7 +6,7 @@ tags:
 - 数据结构
 - 算法
 - C语言
-- 数组
+- 链表
 description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 ---
 
@@ -26,7 +26,8 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 输出：true
 解释：链表中有一个环，其尾部连接到第二个节点。
 ```
-![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png)
+
+![1](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist.png)
 
 **示例 2：**
 
@@ -36,7 +37,8 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 输出：true
 解释：链表中有一个环，其尾部连接到第一个节点。
 ```
-![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test2.png)
+
+![2](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test2.png)
 
 **示例 3：**
 
@@ -46,7 +48,8 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 输出：false
 解释：链表中没有环。
 ```
-![](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
+
+![3](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
  
 
 **进阶：**
