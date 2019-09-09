@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 121. Best Time to Buy and Sell Stock
+title: Leetcode Tencent 50 Task 28 121. Best Time to Buy and Sell Stock
 date: 2019-08-30 19:49:21
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task1X。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task28。
 ---
 
 # 描述

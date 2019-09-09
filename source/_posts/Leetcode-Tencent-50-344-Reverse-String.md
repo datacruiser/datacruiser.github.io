@@ -43,7 +43,7 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 
 # 代码
 
-```c
+    ```c
 void reverseString(char* s, int sSize)
 {
     int head = 0, tail = sSize - 1;
