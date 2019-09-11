@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 217. Contains Duplicate
+title: Leetcode Tencent 50 Task 29 217. Contains Duplicate
 date: 2019-08-31 22:46:13
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期TaskXX。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task29。
 ---
 
 # 描述

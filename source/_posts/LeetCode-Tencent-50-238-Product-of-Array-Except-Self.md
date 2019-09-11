@@ -1,5 +1,5 @@
 ---
-title: LeetCode Tencent 50 238. Product of Array Except Self
+title: LeetCode Tencent 50 Task 30 238. Product of Array Except Self
 date: 2019-08-31 11:55:58
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期TaskXX。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task30。
 ---
 
 # 描述
