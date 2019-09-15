@@ -204,7 +204,7 @@ $$f(x)=f_M(x)=f_0(x)+\sum_{m=1}^M\sum_{j=1}^{J}c_{mj}\,I(x\in R_{mj})$$
 
 - **输入：**
 
-	- 训练数据集$T=\{(x_1,y_1),(x_2,y_2),...,(x_N,y_N)\},x_i\in X\subseteq R^n,y_i \in Y=\{-1,+1\}$；损失函数$L(y,f(x))=log\left(1+e^{(-yf(x))}\right)$$；最大迭代次数 $M$。
+	- 训练数据集$T=\{(x_1,y_1),(x_2,y_2),...,(x_N,y_N)\},x_i\in X\subseteq R^n,y_i \in Y=\{-1,+1\}$；损失函数$L(y,f(x))=log\left(1+e^{(-yf(x))}\right)$；最大迭代次数$M$。
 - **输出：**
 
 	- 分类树 $f(x)$
