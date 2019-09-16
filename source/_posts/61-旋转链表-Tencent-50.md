@@ -10,7 +10,9 @@ tags:
 description: DataWhale暑期学习小组-LeetCode刷题第八期Task33。
 ---
 
+
 # 描述
+
 
 给定一个链表，旋转链表，将链表每个节点向右移动 `k` 个位置，其中 `k` 是非负数。
 
@@ -51,7 +53,7 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task33。
 
 这里先将快指针的`next`指向`head`，相当于先将链表成环，然后将快指针移到慢指针的`next`，最后将慢指针的`next`指向`NULL`，相当于将环打断，最后返回快指针头节点。
 
-示意图如下：
+具体示意图如下：
 
 ![rotate list](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Rotate%20List.png)
 
