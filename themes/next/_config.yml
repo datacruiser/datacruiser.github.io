@@ -371,7 +371,7 @@ han: false
 # Disqus
 disqus:
   enable: true 
-  shortname:
+  shortname: datacruiser
   count: true
 
 # Hypercomments
