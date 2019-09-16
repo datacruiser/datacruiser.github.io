@@ -1,15 +1,13 @@
 ---
 title: 61. 旋转链表 Tencent 50
 date: 2019-09-16 19:03:28
-tags:
----
 categories: LeetCode 腾讯精选50题
 tags:
 - 数据结构
 - 算法
 - C语言
 - 链表
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task32。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task33。
 ---
 
 # 描述
