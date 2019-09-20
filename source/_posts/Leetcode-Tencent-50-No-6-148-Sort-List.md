@@ -1,12 +1,12 @@
 ---
-title: Leetcode Tencent 50 Task 36 No.5 148. Sort List
+title: Leetcode Tencent 50 Task 5 No.5 148. Sort List
 date: 2019-08-07 15:19:27
 categories: LeetCode 腾讯精选50题
 tags:
 - 数据结构
 - 算法
 - C语言
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task36。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task5。
 ---
 # 描述
 
