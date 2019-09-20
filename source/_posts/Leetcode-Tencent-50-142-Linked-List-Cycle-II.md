@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 142. Linked List Cycle II
+title: Leetcode Tencent 50 Task35 142. Linked List Cycle II
 date: 2019-09-07 20:00:44
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 链表
-description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task35。
 ---
 
 # 描述
