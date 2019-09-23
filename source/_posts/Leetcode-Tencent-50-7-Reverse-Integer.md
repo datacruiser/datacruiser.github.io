@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 7. Reverse Integer
+title: Leetcode Tencent 50 Task 39 7. Reverse Integer
 date: 2019-09-01 09:30:37
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期TaskXX。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task39。
 ---
 
 # 描述

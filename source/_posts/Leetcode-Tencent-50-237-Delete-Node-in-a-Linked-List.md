@@ -1,5 +1,5 @@
 ---
-title: Leetcode Tencent 50 237. Delete Node in a Linked List
+title: Leetcode Tencent 50 Task 38 237. Delete Node in a Linked List
 date: 2019-09-01 15:02:29
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 数组
-description: DataWhale暑期学习小组-LeetCode刷题第八期Task21。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task38。
 ---
 
 # 描述
