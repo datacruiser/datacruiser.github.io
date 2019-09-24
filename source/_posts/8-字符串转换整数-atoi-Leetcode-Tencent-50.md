@@ -1,5 +1,5 @@
 ---
-title: 8. 字符串转换整数 (atoi) Leetcode Tencent 50
+title: 8. 字符串转换整数 (atoi) Leetcode Tencent 50 Task 40
 date: 2019-09-19 11:35:07
 categories: LeetCode 腾讯精选50题
 tags:
@@ -7,7 +7,7 @@ tags:
 - 算法
 - C语言
 - 字符串
-description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
+description: DataWhale暑期学习小组-LeetCode刷题第八期Task40。
 ---
 
 # 描述
