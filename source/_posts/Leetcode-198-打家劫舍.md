@@ -8,7 +8,8 @@ tags:
 - 数据结构
 - 算法
 - C语言
-- 位运算
+- 数组
+- 动态规划 
 description: Leetcode刷题系列.
 ---
 # 描述
