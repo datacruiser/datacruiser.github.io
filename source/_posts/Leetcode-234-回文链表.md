@@ -47,8 +47,6 @@ description: Leetcode刷题系列.
 
 # 代码
 
-
-
 ```c
 /**
  * Definition for singly-linked list.
