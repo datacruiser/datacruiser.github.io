@@ -58,6 +58,10 @@ description: Leetcode刷题系列.
 
 本题采用单调递减栈，栈里只有递减元素，首先遍历数组，如果栈不为空，且当前数字大于栈顶元素，那么如果直接入栈的话就不是递减栈了，所以我们取出栈顶元素，那么由于当前数字大于栈顶元素的数字，而且一定是第一个大雨栈顶元素的数，那么我们直接求出下标差就是二者的距离了，然后继续看新的栈顶元素，直到当前数字小于等于栈顶元素停止，然后将数字入栈，这样就可以一直保持递减栈，且每个数字和第一个大于它的数的距离也可以算出来了，具体代码见解法二：
 
+具体流程见下图
+
+![Monotonic Stack](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Daily%20Temperatures_Monotonic%20Stack.png)
+
 # 代码
 
 ## 解法一
