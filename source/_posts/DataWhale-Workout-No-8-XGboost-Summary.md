@@ -9,6 +9,7 @@ tags:
 - 分布式
 - sklearn
 - 泰勒展开
+- 机器学习
 description: DataWhale暑期学习小组-高级算法梳理第八期Task3。
 ---
 

@@ -8,6 +8,7 @@ tags:
 - Ordered boosting
 - Prediction shift
 - sklearn
+- 机器学习
 description: 这是DataWhale暑期学习小组-高级算法梳理的补充，是对目前最新的开源Boost族算法CatBoost的介绍，结合相关论文以及笔者的使用经验，对CatBoost的算法特性和适用场景做一些小结。
 ---
 
