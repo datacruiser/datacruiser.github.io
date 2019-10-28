@@ -130,8 +130,7 @@ func (pow *ProofOfWork) prepareData(nonce int) []byte {
 }
 ```
 
-上述的 `prepareData` 方法（因为在`prepareData`之前有`ProofOfWork`的结构体声明，这样的一种特殊的函数在Go语言当中叫做`method`）比较简单明了：我们通过调用`bytes`包的`Join`函数将区块信息与`targetBits`（在比特币当中，难度系数也是属于区块头部数据，这里也把它当做公开数据的一部分）以及`nonce（临时值）`相合并。**nonce**变量在这里就是前面[Hashcash算法](https://en.wikipedia.org/wiki/Hashcash)中描述的`counter`（计数器），它是一条加密后的数据。
-
+上述的 `prepareData` 方法（因为在`prepareData`之前有`ProofOfWork`的结构体声明，这样的一种特殊的函数在Go语言当中叫做`method`）比较简单明了：我们通过调用`bytes`包的`Join`函数将区块信息与`targetBits`（在比特币当中，难度系数也是属于区块头部数据，这里也把它当做公开数据的一部分）以及`nonce（临时值）`相合并。**nonce**变量在这里就是前面[Hashcash算法](https://en.wikipedia.org/wiki/Hashcash)中描述的`counter`（计数器），它是一个密码学术语。
 OK，所有的准备已经就绪，来让我们实现`PoW`算法的核心部分吧：
 
 ```go
