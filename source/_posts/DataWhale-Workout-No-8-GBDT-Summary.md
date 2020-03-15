@@ -15,7 +15,7 @@ GBDT（Gradient Boosting Decision Tree）是一种可用于处理分类（classi
 
 Gradient Boosting的思想起源于Leo Briman的评论：Boosting可以解释为一个基于合适的损失函数的优化算法。随后Friedman开发了显式回归梯度提升算法，同时部分学者从更通用的函数梯度下降（functional gradient descent）视角进行跟进，发表了将boosting算法作为迭代函数梯度下降算法（iterative functinal gradient descent algorithms）的观点。也就是说，GBDT是一种通过迭代选定的指向负梯度方向的函数（弱学习器）在函数空间对损失函数进行优化的算法。这种将boosting视为函数梯度的观点也推动了boosting族算法在回归和分类以外的其它机器（统计）学习领域的发展。
 
-# 前向分布算法
+# 前向分步算法
 
 考虑加法模型（additive model）
 
@@ -81,7 +81,7 @@ $$f(x)=\sum_{n=0}^\infty\frac{f^{(n)}x_0}{n!}(x-x_o)^n$$
 
 - 迭代形式
 
-假设$x^t=x^(t-1)+\Delta	x$，将$f(x^t)$在$x^{t-1}$处进行泰勒展开：
+假设$x^t=x^{t-1}+\Delta	x$，将$f(x^t)$在$x^{t-1}$处进行泰勒展开：
 	$$
 	\begin{align}
    f(x^t) &=f(x^{t-1}+\Delta x) \\\\ 
@@ -100,7 +100,7 @@ $$
 	\end{align}
 $$
 
-- 要使得  $L(\theta^t) <L(\theta^{t-1}$ ，可取： $\Delta\theta=-\alpha L'(\theta^{t-1})$ ，则：  $\theta^t=\theta^{t-1}-\alpha L'(\theta^{t-1})$ ，这里 $\alpha$ 是步长，一般直接赋值一个小的数。
+- 要使得  $L(\theta^t) <L(\theta^{t-1})$ ，可取： $\Delta\theta=-\alpha L'(\theta^{t-1})$ ，则：  $\theta^t=\theta^{t-1}-\alpha L'(\theta^{t-1})$ ，这里 $\alpha$ 是步长，一般直接赋值一个小的数。
 
 
 相对的，在函数空间里，有 $f^t(x)=f^{t-1}(x)+f_t(x)$
@@ -336,7 +336,7 @@ class GradientBoostingClassifier(BaseGradientBoosting, ClassifierMixin):
 
 - **n_estimators : int (default=100)**
 
-	- boosting迭代步数，Gradient boosting通常对于过拟合有鲁棒性，一个较大的数通常意味着更好的性能，整型，默认时100
+	- boosting迭代步数，Gradient boosting通常对于过拟合有鲁棒性，一个较大的数通常意味着更好的性能，整型，默认是100
 
 - **subsample : float, optional (default=1.0)**
 
@@ -401,7 +401,7 @@ class GradientBoostingClassifier(BaseGradientBoosting, ClassifierMixin):
 
 - **max_leaf_nodes : int or None, optional (default=None)**
     
-    - 以最好的方式用`max_leaf_nodes`来建树，如果是Nonde的话则对叶子结点的个数不限制，整型或者Node，可选项，默认是Node
+    - 以最好的方式用`max_leaf_nodes`来建树，如果是None的话则对叶子结点的个数不限制，整型或者Node，可选项，默认是Node
 
 - **warm_start : bool, optional (default=False)**
 

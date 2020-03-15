@@ -184,7 +184,7 @@ CatBoost采用对称树作为基学习器，对称意味着在树的同一层，
 
 ![Building a tree in CatBoost](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/Catboost/%2A%20CatBoost-%20unbiased%20boosting%20with%20categorical%20features%202019-08-26%2020-24-29%20Catboost%E5%BB%BA%E6%A0%91.png)
 
-在Ordered boosting模式的学习过程当中，我们维持一个模型$M_{r,j}$，其中$M_{r,j}(i)$表示基于在序列$\sigma_r$当中的前$j$个样本学习得到的模型对于第$i$个样本的预测。在算法的每一次迭代$t$，我们从$\{\sigma_1,...,\sigma_s\}$当中抽样一个随机序列$\sigma_r$，并基于此构建第$t$步的学习树$T_t$。然后，基于$M_{r,j}(i)$，计算相应的梯度$grad_{r,j}(i)=\frac{\partial L(y_i,s)}{\partial s}|_{s=M_{r,j}(i)}$。接下来，我们会用余弦相似度来近似梯度$G$，其中对于每一个样本$i$，我们取梯度$grad_{r,\sigma(i)-1}(i)$。在候选分裂评估过程当中，第$i$个样本的叶子节点的值$\delta(i)$由与$i$同属一个叶子的$leaf_r(i)$的所有样本的前$p$个样本的梯度值$grad_{r,\sigma(i)-1}$求平均得到。需要注意的是，$leaf_r(i)$取决于选定的序列$\sigma_r$，因为$\sigma_r$会影响第$i$个样本的Ordered TS。当树$T_t$的结构确定以后，我们用它来提升所有的模型$M_{r^{`},j}$，我们需要强调下，一个相同的树结构$T_t$会被用于所有的模型，但是会根据$r^{`}$和 $j$的不同设置不同的叶子节点的值以后应用于不同的模型。
+在Ordered boosting模式的学习过程当中，我们维持一个模型$M_{r,j}$，其中$M_{r,j}(i)$表示基于在序列$\sigma_r$当中的前$j$个样本学习得到的模型对于第$i$个样本的预测。在算法的每一次迭代$t$，我们从$\{\sigma_1,...,\sigma_s\}$当中抽样一个随机序列$\sigma_r$，并基于此构建第$t$步的学习树$T_t$。然后，基于$M_{r,j}(i)$，计算相应的梯度$grad_{r,j}(i)=\frac{\partial L(y_i,s)}{\partial s}|_{s=M_{r,j}(i)}$。接下来，我们会用余弦相似度来近似梯度$G$，其中对于每一个样本$i$，我们取梯度$grad_{r,\sigma(i)-1}(i)$。在候选分裂评估过程当中，第$i$个样本的叶子节点的值$\delta(i)$由与$i$同属一个叶子的$leaf_r(i)$的所有样本的前$p$个样本的梯度值$grad_{r,\sigma(i)-1}$求平均得到。需要注意的是，$leaf_r(i)$取决于选定的序列$\sigma_r$，因为$\sigma_r$会影响第$i$个样本的Ordered TS。当树$T_t$的结构确定以后，我们用它来提升所有的模型$M_{r^{'},j}$，我们需要强调下，一个相同的树结构$T_t$ 会被用于所有的模型，但是会根据$r^{'}$ 和 $j$的不同设置不同的叶子节点的值以后应用于不同的模型。
 
 ### Plain boosting mode 
 
