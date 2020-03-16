@@ -44,7 +44,7 @@ tags:
 ```
 
 来源：力扣（LeetCode）
-链接：[](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum)
+链接：[124. Binary Tree Maximum Path Sum](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum)
 
 # 解题思路
 
