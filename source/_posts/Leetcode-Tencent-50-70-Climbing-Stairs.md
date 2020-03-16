@@ -56,7 +56,7 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Taskxx。
 可以发现有这样的规律，`f(5)=f(4)+f(3)`，`f(4)=f(3)+f(2)`，`f(3)=f(2)+f(1)`……其实如果把`n`变大，根据题意，可以走`1`或者`2`步，那么走到第`n`阶台阶可以分别从`n-1`阶走`1`步上来，也可以从`n-2`阶走`2`步上来。则有第`n`阶的可行走法的状态转移方程：
 $$climbStairs(n)=climbStairs(n-1)+climbStairs(n-2)$$
 
-于是最初相等使用递归的解法，代码如下：
+于是最初想到使用递归的解法，代码如下：
 
 ```c
 int climbStairs(int n)
