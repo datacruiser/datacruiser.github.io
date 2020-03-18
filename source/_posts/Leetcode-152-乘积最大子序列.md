@@ -60,10 +60,12 @@ Similarly,
  
 
 Then,
-```
+
+```c
 f(k) = max( f(k-1) * A[k], A[k], g(k-1) * A[k] )
 g(k) = min( g(k-1) * A[k], A[k], f(k-1) * A[k] )
 ``` 
+
 
 There we have a dynamic programming formula. Using two arrays of size n, we could deduce the final answer as f(n-1). Since we only need to access its previous elements at each step, two variables are sufficient.
 

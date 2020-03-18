@@ -46,7 +46,7 @@ minStack.getMin();   --> 返回 -2.
   
 ```c 
 typedef struct SNode * PtrToSNode;
-struct SNode、
+struct SNode
 {
         int data[20000];
         int min[20000];

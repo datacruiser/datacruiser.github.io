@@ -37,7 +37,7 @@ description: DataWhale暑期学习小组-LeetCode刷题第八期Task3。
 从上面的步骤不难看出，由于合并两个链表本身的时间复杂度是$O(n)$，其中$n$是两个链表的总长度，因此把所有合并过程所需的时间加起来我们可以得到合并$k$个的时间复杂度为：
 $$O(\sum_{i=1}^{k-1}(i*(\frac{N}{k})+\frac{N}{k})=O(kN)$$
 
-时间复杂度方面，由于合并两个链表只需要开一个链表结构体的指针，且合并多次也不需要重开开这个指针，因此我们可以在$O(1)$的时间复杂度内完成所有合并工作。C语言的实现代码如下：
+时间复杂度方面，由于合并两个链表只需要开一个链表结构体的指针，且合并多次也不需要重新开这个指针，因此我们可以在$O(1)$的时间复杂度内完成所有合并工作。C语言的实现代码如下：
 
 # 代码
 
@@ -83,8 +83,9 @@ struct ListNode* mergeKLists(struct ListNode** lists, int listsSize)
 		return lists[0];
 	else 
 	{
-		struct ListNode *head = mergeTwoLists(lists[0], lists[1]);
-		for (int i = 2; i < listsSize; i++)
+	   struct ListNode *head = mergeTwoLists(lists[0], lists[1]);
+       
+	   for (int i = 2; i < listsSize; i++)
        {
            head = mergeTwoLists(head, lists[i]);
        }
