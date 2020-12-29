@@ -80,7 +80,7 @@ baidusitemap:
     path: baidusitemap.xml
 
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: yilia
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
