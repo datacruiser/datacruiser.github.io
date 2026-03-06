@@ -8,7 +8,7 @@
           skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
         },
         "HTML-CSS": {
-          scale: 95,
+          scale: 100,
           availableFonts: ["TeX"],
           preferredFont: "TeX",
           webFont: "TeX",
@@ -16,11 +16,9 @@
           showMathMenu: false
         },
         SVG: {
-          scale: 95,
+          scale: 100,
           font: "TeX"
-        },
-        displayAlign: "left",
-        displayIndent: "0.5em"
+        }
       });
     </script>
 
