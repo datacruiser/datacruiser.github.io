@@ -19,22 +19,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '12'
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
       - name: Generate static files
         run: npx hexo clean && npx hexo generate
-
-      - name: Debug - Check generated files
-        run: |
-          echo "=== Checking public directory ==="
-          ls -la public/
-          echo "=== Checking index.html size ==="
-          wc -c public/index.html
-          echo "=== First 500 chars of index.html ==="
-          head -c 500 public/index.html || echo "File is empty"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
