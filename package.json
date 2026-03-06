@@ -2,6 +2,9 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
+  "hexo": {
+    "version": "3.4.3"
+  },
   "dependencies": {
     "hexo": "^3.4.3",
     "hexo-asset-image": "0.0.3",
