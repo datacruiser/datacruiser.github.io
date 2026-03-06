@@ -1,8 +1,18 @@
 // Custom styles.
 
-// MathJax 样式优化
+// MathJax 渲染优化 - 防止闪烁
+.MathJax_Preview {
+  visibility: hidden;
+}
+
+// MathJax 渲染完成后显示
 .MathJax {
-  font-size: 1em !important;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.MathJax.Processed {
+  opacity: 1;
 }
 
 // 行内公式优化
@@ -16,10 +26,4 @@
   margin: 1em 0 !important;
   overflow-x: auto;
   overflow-y: hidden;
-}
-
-// 公式容器优化
-.MathJax_Preview {
-  color: #888;
-  font-style: italic;
 }
