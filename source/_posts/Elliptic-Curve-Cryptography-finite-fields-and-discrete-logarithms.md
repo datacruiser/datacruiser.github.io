@@ -151,7 +151,7 @@ y_R&=[y_P+m(x_R-x_P)]\mod\, p\\
 \end{align}
 $$
 
-如果$P\neqQ$，斜率$m$的形式如下：
+如果$P\neq Q$，斜率$m$的形式如下：
 $$m=(y_P-y_Q){(x_P-x_Q)}^{-1}\mod\,p$$
 
 如果$P=Q$，则有：
@@ -169,7 +169,7 @@ $$m=(3x^2_P+a)(2y_P)^{-1}\mod\,p$$
 
 通常从$x$到 $p-1$进行暴力枚举不是一个可行的方式，这个需要$O(p)$的步骤，如果$p$是一个很大的质数，这将是一个难题。
 
-所幸，有一个更快的算法可以计算群的阶：[Schoof's algorithm](https://en.wikipedia.org/wiki/Schoof%27s_algorithm)，这个算法可以在多项式级别的算法世界复杂度内，这正是我们所需要的。
+所幸，有一个更快的算法可以计算群的阶：[Schoof's algorithm](https://en.wikipedia.org/wiki/Schoof%27s_algorithm)，这个算法可以在多项式级别的算法时间复杂度内，这正是我们所需要的。
 
 # 标量乘法与循环子群（Scalar multiplication and cyclic subgroups）
 
@@ -177,7 +177,7 @@ $$nP=\underbrace{P+P+...+P}_{n\,times}$$
 
 这次我们依然可以使用[翻倍累加算法](https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/#double-and-add)将乘法计算的时间复杂度控制在$O(\log n)$。
 
-在$\mathbb{F}_p$域上的椭圆曲线进行乘法有一个有趣的性质。以曲线$y^2\equivx^3+2x+3(\mod\,97)$和点$P=(3,6)$为例，[计算](https://andrea.corbellini.name/ecc/interactive/modk-mul.html)$P$的所有乘积：
+在$\mathbb{F}_p$域上的椭圆曲线进行乘法有一个有趣的性质。以曲线$y^2\equiv x^3+2x+3(\mod\,97)$和点$P=(3,6)$为例，[计算](https://andrea.corbellini.name/ecc/interactive/modk-mul.html)$P$的所有乘积：
 ![$P=(3,6)$的乘积仅有5个离散点$(0,P,2P,3P,4P)$，然后他们会循环出现，显然，可以比较容易辨认出椭圆曲线上标量乘法计算规则与模运算上加法之间的相似性](https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/ECCReview/cyclic-subgroup.png)
 
 - $0P=0$
