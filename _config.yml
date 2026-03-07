@@ -34,7 +34,7 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: true 
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
@@ -42,6 +42,26 @@ highlight:
   line_number: true
   auto_detect: false
   tab_replace:
+
+# Markdown renderer settings
+marked:
+  gfm: true
+  pedantic: false
+  breaks: true
+  smartLists: true
+  smartypants: true
+  modifyAnchors: 0
+  autolink: true
+  mangle: true
+  sanitizeUrl: false
+  dompurify: false
+  headerIds: true
+  lazyload: false
+  figcaption: false
+  prependRoot: true
+  postAsset: false
+  disableNunjucks: true
+  descriptionLists: true
   
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -72,12 +92,8 @@ pagination_dir: page
 # Extensions
 Plugins:
 - hexo-generator-sitemap
-- hexo-generator-baidu-sitemap
-- hexo-math
 sitemap:
     path: sitemap.xml
-baidusitemap:
-    path: baidusitemap.xml
 
 ## Themes: https://hexo.io/themes/
 theme: next

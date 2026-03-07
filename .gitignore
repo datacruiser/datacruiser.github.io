@@ -6,3 +6,6 @@ public/
 .deploy*/
 *.html
 upload/*
+.backup/
+/tmp/
+node_modules/

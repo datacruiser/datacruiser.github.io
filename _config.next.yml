@@ -1,0 +1,312 @@
+# ===============================================================
+# NexT 8.x Theme Configuration
+# Migrated from NexT 5.1.3
+# ===============================================================
+
+# ---------------------------------------------------------------
+# Theme Core Configuration Settings
+# ---------------------------------------------------------------
+
+# Allow to cache content generation.
+cache:
+  enable: true
+
+# Remove unnecessary files after hexo generate.
+minify: false
+
+
+# ---------------------------------------------------------------
+# Scheme Settings
+# ---------------------------------------------------------------
+
+# Schemes
+scheme: Muse
+#scheme: Mist
+#scheme: Pisces
+#scheme: Gemini
+
+# Dark Mode
+darkmode: false
+
+
+# ---------------------------------------------------------------
+# Site Information Settings
+# ---------------------------------------------------------------
+
+favicon:
+  small: /images/favicon-16x16-next.png
+  medium: /images/favicon-32x32-next.png
+  apple_touch_icon: /images/apple-touch-icon-next.png
+  safari_pinned_tab: /images/logo.svg
+
+# Custom Logo
+custom_logo:
+  enabled: false
+  image:
+
+
+# ---------------------------------------------------------------
+# Menu Settings
+# ---------------------------------------------------------------
+
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  sitemap: /sitemap.xml || fa fa-sitemap
+
+menu_settings:
+  icons: true
+  badges: false
+
+
+# ---------------------------------------------------------------
+# Sidebar Settings
+# ---------------------------------------------------------------
+
+sidebar:
+  position: left
+  display: post
+  padding: 18
+  offset: 12
+
+# Sidebar Avatar
+avatar:
+  url: https://i.imgur.com/qsQpBoA.jpg
+  rounded: false
+  rotated: false
+
+# Posts / Categories / Tags in sidebar.
+site_state: true
+
+# Social Links
+social:
+  GitHub: https://github.com/datacruiser || fab fa-github
+  Zhihu: https://www.zhihu.com/people/realphy || fa fa-users
+  Weibo: https://weibo.com/jijiwhywhy || fab fa-weibo
+  E-Mail: mailto:phy.zju@gmail.com || fa fa-envelope
+
+social_icons:
+  enable: true
+  icons_only: false
+  transition: false
+
+# Table of Contents in the Sidebar
+toc:
+  enable: true
+  number: true
+  wrap: false
+  expand_all: false
+  max_depth: 6
+
+
+# ---------------------------------------------------------------
+# Footer Settings
+# ---------------------------------------------------------------
+
+footer:
+  since: 2017
+  icon:
+    name: fa fa-user
+    animated: false
+    color: "#808080"
+  powered: true
+  beian:
+    enable: false
+
+
+# ---------------------------------------------------------------
+# Post Settings
+# ---------------------------------------------------------------
+
+excerpt_description: true
+read_more_btn: true
+
+post_meta:
+  item_text: true
+  created_at: true
+  updated_at:
+    enable: false
+    another_day: true
+  categories: true
+
+# Post wordcount display settings
+symbols_count_time:
+  separated_meta: true
+  item_text_total: false
+
+tag_icon: false
+
+# Post navigation
+post_navigation: left
+
+
+# ---------------------------------------------------------------
+# Misc Theme Settings
+# ---------------------------------------------------------------
+
+mobile_layout_economy: false
+
+theme_color:
+  light: "#222"
+  dark: "#222"
+
+codeblock:
+  theme:
+    light: default
+    dark: stackoverflow-dark
+  prism:
+    light: prism
+    dark: prism-dark
+  copy_button:
+    enable: false
+  fold:
+    enable: false
+    height: 500
+
+back2top:
+  enable: true
+  sidebar: true
+  scrollpercent: true
+
+
+# ---------------------------------------------------------------
+# Font Settings
+# ---------------------------------------------------------------
+
+font:
+  enable: false
+  host:
+  global:
+    external: true
+    family: Lato
+    size:
+  title:
+    external: true
+    family:
+    size:
+  headings:
+    external: true
+    family:
+    size:
+  posts:
+    external: true
+    family:
+  codes:
+    external: true
+    family:
+
+
+# ---------------------------------------------------------------
+# SEO Settings
+# ---------------------------------------------------------------
+
+index_with_subtitle: false
+exturl: false
+exturl_icon: true
+
+
+# ---------------------------------------------------------------
+# Animation Settings
+# ---------------------------------------------------------------
+
+motion:
+  enable: false
+  async: false
+  transition:
+    menu_item: fadeInDown
+    post_block: fadeIn
+    post_header: fadeInDown
+    post_body: fadeInDown
+    coll_header: fadeInLeft
+    sidebar: fadeInUp
+
+pace:
+  enable: false
+  color: blue
+  theme: minimal
+
+
+# ---------------------------------------------------------------
+# Math Formulas Render Support
+# Using MathJax for math equations
+# ---------------------------------------------------------------
+
+math:
+  every_page: false
+  mathjax:
+    enable: true
+    tags: none
+  katex:
+    enable: false
+    copy_tex: false
+
+
+# ---------------------------------------------------------------
+# External Libraries
+# ---------------------------------------------------------------
+
+pjax: false
+fancybox: true
+mediumzoom: false
+lazyload: false
+pangu: false
+
+
+# ---------------------------------------------------------------
+# Comments Settings
+# ---------------------------------------------------------------
+
+comments:
+  style: tabs
+  active: disqus
+  storage: true
+  lazyload: false
+
+# Disqus
+disqus:
+  enable: true
+  shortname: datacruiser
+  count: true
+
+
+# ---------------------------------------------------------------
+# Statistics and Analytics
+# ---------------------------------------------------------------
+
+# Show Views / Visitors of the website / page with busuanzi.
+busuanzi_count:
+  enable: true
+  total_visitors: false
+  total_visitors_icon: fa fa-user
+  total_views: false
+  total_views_icon: fa fa-eye
+  post_views: true
+  post_views_icon: far fa-eye
+
+
+# ---------------------------------------------------------------
+# Search Services
+# ---------------------------------------------------------------
+
+local_search:
+  enable: false
+  trigger: auto
+  top_n_per_article: 1
+  unescape: false
+  preload: false
+
+
+# ---------------------------------------------------------------
+# CDN Settings
+# ---------------------------------------------------------------
+
+vendors:
+  internal: local
+  plugins: cdnjs
+
+css: css
+js: js
+images: images
