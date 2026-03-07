@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第四章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 4 练习">
+<meta property="og:url" content="https://datacruiser.github.io/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第四章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-22T23:12:40.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.870Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/","path":"2019/04/22/Scala-for-the-Impatient-Chapter-4-练习/","title":"Scala for the Impatient Chapter 4 练习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 4 练习 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 4 练习 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第四章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 4 练习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-22 23:12:40" itemprop="dateCreated datePublished" datetime="2019-04-22T23:12:40+00:00">2019-04-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/22/Scala-for-the-Impatient-Chapter-4-练习/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第四章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p>设置一个映射，其中包含你想要的一些装备，以及他们的价格。然后构建另一个映射，采用同一组键，但在价格上打9折。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> items = <span class="type">Map</span>(<span class="string">"MacBook"</span> -&gt; <span class="number">9888</span>, <span class="string">"MacBook Pro"</span> -&gt; <span class="number">20888</span>, <span class="string">"Iphone XS Max"</span> -&gt; <span class="number">10888</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ((k, v) &lt;- items) <span class="keyword">yield</span> (k, v * <span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> items = <span class="type">Map</span>(<span class="string">"MacBook"</span> -&gt; <span class="number">9888</span>, <span class="string">"MacBook Pro"</span> -&gt; <span class="number">20888</span>, <span class="string">"Iphone XS Max"</span> -&gt; <span class="number">10888</span>)</span><br><span class="line">items: scala.collection.immutable.<span class="type">Map</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>(<span class="type">MacBook</span> -&gt; <span class="number">9888</span>, <span class="type">MacBook</span> <span class="type">Pro</span> -&gt; <span class="number">20888</span>, <span class="type">Iphone</span> <span class="type">XS</span> <span class="type">Max</span> -&gt; <span class="number">10888</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; items</span><br><span class="line">res0: scala.collection.immutable.<span class="type">Map</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>(<span class="type">MacBook</span> -&gt; <span class="number">9888</span>, <span class="type">MacBook</span> <span class="type">Pro</span> -&gt; <span class="number">20888</span>, <span class="type">Iphone</span> <span class="type">XS</span> <span class="type">Max</span> -&gt; <span class="number">10888</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">for</span> ((k, v) &lt;- items) <span class="keyword">yield</span> (k, v * <span class="number">0.9</span>)</span><br><span class="line">res1: scala.collection.immutable.<span class="type">Map</span>[<span class="type">String</span>,<span class="type">Double</span>] = <span class="type">Map</span>(<span class="type">MacBook</span> -&gt; <span class="number">8899.2</span>, <span class="type">MacBook</span> <span class="type">Pro</span> -&gt; <span class="number">18799.2</span>, <span class="type">Iphone</span> <span class="type">XS</span> <span class="type">Max</span> -&gt; <span class="number">9799.2</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>编写一段程序，从文件中读取单词。用一个可变映射来清点每一个单词出现的频率。读取这些单词的操作可以使用<code> java.util.Scanner</code>:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"myfile.txt"</span>))</span><br><span class="line"><span class="keyword">while</span> (in.hasNext()) 处理 in.next()</span><br></pre></td></tr></table></figure>
+<p>或者翻到第9章看看更<code> Scala</code>的做法。<br>
+最后打印出所有单词和他们出现的次数</p>
+<p>首先在<code>scala</code>命令行启动目录下新建文本文件<code>file.txt</code>，内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">world</span><br><span class="line">scala</span><br><span class="line">java</span><br><span class="line">java</span><br><span class="line">erlang</span><br><span class="line">go</span><br><span class="line">C</span><br><span class="line">C++</span><br><span class="line">C</span><br><span class="line">C++</span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line">java</span><br><span class="line">scala</span><br><span class="line">scala</span><br><span class="line">spark</span><br><span class="line">spark</span><br><span class="line">hadoop</span><br><span class="line">hadoop</span><br><span class="line">hadoop</span><br><span class="line">python</span><br><span class="line">python</span><br><span class="line">python</span><br><span class="line">scala</span><br><span class="line">C</span><br><span class="line">java</span><br><span class="line">go</span><br><span class="line">go</span><br><span class="line">go</span><br><span class="line">scala</span><br><span class="line">scala</span><br></pre></td></tr></table></figure>
+<p>采用题干中提到的方法的代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">HashMap</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> maps = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line"><span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"><span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">    key = in.next()</span><br><span class="line">    maps(key) = maps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">}</span><br><span class="line">maps.foreach(println)</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line">in: java.util.<span class="type">Scanner</span> = java.util.<span class="type">Scanner</span>[delimiters=\p{javaWhitespace}+][position=<span class="number">0</span>][<span class="keyword">match</span> valid=<span class="literal">false</span>][need input=<span class="literal">false</span>][source closed=<span class="literal">false</span>][skipped=<span class="literal">false</span>][group separator=\,][decimal separator=\.][positive prefix=][negative prefix=\<span class="type">Q</span>-\<span class="type">E</span>][positive suffix=][negative suffix=][<span class="type">NaN</span> string=\<span class="type">Q</span>�\<span class="type">E</span>][infinity string=\<span class="type">Q</span>∞\<span class="type">E</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> maps = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line">maps: scala.collection.mutable.<span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line">key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">     |     key = in.next()</span><br><span class="line">     |     maps(key) = maps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">     | }</span><br><span class="line"></span><br><span class="line">scala&gt; maps.foreach(println)</span><br><span class="line">(go,<span class="number">4</span>)</span><br><span class="line">(hadoop,<span class="number">3</span>)</span><br><span class="line">(spark,<span class="number">2</span>)</span><br><span class="line">(erlang,<span class="number">1</span>)</span><br><span class="line">(scala,<span class="number">6</span>)</span><br><span class="line">(world,<span class="number">2</span>)</span><br><span class="line">(<span class="type">C</span>,<span class="number">3</span>)</span><br><span class="line">(java,<span class="number">4</span>)</span><br><span class="line">(hello,<span class="number">2</span>)</span><br><span class="line">(python,<span class="number">3</span>)</span><br><span class="line">(<span class="type">C</span>++,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>按照第九章的文件处理来做的代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">HashMap</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> fileSource = <span class="type">Source</span>.fromFile(<span class="string">"file.txt"</span>).mkString</span><br><span class="line"><span class="keyword">val</span> tokens = fileSource.split(<span class="string">"\\s+"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> maps = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (key &lt;- tokens) {</span><br><span class="line">	maps(key) = maps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span> <span class="comment">// 用 getOrElse 来加入新的元素或加1</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">maps.foreach(println)</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line"><span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.mutable.<span class="type">HashMap</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">HashMap</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> fileSource = <span class="type">Source</span>.fromFile(<span class="string">"file.txt"</span>).mkString</span><br><span class="line">fileSource: <span class="type">String</span> =</span><br><span class="line"><span class="string">"hello</span></span><br><span class="line"><span class="string">world</span></span><br><span class="line"><span class="string">scala</span></span><br><span class="line"><span class="string">java</span></span><br><span class="line"><span class="string">java</span></span><br><span class="line"><span class="string">erlang</span></span><br><span class="line"><span class="string">go</span></span><br><span class="line"><span class="string">C</span></span><br><span class="line"><span class="string">C++</span></span><br><span class="line"><span class="string">C</span></span><br><span class="line"><span class="string">C++</span></span><br><span class="line"><span class="string">hello</span></span><br><span class="line"><span class="string">world</span></span><br><span class="line"><span class="string">java</span></span><br><span class="line"><span class="string">scala</span></span><br><span class="line"><span class="string">scala</span></span><br><span class="line"><span class="string">spark</span></span><br><span class="line"><span class="string">spark</span></span><br><span class="line"><span class="string">hadoop</span></span><br><span class="line"><span class="string">hadoop</span></span><br><span class="line"><span class="string">hadoop</span></span><br><span class="line"><span class="string">python</span></span><br><span class="line"><span class="string">python</span></span><br><span class="line"><span class="string">python</span></span><br><span class="line"><span class="string">scala</span></span><br><span class="line"><span class="string">C</span></span><br><span class="line"><span class="string">java</span></span><br><span class="line"><span class="string">go</span></span><br><span class="line"><span class="string">go</span></span><br><span class="line"><span class="string">go</span></span><br><span class="line"><span class="string">scala</span></span><br><span class="line"><span class="string">scala</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> tokens = fileSource.split(<span class="string">"\\s+"</span>)</span><br><span class="line">tokens: <span class="type">Array</span>[<span class="type">String</span>] = <span class="type">Array</span>(hello, world, scala, java, java, erlang, go, <span class="type">C</span>, <span class="type">C</span>++, <span class="type">C</span>, <span class="type">C</span>++, hello, world, java, scala, scala, spark, spark, hadoop, hadoop, hadoop, python, python, python, scala, <span class="type">C</span>, java, go, go, go, scala, scala)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> maps = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line">maps: scala.collection.mutable.<span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">for</span> (key &lt;- tokens) {</span><br><span class="line">     |   maps(key) = maps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span> <span class="comment">// 用 getOrElse 来加入新的元素或加1</span></span><br><span class="line">     | }</span><br><span class="line"></span><br><span class="line">scala&gt; maps.foreach(println)</span><br><span class="line">(go,<span class="number">4</span>)</span><br><span class="line">(hadoop,<span class="number">3</span>)</span><br><span class="line">(spark,<span class="number">2</span>)</span><br><span class="line">(erlang,<span class="number">1</span>)</span><br><span class="line">(scala,<span class="number">6</span>)</span><br><span class="line">(world,<span class="number">2</span>)</span><br><span class="line">(<span class="type">C</span>,<span class="number">3</span>)</span><br><span class="line">(java,<span class="number">4</span>)</span><br><span class="line">(hello,<span class="number">2</span>)</span><br><span class="line">(python,<span class="number">3</span>)</span><br><span class="line">(<span class="type">C</span>++,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>重复前一个练习，这次用不可变的映射。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.immutable.<span class="type">Map</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> maps = <span class="type">Map</span>[<span class="type">String</span>, <span class="type">Int</span>]() </span><br><span class="line"><span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"><span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">    key = in.next()</span><br><span class="line">    maps += (key -&gt; (maps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span>))</span><br><span class="line">}</span><br><span class="line">maps.foreach(println)</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.immutable.<span class="type">Map</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.immutable.<span class="type">Map</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line">in: java.util.<span class="type">Scanner</span> = java.util.<span class="type">Scanner</span>[delimiters=\p{javaWhitespace}+][position=<span class="number">0</span>][<span class="keyword">match</span> valid=<span class="literal">false</span>][need input=<span class="literal">false</span>][source closed=<span class="literal">false</span>][skipped=<span class="literal">false</span>][group separator=\,][decimal separator=\.][positive prefix=][negative prefix=\<span class="type">Q</span>-\<span class="type">E</span>][positive suffix=][negative suffix=][<span class="type">NaN</span> string=\<span class="type">Q</span>�\<span class="type">E</span>][infinity string=\<span class="type">Q</span>∞\<span class="type">E</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> maps = <span class="type">Map</span>[<span class="type">String</span>, <span class="type">Int</span>]() </span><br><span class="line">maps: scala.collection.immutable.<span class="type">Map</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line">key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">     |     key = in.next()</span><br><span class="line">     |     maps += (key -&gt; (maps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span>))</span><br><span class="line">     | }</span><br><span class="line"></span><br><span class="line">scala&gt; maps.foreach(println)</span><br><span class="line">(world,<span class="number">2</span>)</span><br><span class="line">(java,<span class="number">4</span>)</span><br><span class="line">(go,<span class="number">4</span>)</span><br><span class="line">(hadoop,<span class="number">3</span>)</span><br><span class="line">(spark,<span class="number">2</span>)</span><br><span class="line">(scala,<span class="number">6</span>)</span><br><span class="line">(erlang,<span class="number">1</span>)</span><br><span class="line">(<span class="type">C</span>,<span class="number">3</span>)</span><br><span class="line">(python,<span class="number">3</span>)</span><br><span class="line">(<span class="type">C</span>++,<span class="number">2</span>)</span><br><span class="line">(hello,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>需要注意以下几点：</p>
+<ul>
+<li>Map 是抽象类，无法用 new 关键字来进行实例化</li>
+<li>在定义 maps 变量时需要使用 var 关键字声明为可变变量</li>
+<li>在对 key 进行计数时需要采用<code>+=</code>操作符，且需要用<code>-&gt;</code>指向key 所对应的原来的 value</li>
+</ul>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>重复前一个练习，这次用已排序的映射，以便单词可以按顺序打印出来。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.immutable.<span class="type">SortedMap</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sortedMaps = <span class="type">SortedMap</span>[<span class="type">String</span>, <span class="type">Int</span>]() </span><br><span class="line"><span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"><span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">    key = in.next()</span><br><span class="line">    sortedMaps += (key -&gt; (sortedMaps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span>))</span><br><span class="line">}</span><br><span class="line">sortedMaps.foreach(println)</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.immutable.<span class="type">SortedMap</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.immutable.<span class="type">SortedMap</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line">in: java.util.<span class="type">Scanner</span> = java.util.<span class="type">Scanner</span>[delimiters=\p{javaWhitespace}+][position=<span class="number">0</span>][<span class="keyword">match</span> valid=<span class="literal">false</span>][need input=<span class="literal">false</span>][source closed=<span class="literal">false</span>][skipped=<span class="literal">false</span>][group separator=\,][decimal separator=\.][positive prefix=][negative prefix=\<span class="type">Q</span>-\<span class="type">E</span>][positive suffix=][negative suffix=][<span class="type">NaN</span> string=\<span class="type">Q</span>�\<span class="type">E</span>][infinity string=\<span class="type">Q</span>∞\<span class="type">E</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> sortedMaps = <span class="type">SortedMap</span>[<span class="type">String</span>, <span class="type">Int</span>]() </span><br><span class="line">sortedMaps: scala.collection.immutable.<span class="type">SortedMap</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line">key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">     |     key = in.next()</span><br><span class="line">     |     sortedMaps += (key -&gt; (sortedMaps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span>))</span><br><span class="line">     | }</span><br><span class="line"></span><br><span class="line">scala&gt; sortedMaps.foreach(println)</span><br><span class="line">(<span class="type">C</span>,<span class="number">3</span>)</span><br><span class="line">(<span class="type">C</span>++,<span class="number">2</span>)</span><br><span class="line">(erlang,<span class="number">1</span>)</span><br><span class="line">(go,<span class="number">4</span>)</span><br><span class="line">(hadoop,<span class="number">3</span>)</span><br><span class="line">(hello,<span class="number">2</span>)</span><br><span class="line">(java,<span class="number">4</span>)</span><br><span class="line">(python,<span class="number">3</span>)</span><br><span class="line">(scala,<span class="number">6</span>)</span><br><span class="line">(spark,<span class="number">2</span>)</span><br><span class="line">(world,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，<code>SortedMap</code>的基本性质和<code> Map</code>相同。</p>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>重复前一个练习，这次用 <code>java.util.TreeMap</code>并使之适用于 Scala API。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.<span class="type">JavaConversions</span>.mapAsScalaMap</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line"><span class="keyword">val</span> treeMaps: scala.collection.mutable.<span class="type">Map</span>[<span class="type">String</span>, <span class="type">Int</span>] = <span class="keyword">new</span> java.util.<span class="type">TreeMap</span>[<span class="type">String</span>, <span class="type">Int</span>] </span><br><span class="line"><span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"><span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">    key = in.next()</span><br><span class="line">    treeMaps(key) = treeMaps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">}</span><br><span class="line">treeMaps.foreach(println)</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> in = <span class="keyword">new</span> java.util.<span class="type">Scanner</span>(<span class="keyword">new</span> java.io.<span class="type">File</span>(<span class="string">"file.txt"</span>))</span><br><span class="line">in: java.util.<span class="type">Scanner</span> = java.util.<span class="type">Scanner</span>[delimiters=\p{javaWhitespace}+][position=<span class="number">0</span>][<span class="keyword">match</span> valid=<span class="literal">false</span>][need input=<span class="literal">false</span>][source closed=<span class="literal">false</span>][skipped=<span class="literal">false</span>][group separator=\,][decimal separator=\.][positive prefix=][negative prefix=\<span class="type">Q</span>-\<span class="type">E</span>][positive suffix=][negative suffix=][<span class="type">NaN</span> string=\<span class="type">Q</span>�\<span class="type">E</span>][infinity string=\<span class="type">Q</span>∞\<span class="type">E</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> treeMaps: scala.collection.mutable.<span class="type">Map</span>[<span class="type">String</span>, <span class="type">Int</span>] = <span class="keyword">new</span> java.util.<span class="type">TreeMap</span>[<span class="type">String</span>, <span class="type">Int</span>] </span><br><span class="line">&lt;console&gt;:<span class="number">31</span>: warning: <span class="class"><span class="keyword">object</span> <span class="title">JavaConversions</span> <span class="title">in</span> <span class="title">package</span> <span class="title">collection</span> <span class="title">is</span> <span class="title">deprecated</span> (<span class="params">since 2.12.0</span>)</span>: use <span class="type">JavaConverters</span></span><br><span class="line">       <span class="keyword">val</span> treeMaps: scala.collection.mutable.<span class="type">Map</span>[<span class="type">String</span>, <span class="type">Int</span>] = <span class="keyword">new</span> java.util.<span class="type">TreeMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line">                                                                 ^</span><br><span class="line">treeMaps: scala.collection.mutable.<span class="type">Map</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line">key: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">while</span>(in.hasNext()){</span><br><span class="line">     |     key = in.next()</span><br><span class="line">     |     treeMaps(key) = treeMaps.getOrElse(key, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">     | }</span><br><span class="line"></span><br><span class="line">scala&gt; treeMaps.foreach(println)</span><br><span class="line">(<span class="type">C</span>,<span class="number">3</span>)</span><br><span class="line">(<span class="type">C</span>++,<span class="number">2</span>)</span><br><span class="line">(erlang,<span class="number">1</span>)</span><br><span class="line">(go,<span class="number">4</span>)</span><br><span class="line">(hadoop,<span class="number">3</span>)</span><br><span class="line">(hello,<span class="number">2</span>)</span><br><span class="line">(java,<span class="number">4</span>)</span><br><span class="line">(python,<span class="number">3</span>)</span><br><span class="line">(scala,<span class="number">6</span>)</span><br><span class="line">(spark,<span class="number">2</span>)</span><br><span class="line">(world,<span class="number">2</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>定义一个链式哈希映射，将"Monday"映射到<code>java.util.Calendar.MONDAY</code>，依次类推加入其它日期。展示元素是以插入顺序被访问的。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">LinkedHashMap</span></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="type">Calendar</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> maps = <span class="keyword">new</span> <span class="type">LinkedHashMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line">maps += (<span class="string">"Monday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">MONDAY</span>)</span><br><span class="line">maps += (<span class="string">"Tuesday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">TUESDAY</span>)</span><br><span class="line">maps += (<span class="string">"Thursday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">THURSDAY</span>)</span><br><span class="line">maps += (<span class="string">"Wednesday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">WEDNESDAY</span>)</span><br><span class="line">maps += (<span class="string">"Friday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">FRIDAY</span>)</span><br><span class="line">maps += (<span class="string">"Saturday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">SATURDAY</span>)</span><br><span class="line">maps += (<span class="string">"Sunday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">SUNDAY</span>)</span><br><span class="line">maps foreach println</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.mutable.<span class="type">LinkedHashMap</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">LinkedHashMap</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">import</span> java.util.<span class="type">Calendar</span></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="type">Calendar</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> maps = <span class="keyword">new</span> <span class="type">LinkedHashMap</span>[<span class="type">String</span>, <span class="type">Int</span>]</span><br><span class="line">maps: scala.collection.mutable.<span class="type">LinkedHashMap</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Monday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">MONDAY</span>)</span><br><span class="line">res26: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Tuesday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">TUESDAY</span>)</span><br><span class="line">res27: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>, <span class="type">Tuesday</span> -&gt; <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Thursday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">THURSDAY</span>)</span><br><span class="line">res28: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>, <span class="type">Tuesday</span> -&gt; <span class="number">3</span>, <span class="type">Thursday</span> -&gt; <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Wednesday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">WEDNESDAY</span>)</span><br><span class="line">res29: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>, <span class="type">Tuesday</span> -&gt; <span class="number">3</span>, <span class="type">Thursday</span> -&gt; <span class="number">5</span>, <span class="type">Wednesday</span> -&gt; <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Friday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">FRIDAY</span>)</span><br><span class="line">res30: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>, <span class="type">Tuesday</span> -&gt; <span class="number">3</span>, <span class="type">Thursday</span> -&gt; <span class="number">5</span>, <span class="type">Wednesday</span> -&gt; <span class="number">4</span>, <span class="type">Friday</span> -&gt; <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Saturday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">SATURDAY</span>)</span><br><span class="line">res31: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>, <span class="type">Tuesday</span> -&gt; <span class="number">3</span>, <span class="type">Thursday</span> -&gt; <span class="number">5</span>, <span class="type">Wednesday</span> -&gt; <span class="number">4</span>, <span class="type">Friday</span> -&gt; <span class="number">6</span>, <span class="type">Saturday</span> -&gt; <span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps += (<span class="string">"Sunday"</span> -&gt; <span class="type">Calendar</span>.<span class="type">SUNDAY</span>)</span><br><span class="line">res32: maps.<span class="keyword">type</span> = <span class="type">Map</span>(<span class="type">Monday</span> -&gt; <span class="number">2</span>, <span class="type">Tuesday</span> -&gt; <span class="number">3</span>, <span class="type">Thursday</span> -&gt; <span class="number">5</span>, <span class="type">Wednesday</span> -&gt; <span class="number">4</span>, <span class="type">Friday</span> -&gt; <span class="number">6</span>, <span class="type">Saturday</span> -&gt; <span class="number">7</span>, <span class="type">Sunday</span> -&gt; <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; maps foreach println</span><br><span class="line">(<span class="type">Monday</span>,<span class="number">2</span>)</span><br><span class="line">(<span class="type">Tuesday</span>,<span class="number">3</span>)</span><br><span class="line">(<span class="type">Thursday</span>,<span class="number">5</span>)</span><br><span class="line">(<span class="type">Wednesday</span>,<span class="number">4</span>)</span><br><span class="line">(<span class="type">Friday</span>,<span class="number">6</span>)</span><br><span class="line">(<span class="type">Saturday</span>,<span class="number">7</span>)</span><br><span class="line">(<span class="type">Sunday</span>,<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>打印出所有Java系统属性的表格，类似这样：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">属性名称</th>
+<th style="text-align:center">属性值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="http://java.rutime.name">java.rutime.name</a></td>
+<td style="text-align:center">Java™ SE Runtime Environment</td>
+</tr>
+<tr>
+<td style="text-align:center">sun.boot.library.path</td>
+<td style="text-align:center">/home/apps/jdk1.6.0_21/jre/lib/i386</td>
+</tr>
+<tr>
+<td style="text-align:center">java.vm.version</td>
+<td style="text-align:center">17.0-b16</td>
+</tr>
+<tr>
+<td style="text-align:center">java.vm.vendor</td>
+<td style="text-align:center">sun Microsystems Inc.</td>
+</tr>
+<tr>
+<td style="text-align:center">java.vendor.url</td>
+<td style="text-align:center"><a href="http://java.sun.com/">http://java.sun.com/</a></td>
+</tr>
+<tr>
+<td style="text-align:center">path.separator</td>
+<td style="text-align:center">:</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://java.vm.name">java.vm.name</a></td>
+<td style="text-align:center">Java HotSpot™ Server VM</td>
+</tr>
+<tr>
+<td style="text-align:center">你需要找到最长键的长度才能正确地打印出这张表格。</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.collection.<span class="type">JavaConversions</span>.propertiesAsScalaMap</span><br><span class="line"><span class="keyword">val</span> props: scala.collection.<span class="type">Map</span>[<span class="type">String</span>, <span class="type">String</span>] = <span class="type">System</span>.getProperties()</span><br><span class="line"><span class="keyword">val</span> keys = props.keySet <span class="comment">//获得映射的键</span></span><br><span class="line"><span class="keyword">val</span> keyLength = <span class="keyword">for</span>(i &lt;- keys) <span class="keyword">yield</span> i.length()<span class="comment">// 获得所有键的长度</span></span><br><span class="line"><span class="keyword">val</span> maxKeyLength = keyLength.max <span class="comment">//获得最长键的长度</span></span><br><span class="line"><span class="keyword">for</span>(key &lt;- keys){</span><br><span class="line">    print(key)</span><br><span class="line">    print(<span class="string">" "</span>*(maxKeyLength - key.length()))</span><br><span class="line">    print(<span class="string">"|"</span>)</span><br><span class="line">    println(props(key))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>部分测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.<span class="type">JavaConversions</span>.propertiesAsScalaMap</span><br><span class="line"><span class="keyword">import</span> scala.collection.<span class="type">JavaConversions</span>.propertiesAsScalaMap</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> props: scala.collection.<span class="type">Map</span>[<span class="type">String</span>, <span class="type">String</span>] = <span class="type">System</span>.getProperties()</span><br><span class="line">&lt;console&gt;:<span class="number">36</span>: warning: <span class="class"><span class="keyword">object</span> <span class="title">JavaConversions</span> <span class="title">in</span> <span class="title">package</span> <span class="title">collection</span> <span class="title">is</span> <span class="title">deprecated</span> (<span class="params">since 2.12.0</span>)</span>: use <span class="type">JavaConverters</span></span><br><span class="line">       <span class="keyword">val</span> props: scala.collection.<span class="type">Map</span>[<span class="type">String</span>, <span class="type">String</span>] = <span class="type">System</span>.getProperties()</span><br><span class="line">                                                                             ^</span><br><span class="line">props: scala.collection.<span class="type">Map</span>[<span class="type">String</span>,<span class="type">String</span>] =</span><br><span class="line"><span class="type">Map</span>(java.runtime.name -&gt; <span class="type">Java</span>(<span class="type">TM</span>) <span class="type">SE</span> <span class="type">Runtime</span> <span class="type">Environment</span>, sun.boot.library.path -&gt; /<span class="type">Library</span>/<span class="type">Java</span>/<span class="type">JavaVirtualMachines</span>/jdk1<span class="number">.8</span><span class="number">.0</span>_152.jdk/<span class="type">Contents</span>/<span class="type">Home</span>/jre/lib, java.vm.version -&gt; <span class="number">25.152</span>-b16, gopherProxySet -&gt; <span class="literal">false</span>, java.vm.vendor -&gt; <span class="type">Oracle</span> <span class="type">Corporation</span>, java.vendor.url -&gt; http:<span class="comment">//java.oracle.com/, path.separator -&gt; :, java.vm.name -&gt; Java HotSpot(TM) 64-Bit Server VM, file.encoding.pkg -&gt; sun.io, user.country -&gt; CN, sun.java.launcher -&gt; SUN_STANDARD, sun.os.patch.level -&gt; unknown, java.vm.specification.name -&gt; Java Virtual Machine Specification, user.dir -&gt; /Users/datacruiser/IdeaProjects/prog-scala-2nd-ed-code-examples, java.runtime.version -&gt; 1.8.0_152-b16, java.awt.graphicsenv -&gt; sun.awt.CGraphicsEnvironment, java.end...</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> keys = props.keySet <span class="comment">//获得映射的键</span></span><br><span class="line">keys: scala.collection.<span class="type">Set</span>[<span class="type">String</span>] = <span class="type">Set</span>(java.runtime.name, sun.boot.library.path, java.vm.version, gopherProxySet, java.vm.vendor, java.vendor.url, path.separator, java.vm.name, file.encoding.pkg, user.country, sun.java.launcher, sun.os.patch.level, java.vm.specification.name, user.dir, java.runtime.version, java.awt.graphicsenv, java.endorsed.dirs, os.arch, java.io.tmpdir, line.separator, java.vm.specification.vendor, os.name, sun.jnu.encoding, java.library.path, java.specification.name, java.<span class="keyword">class</span>.version, sun.management.compiler, os.version, scala.boot.<span class="keyword">class</span>.path, user.home, user.timezone, scala.home, java.awt.printerjob, file.encoding, java.specification.version, scala.usejavacp, java.<span class="keyword">class</span>.path, user.name, java.vm.specification.version, sun.java.command, ...</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> keyLength = <span class="keyword">for</span>(i &lt;- keys) <span class="keyword">yield</span> i.length()<span class="comment">// 获得所有键的长度</span></span><br><span class="line">keyLength: scala.collection.<span class="type">Set</span>[<span class="type">Int</span>] = <span class="type">Set</span>(<span class="number">10</span>, <span class="number">25</span>, <span class="number">14</span>, <span class="number">20</span>, <span class="number">29</span>, <span class="number">28</span>, <span class="number">21</span>, <span class="number">9</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">12</span>, <span class="number">7</span>, <span class="number">18</span>, <span class="number">16</span>, <span class="number">11</span>, <span class="number">26</span>, <span class="number">23</span>, <span class="number">8</span>, <span class="number">19</span>, <span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> maxKeyLength = keyLength.max <span class="comment">//获得最长键的长度</span></span><br><span class="line">maxKeyLength: <span class="type">Int</span> = <span class="number">29</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">for</span>(key &lt;- keys){</span><br><span class="line">     |     print(key)</span><br><span class="line">     |     print(<span class="string">" "</span>*(maxKeyLength - key.length()))</span><br><span class="line">     |     print(<span class="string">"|"</span>)</span><br><span class="line">     |     println(props(key))</span><br><span class="line">     | }</span><br><span class="line">java.runtime.name            |<span class="type">Java</span>(<span class="type">TM</span>) <span class="type">SE</span> <span class="type">Runtime</span> <span class="type">Environment</span></span><br><span class="line">sun.boot.library.path        |/<span class="type">Library</span>/<span class="type">Java</span>/<span class="type">JavaVirtualMachines</span>/jdk1<span class="number">.8</span><span class="number">.0</span>_152.jdk/<span class="type">Contents</span>/<span class="type">Home</span>/jre/lib</span><br><span class="line">java.vm.version              |<span class="number">25.152</span>-b16</span><br><span class="line">gopherProxySet               |<span class="literal">false</span></span><br><span class="line">java.vm.vendor               |<span class="type">Oracle</span> <span class="type">Corporation</span></span><br><span class="line">java.vendor.url              |http:<span class="comment">//java.oracle.com/</span></span><br><span class="line">path.separator               |:</span><br><span class="line">java.vm.name                 |<span class="type">Java</span> <span class="type">HotSpot</span>(<span class="type">TM</span>) <span class="number">64</span>-<span class="type">Bit</span> <span class="type">Server</span> <span class="type">VM</span></span><br><span class="line">file.encoding.pkg            |sun.io</span><br><span class="line">user.country                 |<span class="type">CN</span></span><br><span class="line">sun.java.launcher            |<span class="type">SUN_STANDARD</span></span><br><span class="line">sun.os.patch.level           |unknown</span><br><span class="line">java.vm.specification.name   |<span class="type">Java</span> <span class="type">Virtual</span> <span class="type">Machine</span> <span class="type">Specification</span></span><br><span class="line">user.dir                     |/<span class="type">Users</span>/datacruiser/<span class="type">IdeaProjects</span>/prog-scala<span class="number">-2</span>nd-ed-code-examples</span><br><span class="line">java.runtime.version         |<span class="number">1.8</span><span class="number">.0</span>_152-b16</span><br><span class="line">java.awt.graphicsenv         |sun.awt.<span class="type">CGraphicsEnvironment</span></span><br><span class="line">java.endorsed.dirs           |/<span class="type">Library</span>/<span class="type">Java</span>/<span class="type">JavaVirtualMachines</span>/jdk1<span class="number">.8</span><span class="number">.0</span>_152.jdk/<span class="type">Contents</span>/<span class="type">Home</span>/jre/lib/endorsed</span><br><span class="line">os.arch                      |x86_64</span><br><span class="line">java.io.tmpdir               |/<span class="keyword">var</span>/folders/t0/csmkjx2s3cn0dgsd2t4zmf_w0000gn/<span class="type">T</span>/</span><br><span class="line">line.separator               |</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>编写一个函数<code> minmax(values: Array[Int])</code>，返回数组中最小值和最大值的对偶。</p>
+<ul>
+<li>版本一，采用HashMap，代码如下：</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmax</span></span>(values: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">HashMap</span>[<span class="type">Int</span>, <span class="type">Int</span>] = {</span><br><span class="line">    <span class="keyword">val</span> map = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">Int</span>, <span class="type">Int</span>]</span><br><span class="line">    <span class="keyword">val</span> min = values.min</span><br><span class="line">    <span class="keyword">val</span> max = values.max</span><br><span class="line">    map(min) = max</span><br><span class="line">    map</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">minmax</span></span>(values: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">HashMap</span>[<span class="type">Int</span>, <span class="type">Int</span>] = {</span><br><span class="line">     |     <span class="keyword">val</span> map = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">Int</span>, <span class="type">Int</span>]</span><br><span class="line">     |     <span class="keyword">val</span> min = values.min</span><br><span class="line">     |     <span class="keyword">val</span> max = values.max</span><br><span class="line">     |     map(min) = max</span><br><span class="line">     |     map</span><br><span class="line">     | }</span><br><span class="line">minmax: (values: <span class="type">Array</span>[<span class="type">Int</span>])scala.collection.mutable.<span class="type">HashMap</span>[<span class="type">Int</span>,<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> a = <span class="type">Array</span>(<span class="number">1</span> ,<span class="number">2</span>, <span class="number">3</span> ,<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>)</span><br><span class="line">a: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; minmax(a)</span><br><span class="line">res39: scala.collection.mutable.<span class="type">HashMap</span>[<span class="type">Int</span>,<span class="type">Int</span>] = <span class="type">Map</span>(<span class="number">1</span> -&gt; <span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>版本二，采用Map，代码如下：</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minmax</span></span>(values: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">Int</span>] = {</span><br><span class="line">    <span class="keyword">var</span> map = <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">Int</span>]()</span><br><span class="line">    <span class="keyword">val</span> min = values.min</span><br><span class="line">    <span class="keyword">val</span> max = values.max</span><br><span class="line">    map += (min -&gt; max)</span><br><span class="line">    map</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">minmax</span></span>(values: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">Int</span>] = {</span><br><span class="line">     |     <span class="keyword">var</span> map = <span class="type">Map</span>[<span class="type">Int</span>, <span class="type">Int</span>]()</span><br><span class="line">     |     <span class="keyword">val</span> min = values.min</span><br><span class="line">     |     <span class="keyword">val</span> max = values.max</span><br><span class="line">     |     map += (min -&gt; max)</span><br><span class="line">     |     map</span><br><span class="line">     | }</span><br><span class="line">minmax: (values: <span class="type">Array</span>[<span class="type">Int</span>])scala.collection.immutable.<span class="type">Map</span>[<span class="type">Int</span>,<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> ab = <span class="type">Array</span>(<span class="number">1</span> ,<span class="number">2</span> ,<span class="number">3</span> , <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>)</span><br><span class="line">ab: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; minmax(ab)</span><br><span class="line">res42: scala.collection.immutable.<span class="type">Map</span>[<span class="type">Int</span>,<span class="type">Int</span>] = <span class="type">Map</span>(<span class="number">1</span> -&gt; <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>编写一个函数 <code>lteqgt(values: Array[Int], v: Int)</code>，返回数组中小于v、 等于 v和大于 v 的数量，要求三个值一起返回。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lteqgt</span></span>(values: <span class="type">Array</span>[<span class="type">Int</span>], v: <span class="type">Int</span>): <span class="type">Tuple3</span>[<span class="type">Int</span>, <span class="type">Int</span>, <span class="type">Int</span>] = {</span><br><span class="line">    <span class="keyword">val</span> tuple = (values.count(_ &lt; v), values.count(_ == v), values.count(_ &gt; v))</span><br><span class="line">    tuple</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">lteqgt</span></span>(values: <span class="type">Array</span>[<span class="type">Int</span>], v: <span class="type">Int</span>): <span class="type">Tuple3</span>[<span class="type">Int</span>, <span class="type">Int</span>, <span class="type">Int</span>] = {</span><br><span class="line">     |     <span class="keyword">val</span> tuple = (values.count(_ &lt; v), values.count(_ == v), values.count(_ &gt; v))</span><br><span class="line">     |     tuple</span><br><span class="line">     | }</span><br><span class="line">lteqgt: (values: <span class="type">Array</span>[<span class="type">Int</span>], v: <span class="type">Int</span>)(<span class="type">Int</span>, <span class="type">Int</span>, <span class="type">Int</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> values = <span class="type">Array</span>(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span>, <span class="number">-4</span>, <span class="number">0</span> ,<span class="number">0</span>, <span class="number">5</span>, <span class="number">56</span>, <span class="number">7</span> ,<span class="number">12</span>)</span><br><span class="line">values: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span>, <span class="number">-4</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">56</span>, <span class="number">7</span>, <span class="number">12</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> v = <span class="number">0</span></span><br><span class="line">v: <span class="type">Int</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">scala&gt; lteqgt(values, v)</span><br><span class="line">res40: (<span class="type">Int</span>, <span class="type">Int</span>, <span class="type">Int</span>) = (<span class="number">4</span>,<span class="number">2</span>,<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，这里用到了<code> GenTraversableOnce</code>当中的一个聚合函数<code> count</code>：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="function"><span class="keyword">def</span> <span class="title">count</span></span>(p: (<span class="type">A</span>) ⇒ <span class="type">Boolean</span>): <span class="type">Int</span></span><br><span class="line"><span class="type">Counts</span> the number of elements in the collection or iterator which satisfy a predicate.</span><br><span class="line">p</span><br><span class="line">the predicate used to test elements.</span><br><span class="line">returns</span><br><span class="line">the number of elements satisfying the predicate p.</span><br></pre></td></tr></table></figure>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>当你将两个字符串拉链在一起，比如<code>“Hello”.zip("World")</code>，会是什么结果，想出一个讲得通的用例。<br>
+测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="string">"Hello"</span>.zip(<span class="string">"World"</span>)</span><br><span class="line">res43: scala.collection.immutable.<span class="type">IndexedSeq</span>[(<span class="type">Char</span>, <span class="type">Char</span>)] = <span class="type">Vector</span>((<span class="type">H</span>,<span class="type">W</span>), (e,o), (l,r), (l,l), (o,d))</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> string = <span class="string">"Hello"</span>.zip(<span class="string">"World"</span>)</span><br><span class="line">string: scala.collection.immutable.<span class="type">IndexedSeq</span>[(<span class="type">Char</span>, <span class="type">Char</span>)] = <span class="type">Vector</span>((<span class="type">H</span>,<span class="type">W</span>), (e,o), (l,r), (l,l), (o,d))</span><br><span class="line"></span><br><span class="line">scala&gt; string foreach println</span><br><span class="line">(<span class="type">H</span>,<span class="type">W</span>)</span><br><span class="line">(e,o)</span><br><span class="line">(l,r)</span><br><span class="line">(l,l)</span><br><span class="line">(o,d)</span><br></pre></td></tr></table></figure>
+<p>查看 ScalaDoc，在<code>GenIterableLike</code>当中<code> zip</code>的文档如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="function"><span class="keyword">def</span> <span class="title">zip</span></span>[<span class="type">B</span>](that: <span class="type">GenIterable</span>[<span class="type">B</span>]): <span class="type">GenIterable</span>[(<span class="type">A</span>, <span class="type">B</span>)]</span><br><span class="line">[use <span class="keyword">case</span>]</span><br><span class="line"><span class="type">Returns</span> a general iterable collection formed from <span class="keyword">this</span> general iterable collection and another iterable collection by combining corresponding elements in pairs. <span class="type">If</span> one of the two collections is longer than the other, its remaining elements are ignored.</span><br><span class="line"></span><br><span class="line"><span class="type">Note</span>: might <span class="keyword">return</span> different results <span class="keyword">for</span> different runs, unless the underlying collection <span class="class"><span class="keyword">type</span> <span class="title">is</span> <span class="title">ordered</span>.</span></span><br><span class="line"><span class="type">B</span></span><br><span class="line">the <span class="class"><span class="keyword">type</span> <span class="title">of</span> <span class="title">the</span> <span class="title">second</span> <span class="title">half</span> <span class="title">of</span> <span class="title">the</span> <span class="title">returned</span> <span class="title">pairs</span></span></span><br><span class="line">that</span><br><span class="line"><span class="type">The</span> iterable providing the second half of each result pair</span><br><span class="line">returns</span><br><span class="line">a <span class="keyword">new</span> general iterable collection containing pairs consisting of corresponding elements of <span class="keyword">this</span> general iterable collection and that. <span class="type">The</span> length of the returned collection is the minimum of the lengths of <span class="keyword">this</span> general iterable collection and that.</span><br><span class="line"> <span class="type">Full</span> <span class="type">Signature</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>zip</code>会对所有可遍历的集合进行拉链操作，而字符串本身是可遍历的，且是以字符为单位进行遍历，因此出现了上述运行结果。根据文档，返回集合的长度是以 A、B两者较小的长度为准，具体可以再看下下面这个例子:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> string = <span class="string">"Hello"</span>.zip(<span class="string">"Worldscala"</span>)</span><br><span class="line">string: scala.collection.immutable.<span class="type">IndexedSeq</span>[(<span class="type">Char</span>, <span class="type">Char</span>)] = <span class="type">Vector</span>((<span class="type">H</span>,<span class="type">W</span>), (e,o), (l,r), (l,l), (o,d))</span><br><span class="line"></span><br><span class="line">scala&gt; string foreach println</span><br><span class="line">(<span class="type">H</span>,<span class="type">W</span>)</span><br><span class="line">(e,o)</span><br><span class="line">(l,r)</span><br><span class="line">(l,l)</span><br><span class="line">(o,d)</span><br></pre></td></tr></table></figure>
+<p>这里"Worldscala"后面的"scala"被忽略了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/20/Scala-for-the-Impatient-Chapter-3-%E7%BB%83%E4%B9%A0/" rel="prev" title="Scala for the Impatient Chapter 3 练习">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 3 练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/23/Scala-for-the-Impatient-Chapter-5-%E7%BB%83%E4%B9%A0/" rel="next" title="Scala for the Impatient Chapter 5 练习">
+                  Scala for the Impatient Chapter 5 练习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第五章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 5 练习">
+<meta property="og:url" content="https://datacruiser.github.io/2019/04/23/Scala-for-the-Impatient-Chapter-5-%E7%BB%83%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第五章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-23T21:28:25.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.870Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/04/23/Scala-for-the-Impatient-Chapter-5-%E7%BB%83%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/04/23/Scala-for-the-Impatient-Chapter-5-%E7%BB%83%E4%B9%A0/","path":"2019/04/23/Scala-for-the-Impatient-Chapter-5-练习/","title":"Scala for the Impatient Chapter 5 练习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 5 练习 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/04/23/Scala-for-the-Impatient-Chapter-5-%E7%BB%83%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 5 练习 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第五章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 5 练习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-23 21:28:25" itemprop="dateCreated datePublished" datetime="2019-04-23T21:28:25+00:00">2019-04-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/04/23/Scala-for-the-Impatient-Chapter-5-%E7%BB%83%E4%B9%A0/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/23/Scala-for-the-Impatient-Chapter-5-练习/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第五章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p>改进5.1节的<code> Counter</code>类，让它不要在 <code>Int.MaxValue</code>时变成负数。<br>
+本题的要求其实是在不断对 <code>value</code> 进行累加是避免溢出，因为溢出了就会变成负数，所以需要对<code> increment()</code>进行改造，具体修改及测试代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> </span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> value = <span class="number">200</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">increment</span></span>(): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">if</span>(value &lt; <span class="type">Int</span>.<span class="type">MaxValue</span>) <span class="comment">//增加一次判断</span></span><br><span class="line">      value += <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      value</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">current</span> </span>= value</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Counter</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> max = <span class="type">Int</span>.<span class="type">MaxValue</span></span><br><span class="line">    <span class="keyword">var</span> count = <span class="number">0</span> <span class="comment">//累加次数计数</span></span><br><span class="line">    println(<span class="string">"Int类型的最大值："</span> + max)</span><br><span class="line">    <span class="keyword">val</span> counter = <span class="keyword">new</span> <span class="type">Counter</span></span><br><span class="line">    <span class="keyword">for</span>(i &lt;- <span class="number">1</span> to (max)) {</span><br><span class="line">      counter.increment()</span><br><span class="line">      count += <span class="number">1</span> </span><br><span class="line">    }</span><br><span class="line">    println(<span class="string">"经过"</span> + count + <span class="string">"次累后 Value 值为: "</span> + counter.current)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>通过<code>sbt</code>编译后，运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">Counter</span> </span><br><span class="line"><span class="type">Int</span>类型的最大值：<span class="number">2147483647</span></span><br><span class="line">经过<span class="number">2147483647</span>次累后 <span class="type">Value</span> 值为: <span class="number">2147483647</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">5</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">27</span>:<span class="number">27</span> <span class="type">AM</span></span><br><span class="line">[<span class="type">IJ</span>]sbt:scalaimpatient&gt; </span><br></pre></td></tr></table></figure>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>编写一个<code> BankAccount</code>类，加入<code>deposit</code>和<code> withdraw</code>方法，和一个只读的<code> balance</code>属性。</p>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BankAccount</span> </span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> balance = <span class="number">0.0</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">deposit</span></span>(depositAmount: <span class="type">Double</span>): <span class="type">Unit</span> ={</span><br><span class="line">    balance += depositAmount</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">withdraw</span></span>(drawAmount: <span class="type">Double</span>): <span class="type">Unit</span> ={</span><br><span class="line">    balance -= drawAmount</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">current</span> </span>= balance</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">BankAccount</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> ={</span><br><span class="line">    <span class="keyword">val</span> drawAmount = <span class="number">800</span></span><br><span class="line">    <span class="keyword">val</span> depositAmount = <span class="number">1000</span></span><br><span class="line">    <span class="keyword">val</span> account = <span class="keyword">new</span> <span class="type">BankAccount</span></span><br><span class="line">    println(<span class="string">"存入金额："</span> + depositAmount)</span><br><span class="line">    account.deposit(depositAmount)</span><br><span class="line">    println(<span class="string">"余额："</span> + account.current)</span><br><span class="line">    println(<span class="string">"取出金额："</span> + drawAmount)</span><br><span class="line">    account.withdraw(drawAmount)</span><br><span class="line">    println(<span class="string">"余额为："</span> + account.current)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">BankAccount</span> </span><br><span class="line">存入金额：<span class="number">1000</span></span><br><span class="line">余额：<span class="number">1000.0</span></span><br><span class="line">取出金额：<span class="number">800</span></span><br><span class="line">余额为：<span class="number">200.0</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">3</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">32</span>:<span class="number">38</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>编写一个<code>Time</code>类，加入只读属性<code> hours</code>和<code> minutes</code>，和一个检查某一时刻是否早于另一时刻的方法<code> before(other: Time): Boolean</code>。<code>Time</code>对象应该以<code> new Time(hrs, min)</code>方式创建，其中 hrs 小时数以军用时间格式呈现（介于0和23之间）。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span>(<span class="params">val hours: <span class="type">Int</span>, val minutes: <span class="type">Int</span></span>) </span>{</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">before</span></span>(other: <span class="type">Time</span>): <span class="type">Boolean</span> ={</span><br><span class="line">      hours &lt; other.hours || (hours == other.hours &amp;&amp; minutes &lt; other.minutes)</span><br><span class="line">    }</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">showtime</span></span>(): <span class="type">String</span> ={</span><br><span class="line">    hours + <span class="string">":"</span> + minutes</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Time</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> ={</span><br><span class="line">    <span class="keyword">val</span> time1 = <span class="keyword">new</span> <span class="type">Time</span>(<span class="number">12</span>, <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">val</span> time2 = <span class="keyword">new</span> <span class="type">Time</span>(<span class="number">22</span>, <span class="number">35</span>)</span><br><span class="line">    <span class="keyword">val</span> time3 = <span class="keyword">new</span> <span class="type">Time</span>(<span class="number">7</span>, <span class="number">15</span>)</span><br><span class="line">    println(<span class="string">"time1时刻是："</span> + time1.showtime())</span><br><span class="line">    println(<span class="string">"time2时刻是："</span> + time2.showtime())</span><br><span class="line">    println(<span class="string">"time3时刻是："</span> + time3.showtime())</span><br><span class="line">    println(<span class="string">"time1时刻是否早于 time2："</span> + time1.before(time2))</span><br><span class="line">    println(<span class="string">"time2时刻是否早于 time3："</span> + time2.before(time3))</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">Time</span> </span><br><span class="line">time1时刻是：<span class="number">12</span>:<span class="number">30</span></span><br><span class="line">time2时刻是：<span class="number">22</span>:<span class="number">35</span></span><br><span class="line">time3时刻是：<span class="number">7</span>:<span class="number">15</span></span><br><span class="line">time1时刻是否早于 time2：<span class="literal">true</span></span><br><span class="line">time2时刻是否早于 time3：<span class="literal">false</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">26</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">31</span>:<span class="number">33</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>重新实现前一个练习中的<code>Time</code>类，将内部呈现改成自午夜起的分钟数（介于0到24x60-1之间）。不要改变公有接口。也就是说，客户端代码不应你的修改而受到影响。<br>
+根据题意，只要修改原<code>Time</code>类当中当中的<code> showtime()</code>就可以了，实现代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewTime</span>(<span class="params">override val hours: <span class="type">Int</span>, override val minutes: <span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Time</span>(<span class="params">hours = 0, minutes = 0</span>) </span>{</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">before</span></span>(other: <span class="type">Time</span>): <span class="type">Boolean</span> = <span class="keyword">super</span>.before(other) <span class="comment">//使用原类的方法</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">showtime</span></span>(): <span class="type">String</span> = hours * <span class="number">60</span> + <span class="string">""</span> + minutes <span class="comment">//根据题意重写原类的方法</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">NewTime</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> time1 = <span class="keyword">new</span> <span class="type">NewTime</span>(<span class="number">12</span>, <span class="number">30</span>)</span><br><span class="line">    <span class="keyword">val</span> time2 = <span class="keyword">new</span> <span class="type">NewTime</span>(<span class="number">22</span>, <span class="number">35</span>)</span><br><span class="line">    <span class="keyword">val</span> time3 = <span class="keyword">new</span> <span class="type">NewTime</span>(<span class="number">7</span>, <span class="number">15</span>)</span><br><span class="line">    println(<span class="string">"time1时刻是："</span> + time1.showtime())</span><br><span class="line">    println(<span class="string">"time2时刻是："</span> + time2.showtime())</span><br><span class="line">    println(<span class="string">"time3时刻是："</span> + time3.showtime())</span><br><span class="line">    println(<span class="string">"time1时刻是否早于 time2："</span> + time1.before(time2))</span><br><span class="line">    println(<span class="string">"time2时刻是否早于 time3："</span> + time2.before(time3))</span><br><span class="line">  }</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">NewTime</span> </span><br><span class="line">time1时刻是：<span class="number">72030</span></span><br><span class="line">time2时刻是：<span class="number">132035</span></span><br><span class="line">time3时刻是：<span class="number">42015</span></span><br><span class="line">time1时刻是否早于 time2：<span class="literal">true</span></span><br><span class="line">time2时刻是否早于 time3：<span class="literal">false</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">11</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">59</span>:<span class="number">56</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>创建一个<code>Student</code>类，加入可以读写的<code> JavaBeans</code>属性<code> name</code>（类型为 <code>String</code>）和<code> ID</code>（类型为 Long）。有哪些方法被生成？（用 <code>javap</code> 查看）你可以在 <code>Scala</code> 中调用<code>javaBeans</code> 版的 <code>getter</code> 和 <code>setter</code> 方法吗？应该这样做吗？<br>
+类代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.beans.<span class="type">BeanProperty</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>{</span><br><span class="line">  <span class="meta">@BeanProperty</span> <span class="keyword">val</span> name: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line">  <span class="meta">@BeanProperty</span> <span class="keyword">val</span> <span class="type">ID</span>: <span class="type">Long</span> = <span class="number">0</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>生成方法如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">⇒  javap -<span class="keyword">private</span> <span class="type">Student</span> </span><br><span class="line"><span class="type">Warning</span>: <span class="type">Binary</span> file <span class="type">Student</span> contains excercises.chapter5.<span class="type">Student</span></span><br><span class="line"><span class="type">Compiled</span> from <span class="string">"Student.scala"</span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">excercises</span>.<span class="title">chapter5</span>.<span class="title">Student</span> </span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> java.lang.<span class="type">String</span> name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> long <span class="type">ID</span>;</span><br><span class="line">  public java.lang.<span class="type">String</span> name();</span><br><span class="line">  public long <span class="type">ID</span>();</span><br><span class="line">  public long getID();</span><br><span class="line">  public java.lang.<span class="type">String</span> getName();</span><br><span class="line">  public excercises.chapter5.<span class="type">Student</span>();</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>显然，可以在 <code>Scala</code> 中调用<code>javaBeans</code> 版的 <code>getter</code> 和 <code>setter</code> 方法，测试代码如下:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.beans.<span class="type">BeanProperty</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>{</span><br><span class="line">  <span class="meta">@BeanProperty</span> <span class="keyword">var</span> name: <span class="type">String</span> = <span class="literal">null</span></span><br><span class="line">  <span class="meta">@BeanProperty</span> <span class="keyword">var</span> <span class="type">ID</span>: <span class="type">Long</span> = <span class="number">0</span></span><br><span class="line">  <span class="comment">//为了后面也能够调用 setter 方法，将变量声明为 var 类型</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Student</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> student = <span class="keyword">new</span> <span class="type">Student</span>()</span><br><span class="line">    println(student.getID())</span><br><span class="line">    println(student.getName())</span><br><span class="line">    student.<span class="type">ID</span> = <span class="number">1984</span></span><br><span class="line">    student.name = <span class="string">"Simon"</span></span><br><span class="line">    println(student.getID())</span><br><span class="line">    println(student.getName())</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">Student</span> </span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="literal">null</span></span><br><span class="line"><span class="number">1984</span></span><br><span class="line"><span class="type">Simon</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">62</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">5</span>:<span class="number">22</span>:<span class="number">55</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<p>出于Java 与 Scala 互操作的考虑，应该需要这样的调用。</p>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>在5.2节的<code> Person</code>类中提供一个主构造器，将负年龄转换为0。<br>
+代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>(<span class="params">var age: <span class="type">Int</span> = 0</span>) </span>{</span><br><span class="line">  age = <span class="keyword">if</span>(age &lt; <span class="number">0</span>) <span class="number">0</span> <span class="keyword">else</span> age</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Person</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> age1 = <span class="number">15</span></span><br><span class="line">    <span class="keyword">val</span> age2 = <span class="number">-25</span></span><br><span class="line"></span><br><span class="line">    println(<span class="string">"将Simon的年龄初始化为:"</span>+age1)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Simon</span> = <span class="keyword">new</span> <span class="type">Person</span>(age1)</span><br><span class="line">    println(<span class="string">"Simon的实际年龄为:"</span> + <span class="type">Simon</span>.age)</span><br><span class="line">    println(<span class="string">"将Jack的年龄初始化为:"</span>+age2)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Jack</span> = <span class="keyword">new</span> <span class="type">Person</span>(age2)</span><br><span class="line">    println(<span class="string">"Jack的实际年龄为:"</span> + <span class="type">Jack</span>.age)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">Person</span> </span><br><span class="line">将<span class="type">Simon</span>的年龄初始化为:<span class="number">15</span></span><br><span class="line"><span class="type">Simon</span>的实际年龄为:<span class="number">15</span></span><br><span class="line">将<span class="type">Jack</span>的年龄初始化为:<span class="number">-25</span></span><br><span class="line"><span class="type">Jack</span>的实际年龄为:<span class="number">0</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">5</span>:<span class="number">34</span>:<span class="number">34</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>编写一个<code> Person</code>类，其主构造器接受一个字符串，该字符串包含名字、空格和姓，如<code> new Person("Fred Smith")</code>。提供只读属性<code> firstName</code>和<code> lastName</code>。主构造器参数应该是 var、val还是普通参数呢？为什么？</p>
+<p>根据题意，firstName和lastName为只读的，所以不能重复赋值。如果为var，则对应的此字符串有get和set方法，会因为可能发生的重复赋值而报错。<br>
+并且名字一般不会轻易变更，实现代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NewPerson</span>(<span class="params">val name: <span class="type">String</span></span>) </span>{</span><br><span class="line">  <span class="keyword">val</span> firstName: <span class="type">String</span> = {<span class="keyword">val</span> tokens = name.mkString.split(<span class="string">"\\s+"</span>); tokens.head}</span><br><span class="line">  <span class="keyword">val</span> lastName: <span class="type">String</span> = {<span class="keyword">val</span> tokens = name.mkString.split(<span class="string">"\\s+"</span>); tokens.last}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">NewPerson</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> person=<span class="keyword">new</span> <span class="type">NewPerson</span>(<span class="string">"Simon Peter"</span>)</span><br><span class="line">    <span class="comment">//name参数自动转为私有字段,并生成公有getter</span></span><br><span class="line">    println(<span class="string">"person的名称为:"</span> + person.name)</span><br><span class="line">    println(<span class="string">"person的FisrtName:"</span> + person.firstName)</span><br><span class="line">    println(<span class="string">"person的LastName:"</span> + person.lastName)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">NewPerson</span> </span><br><span class="line">person的名称为:<span class="type">Simon</span> <span class="type">Peter</span></span><br><span class="line">person的<span class="type">FisrtName</span>:<span class="type">Simon</span></span><br><span class="line">person的<span class="type">LastName</span>:<span class="type">Peter</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">6</span>:<span class="number">30</span>:<span class="number">41</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>创建一个 Car 类，以只读属性对应制造商、型号名称、型号年份以及一个可读写的属性用于车牌。提供四组构造器。每一个构造器都要求制造商和型号名称为必填。型号年份以及车牌为可选，如果未填，则型号年份设置为-1，车牌设置为空字符串。你会选择哪一个作为你的主构造器？为什么？</p>
+<p>为了少写一些代码，以四个参数都带齐的构造器为主构造器。具体代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span>(<span class="params">val producer: <span class="type">String</span>, val model: <span class="type">String</span>, val year: <span class="type">String</span> = null, var identify: <span class="type">Int</span> = -1</span>) </span>{</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Car</span></span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Tesla</span> = <span class="keyword">new</span> <span class="type">Car</span>(<span class="string">"特斯拉"</span>,<span class="string">"Tesla-Model S"</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Audi</span> = <span class="keyword">new</span> <span class="type">Car</span>(<span class="string">"一汽"</span>,<span class="string">"大众-奥迪"</span>,<span class="string">"2015-1-1"</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">Volvo</span> = <span class="keyword">new</span> <span class="type">Car</span>(<span class="string">"吉利"</span>,<span class="string">"Volvo-s40"</span>,<span class="string">"2015-1-2"</span>,<span class="number">666666</span>)</span><br><span class="line">    <span class="keyword">val</span> nameArr = <span class="type">Array</span>(<span class="string">"特斯拉"</span>,<span class="string">"大众"</span>,<span class="string">"沃尔沃"</span>)</span><br><span class="line">    <span class="keyword">val</span> carArr = <span class="type">Array</span>(<span class="type">Tesla</span>,<span class="type">Audi</span>,<span class="type">Volvo</span>)</span><br><span class="line">    infoOutput(nameArr,carArr)</span><br><span class="line">  }</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">infoOutput</span></span>(carName:<span class="type">Array</span>[<span class="type">String</span>],carArr:<span class="type">Array</span>[<span class="type">Car</span>])={</span><br><span class="line">    <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until carName.length){</span><br><span class="line">      println(carName(i))</span><br><span class="line">      println(<span class="string">"汽车制造商为: "</span> + carArr(i).producer)</span><br><span class="line">      println(<span class="string">"汽车型号为: "</span> + carArr(i).model)</span><br><span class="line">      println(<span class="string">"汽车产年份为: "</span> + carArr(i).year)</span><br><span class="line">      println(<span class="string">"汽车车牌号为: "</span> + carArr(i).identify)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter5.<span class="type">Car</span> </span><br><span class="line">特斯拉</span><br><span class="line">汽车制造商为: 特斯拉</span><br><span class="line">汽车型号为: <span class="type">Tesla</span>-<span class="type">Model</span> <span class="type">S</span></span><br><span class="line">汽车产年份为: <span class="literal">null</span></span><br><span class="line">汽车车牌号为: <span class="number">-1</span></span><br><span class="line">大众</span><br><span class="line">汽车制造商为: 一汽</span><br><span class="line">汽车型号为: 大众-奥迪</span><br><span class="line">汽车产年份为: <span class="number">2015</span><span class="number">-1</span><span class="number">-1</span></span><br><span class="line">汽车车牌号为: <span class="number">-1</span></span><br><span class="line">沃尔沃</span><br><span class="line">汽车制造商为: 吉利</span><br><span class="line">汽车型号为: <span class="type">Volvo</span>-s40</span><br><span class="line">汽车产年份为: <span class="number">2015</span><span class="number">-1</span><span class="number">-2</span></span><br><span class="line">汽车车牌号为: <span class="number">666666</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">8</span> s, completed <span class="type">Apr</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">7</span>:<span class="number">20</span>:<span class="number">49</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>在 Java、C#或 C++（你自己选）重做前一个练习。Scala 相比之下精简多少？<br>
+java 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter5;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">JavaCar</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String producer;</span><br><span class="line">    <span class="keyword">private</span> String model;</span><br><span class="line">    <span class="keyword">private</span> String year;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> identify;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">JavaCar</span><span class="params">()</span>{</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">JavaCar</span><span class="params">(String producer, String model)</span>{</span><br><span class="line">        <span class="built_in">this</span>.producer = producer;</span><br><span class="line">        <span class="built_in">this</span>.model = model;</span><br><span class="line">        <span class="built_in">this</span>.year = <span class="literal">null</span>;</span><br><span class="line">        <span class="built_in">this</span>.identify = -<span class="number">1</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">JavaCar</span><span class="params">(String producer, String model, String year)</span>{</span><br><span class="line">        <span class="built_in">this</span>.producer = producer;</span><br><span class="line">        <span class="built_in">this</span>.model = model;</span><br><span class="line">        <span class="built_in">this</span>.year = year;</span><br><span class="line">        <span class="built_in">this</span>.identify = -<span class="number">1</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">JavaCar</span><span class="params">(String producer, String model, String year, <span class="type">int</span> identify)</span>{</span><br><span class="line">        <span class="built_in">this</span>.producer = producer;</span><br><span class="line">        <span class="built_in">this</span>.model = model;</span><br><span class="line">        <span class="built_in">this</span>.year = year;</span><br><span class="line">        <span class="built_in">this</span>.identify = identify;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getProducer</span><span class="params">()</span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.producer;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getModel</span><span class="params">()</span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.model;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getYear</span><span class="params">()</span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.year;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getIdentify</span><span class="params">()</span>{</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.identify;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setIdentify</span><span class="params">(<span class="type">int</span> identify)</span>{</span><br><span class="line">        <span class="built_in">this</span>.identify = identify;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CarTest</span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> {</span><br><span class="line">        <span class="type">JavaCar</span> <span class="variable">Tesla</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JavaCar</span>(<span class="string">"特斯拉"</span>,<span class="string">"特斯拉-Model S"</span>);</span><br><span class="line">        <span class="type">JavaCar</span> <span class="variable">Audi</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JavaCar</span>(<span class="string">"一汽"</span>,<span class="string">"大众-奥迪"</span>,<span class="string">"2015-1-1"</span>);</span><br><span class="line">        <span class="type">JavaCar</span> <span class="variable">Volvo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JavaCar</span>(<span class="string">"吉利"</span>,<span class="string">"Volvo-S40"</span>,<span class="string">"2015-1-2"</span>,<span class="number">66666</span>);</span><br><span class="line">        String[] nameArr = {<span class="string">"特斯拉"</span>, <span class="string">"大众"</span>, <span class="string">"沃尔沃"</span>};</span><br><span class="line">        JavaCar[] carinfoArr = {Tesla, Audi, Volvo};</span><br><span class="line">        <span class="type">CarTest</span> <span class="variable">cartest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CarTest</span>();</span><br><span class="line">        cartest.infoOutput(nameArr,carinfoArr);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">infoOutput</span><span class="params">(String[] nameArr,JavaCar[] carinfoArr)</span>{</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;i &lt; nameArr.length; i++){</span><br><span class="line">            System.out.println(nameArr[i]);</span><br><span class="line">            System.out.println(<span class="string">"汽车制造商: "</span> + carinfoArr[i].getProducer());</span><br><span class="line">            System.out.println(<span class="string">"汽车型号: "</span> + carinfoArr[i].getModel());</span><br><span class="line">            System.out.println(<span class="string">"汽车年份: "</span> + carinfoArr[i].getYear());</span><br><span class="line">            System.out.print(<span class="string">"车牌号: "</span>+ carinfoArr[i].getIdentify());</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure> 输出结果如下：
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[info] Running excercises.chapter5.CarTest </span><br><span class="line">特斯拉</span><br><span class="line">汽车制造商: 特斯拉</span><br><span class="line">汽车型号: 特斯拉-Model S</span><br><span class="line">汽车年份: <span class="literal">null</span></span><br><span class="line">车牌号: -<span class="number">1</span>大众</span><br><span class="line">汽车制造商: 一汽</span><br><span class="line">汽车型号: 大众-奥迪</span><br><span class="line">汽车年份: <span class="number">2015</span>-<span class="number">1</span>-<span class="number">1</span></span><br><span class="line">车牌号: -<span class="number">1</span>沃尔沃</span><br><span class="line">汽车制造商: 吉利</span><br><span class="line">汽车型号: Volvo-S40</span><br><span class="line">汽车年份: <span class="number">2015</span>-<span class="number">1</span>-<span class="number">2</span></span><br><span class="line">车牌号: <span class="number">66666</span>[success] Total time: <span class="number">3</span> s, completed Apr <span class="number">25</span>, <span class="number">2019</span> <span class="number">8</span>:<span class="number">25</span>:<span class="number">29</span> AM</span><br></pre></td></tr></table></figure>
+<p>相比较而言，Scala实在精简太多了……</p>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>考虑如下类：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span>(<span class="params">val name: <span class="type">String</span>, var salary: <span class="type">Double</span></span>)</span>{</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">this</span></span>(){<span class="keyword">this</span>(<span class="string">"John Q. Public"</span>, <span class="number">0.0</span>)}</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>重写该类，使用显式的字段定义，和一个缺省主构造器。你更倾向于使用哪种形式？为什么？</p>
+<p>重写的类代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span>(<span class="params"></span>)</span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> name: <span class="type">String</span> = <span class="string">"John Q. Public"</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> salary: <span class="type">Double</span> = <span class="number">0.0</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>重写类的风格更加趋向于 Java，自带主构造器的则更加 scalable，从后续拓展，减少代码量的角度倾向于后一种。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/" rel="prev" title="Scala for the Impatient Chapter 4 练习">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 4 练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/25/Scala-for-the-Impatient-Chapter-6-%E7%BB%83%E4%B9%A0/" rel="next" title="Scala for the Impatient Chapter 6 练习">
+                  Scala for the Impatient Chapter 6 练习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

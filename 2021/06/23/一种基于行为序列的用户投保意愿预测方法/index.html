@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="说起保险营销，往往让人想起各种保险推销电话以及无所不在的营销短信，有时候还挺令人嫌弃的。当然，如果把一个东西推送或者介绍给一个不感兴趣、也没有需求的人，当然结果必然是不会太好的，营销效果没有达成不说，甚至还会带来投诉，造成相关线路或者通道资源的使用受限。那如何把投保意愿高、投保需求强烈的客群给挖掘出来就成了整个营销解决方案的核心问题，特别是在业务扩张期，既可以大大降低营销成本，又可以提高相关营销资">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种基于行为序列的用户投保意愿预测方法">
+<meta property="og:url" content="https://datacruiser.github.io/2021/06/23/%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E5%BA%8F%E5%88%97%E7%9A%84%E7%94%A8%E6%88%B7%E6%8A%95%E4%BF%9D%E6%84%8F%E6%84%BF%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="说起保险营销，往往让人想起各种保险推销电话以及无所不在的营销短信，有时候还挺令人嫌弃的。当然，如果把一个东西推送或者介绍给一个不感兴趣、也没有需求的人，当然结果必然是不会太好的，营销效果没有达成不说，甚至还会带来投诉，造成相关线路或者通道资源的使用受限。那如何把投保意愿高、投保需求强烈的客群给挖掘出来就成了整个营销解决方案的核心问题，特别是在业务扩张期，既可以大大降低营销成本，又可以提高相关营销资">
+<meta property="og:locale">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/insure_transformer/netstr.jpg">
+<meta property="article:published_time" content="2021-06-23T22:29:48.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.870Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="序列模型">
+<meta property="article:tag" content="公众号">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/insure_transformer/netstr.jpg">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2021/06/23/%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E5%BA%8F%E5%88%97%E7%9A%84%E7%94%A8%E6%88%B7%E6%8A%95%E4%BF%9D%E6%84%8F%E6%84%BF%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2021/06/23/%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E5%BA%8F%E5%88%97%E7%9A%84%E7%94%A8%E6%88%B7%E6%8A%95%E4%BF%9D%E6%84%8F%E6%84%BF%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95/","path":"2021/06/23/一种基于行为序列的用户投保意愿预测方法/","title":"一种基于行为序列的用户投保意愿预测方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一种基于行为序列的用户投保意愿预测方法 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text"> 背景概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text"> 数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text"> 网络结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text"> 小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2021/06/23/%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E5%BA%8F%E5%88%97%E7%9A%84%E7%94%A8%E6%88%B7%E6%8A%95%E4%BF%9D%E6%84%8F%E6%84%BF%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一种基于行为序列的用户投保意愿预测方法 | Datacruiser's Blog">
+      <meta itemprop="description" content="说起保险营销，往往让人想起各种保险推销电话以及无所不在的营销短信，有时候还挺令人嫌弃的。当然，如果把一个东西推送或者介绍给一个不感兴趣、也没有需求的人，当然结果必然是不会太好的，营销效果没有达成不说，甚至还会带来投诉，造成相关线路或者通道资源的使用受限。那如何把投保意愿高、投保需求强烈的客群给挖掘出来就成了整个营销解决方案的核心问题，特别是在业务扩张期，既可以大大降低营销成本，又可以提高相关营销资源的使用寿命和利用率。本文介绍一种基于用户行为序列，利用深度学习技术对用户的保险投保意愿进行预测的方法，适合电商类、支付类等有着大量用户行为数据的平台型互联网公司在开展保险业务时进行借鉴。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一种基于行为序列的用户投保意愿预测方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-23 22:29:48" itemprop="dateCreated datePublished" datetime="2021-06-23T22:29:48+00:00">2021-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">推荐算法</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%A1%8C%E4%B8%BA%E5%BA%8F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">行为序列</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Transformer/" itemprop="url" rel="index"><span itemprop="name">Transformer</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BF%9D%E9%99%A9%E8%90%A5%E9%94%80/" itemprop="url" rel="index"><span itemprop="name">保险营销</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2021/06/23/%E4%B8%80%E7%A7%8D%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E5%BA%8F%E5%88%97%E7%9A%84%E7%94%A8%E6%88%B7%E6%8A%95%E4%BF%9D%E6%84%8F%E6%84%BF%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/06/23/一种基于行为序列的用户投保意愿预测方法/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">说起保险营销，往往让人想起各种保险推销电话以及无所不在的营销短信，有时候还挺令人嫌弃的。当然，如果把一个东西推送或者介绍给一个不感兴趣、也没有需求的人，当然结果必然是不会太好的，营销效果没有达成不说，甚至还会带来投诉，造成相关线路或者通道资源的使用受限。那如何把投保意愿高、投保需求强烈的客群给挖掘出来就成了整个营销解决方案的核心问题，特别是在业务扩张期，既可以大大降低营销成本，又可以提高相关营销资源的使用寿命和利用率。本文介绍一种基于用户行为序列，利用深度学习技术对用户的保险投保意愿进行预测的方法，适合电商类、支付类等有着大量用户行为数据的平台型互联网公司在开展保险业务时进行借鉴。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="背景概述"><a class="markdownIt-Anchor" href="#背景概述"></a> 背景概述</h1>
+<p>用户投保意愿的预测，本质上是一个二分类建模的问题。具体地，首先对用户进行用户画像，并根据用户的静态属性、动态行为等对数据进行预处理和特征工程，接着，综合运用统计学和保险业务领域知识对数据进行特征提炼，并在业务上积累获取一定数量的正、负样本后，利用逻辑回归、决策树以及梯度提升树等集成学习算法，甚至是深度学习算法来建立模型，得到预测模型和相应的模型参数。最后根据使用场景的不同对模型进行离线或者在线部署，来预测带相关入模特征的新用户，得到预测结果。基于模型预测得到的结果会被推送给保险业务人员，为保险业务的精准营销提供基础。</p>
+<p>在相关技术中，处理特征工程时需要对用户的行为进行分类，然后根据业务知识对不同类型的行为进行分时段的统计，从次数、频率、变化率等方面对用户进行多方面的描述以获取用户特征数据。因此，现有模型的预测效果严重依赖于特征工程所产生的特征质量，而特征工程又取决于数据质量和业务领域知识，尤其是业务领域知识，内容复杂且专业，对一些非本领域的工程师来说很难做到精确全面；此外，针对数据质量方面，需要对数据进行一系列的去噪等预处理，耗时比较大。</p>
+<p>因此，基于传统的特征工程按步就班地进行投保意愿预测存在着预测精度受制于领域知识，同时也存在着效率低下的问题。笔者借助<code>Embedding</code>技术直接对用户行为序列进行编码，然后利用<code>CNN</code>以及<code>Transformer</code>等深度学习网络直接从用户行为到投保意愿的端到端预测模型，试图解决上诉问题，模型上线后在实际的投放使用当中也取得了不错的效果。</p>
+<h1 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型"></a> 数据类型</h1>
+<p>本模型所使用的源数据是一种用户行为的序列数据，从记录用户行为的事件日志数据抽取而来，详细记录了用户在公司各个客户当中的所发生的不同类型的事件以及事件发生的时间。目前，我们对不同的客户进行命名，然后对于支持的行为事件进行分类，比如常见的登录、注册等，最后我们将不同客户和可能的行为事件类型进行排列组合，并将这个组合作为后续<code>embedding</code>操作时候的最小单元，相应的这个组合的全集就是<code>embedding</code>所需要依赖的词典。这样讲可能比较拗口，咱们举一个例子。</p>
+<p>比如一共有两个客户，分别命名为<code>customer_a</code>和<code>customer_b</code>，有两个支持的行为，分别为<code>login</code>和<code>register</code>，那么在本模型在对序列进行处理的时候中将<code>customer_a=&gt;login</code>这一组合当作一个词（<code>Word</code>），然后所有客户和所有行为进行分别枚举组合的全集就是后面在对每个词进行<code>One-hot</code>编码的时候的词典（<code>Dictionary</code>），在本例中，词典为<code>['customer_a=&gt;login','customer_a=&gt;register','customer_b=&gt;login','customer_b=&gt;register']</code>。</p>
+<p>除了行为事件本身，事件发生的时间也是非常重要的信息，在传统序列模型用于<code>NLP</code>领域时往往只关注词的先后顺序和上下文关系，并没有时间的概念，本模型也将事件发生时间距离当前的间隔天数也作为一个单独的序列。因为这个序列已经是数值型，在<code>embedding</code>之前无需<code>One-hot</code>编码。</p>
+<h1 id="网络结构"><a class="markdownIt-Anchor" href="#网络结构"></a> 网络结构</h1>
+<p>前面以及提到，用户的行为序列具备天然顺序的特点，如果将一个用户的每一次行为当作一个词，那么可以将他的一段时间内的完整行为序列当作一句话，天然适合采用<code>NLP</code>领域的算法进行建模。</p>
+<p>正是基于这样的考虑，本模型在构建网络结构的时候除了考虑<code>CNN</code>，还考虑了自<code>Google</code>发布<a href="https://arxiv.org/pdf/1706.03762.pdf">Attention Is All You Need</a>论文以来在<code>NLP</code>领域大放异彩的<code>Transformer</code>，分别利用的<code>CNN</code>来捕捉局部行为与用户投保意愿之间的关系，利用<code>Transformer</code>网络编码层中的<code>Attention</code>机制来捕捉全局或长程行为与用户投保意愿之间的关系，最后再用相应的<code>Sigmoid</code>函数来预测用户的投保意愿。整个模型的网络结构图如下：</p>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/insure_transformer/netstr.jpg" alt="网络结构图"></p>
+<p>下面对着这张图对整个网络结构做一个简单的介绍。</p>
+<p>从上往下，大致的走向是两路输入分别经过<code>Embedding</code>后保留其中一路──行为事件序列──去过<code>CNN</code>模块，以抽取局部行为特征，与<code>Transformer</code>原论文不同的是本模型并没有采用<code>Position Embedding</code>，而是直接使用事件发生时间的距今时长（单位天）的<code>Embedding</code>来代替，将两个向量进行<code>Add</code>处理以后进入类似于<code>Transformer</code>网络<code>encoder</code>层的带<code>Attention</code>机制的处理模块，来捕捉全局或者长程行为的特征。值得一提的时候，这里对原论文中<code>Position Embedding</code>的替换，不但可以表征事件发生的先后关系，也能表征事件发生时间的间隔关系。后续的训练结果也表明这样替换能够小幅提高模型结果。</p>
+<p>经过<code>CNN</code>和<code>Transformer</code>两个子模块处理后的向量在各自池化以后拼接到一起后再喂给<code>DNN</code>和<code>Dropout</code>相间的网络，其中<code>DNN</code>的输出维度不但减小，最后变为1维（<code>Sigmoid</code>函数），对应所需要预测的用户投保意愿。</p>
+<h1 id="小结"><a class="markdownIt-Anchor" href="#小结"></a> 小结</h1>
+<p>本模型综合运用现有、成熟的网络结构，并针对数据情况和业务场景进行了适当的改进，如果理解了业务和数据，那么理解模型就更为容易。</p>
+<p>目前，本模型已经部署并在相关营销业务场景上面试用大半年，取得了一定的效果，相应的专利也在审查当中。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+              <a href="/tags/%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B/" rel="tag"># 序列模型</a>
+              <a href="/tags/%E5%85%AC%E4%BC%97%E5%8F%B7/" rel="tag"># 公众号</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/22/2020%E5%B9%B4%E5%B9%B4%E7%BB%88%E5%B0%8F%E7%BB%93/" rel="prev" title="2020年年终小结">
+                  <i class="fa fa-angle-left"></i> 2020年年终小结
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

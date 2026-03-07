@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="DataWhale暑期学习小组-LeetCode刷题第八期Task17。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode Tencent 50 Task17 4. Median of Two Sorted Arrays">
+<meta property="og:url" content="https://datacruiser.github.io/2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="DataWhale暑期学习小组-LeetCode刷题第八期Task17。">
+<meta property="og:locale">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-25-12.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-26-22.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-26-40.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-26-55.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-11.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-25.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-40.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-57.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-28-16.png">
+<meta property="og:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-28-38.png">
+<meta property="article:published_time" content="2019-08-21T08:35:21.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.868Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="C语言">
+<meta property="article:tag" content="数组">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-25-12.png">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/","path":"2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/","title":"Leetcode Tencent 50 Task17 4. Median of Two Sorted Arrays"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Leetcode Tencent 50 Task17 4. Median of Two Sorted Arrays | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text"> 描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text"> 解题思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E4%BD%8D%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text"> 中位数定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3"><span class="nav-number">2.2.</span> <span class="nav-text"> 题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE1"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 配图1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE2"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 配图2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE3"><span class="nav-number">2.2.3.</span> <span class="nav-text"> 配图3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE4"><span class="nav-number">2.2.4.</span> <span class="nav-text"> 配图4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE5"><span class="nav-number">2.2.5.</span> <span class="nav-text"> 配图5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE6"><span class="nav-number">2.2.6.</span> <span class="nav-text"> 配图6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE7"><span class="nav-number">2.2.7.</span> <span class="nav-text"> 配图7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE8"><span class="nav-number">2.2.8.</span> <span class="nav-text"> 配图8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE9"><span class="nav-number">2.2.9.</span> <span class="nav-text"> 配图9</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%9B%BE10"><span class="nav-number">2.2.10.</span> <span class="nav-text"> 配图10</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text"> 代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text"> 参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Leetcode Tencent 50 Task17 4. Median of Two Sorted Arrays | Datacruiser's Blog">
+      <meta itemprop="description" content="DataWhale暑期学习小组-LeetCode刷题第八期Task17。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Leetcode Tencent 50 Task17 4. Median of Two Sorted Arrays
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-21 08:35:21" itemprop="dateCreated datePublished" datetime="2019-08-21T08:35:21+00:00">2019-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LeetCode-%E8%85%BE%E8%AE%AF%E7%B2%BE%E9%80%8950%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">LeetCode 腾讯精选50题</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/21/Leetcode-Tencent-50-Task17-4-Median-of-Two-Sorted-Arrays/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">DataWhale暑期学习小组-LeetCode刷题第八期Task17。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="描述"><a class="markdownIt-Anchor" href="#描述"></a> 描述</h1>
+<p>给定两个大小为 <code>m </code>和 <code>n </code>的有序数组 <code>nums1 </code>和 <code>nums2</code>。</p>
+<p>请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为<code> O(log(m + n))</code>。</p>
+<p>你可以假设 <code>nums1</code> 和 <code>nums2</code> 不会同时为空。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">nums1 = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line">nums2 = [<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">则中位数是 <span class="number">2.0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">nums1 = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">nums2 = [<span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">则中位数是 (<span class="number">2</span> + <span class="number">3</span>)/<span class="number">2</span> = <span class="number">2.5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>来源：力扣（LeetCode）<br>
+链接：<a href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays">4. Median of Two Sorted Arrays</a></p>
+<h1 id="解题思路"><a class="markdownIt-Anchor" href="#解题思路"></a> 解题思路</h1>
+<p>显然，这道题对于时间复杂度有要求，常规的合并两个有序数组然后再根据数组下标再找中位数的思路是行不通的。看到<code> O(log(m + n))</code>应该能够想到采用二分法。</p>
+<h2 id="中位数定义"><a class="markdownIt-Anchor" href="#中位数定义"></a> 中位数定义</h2>
+<p><strong>中位数</strong>（又称中值，英语：Median），统计学中的专有名词，代表一个样本、种群或概率分布中的一个数值，其可将数值集合划分为相等的上下两部分。对于有限的数集，可以通过把所有观察值高低排序后找出正中间的一个作为中位数。如果观察值有偶数个，则中位数不唯一，通常取最中间的两个数值的平均数作为中位数。</p>
+<p>一个数集中最多有一半的数值小于中位数，也最多有一半的数值大于中位数。如果大于和小于中位数的数值个数均少于一半，那么数集中必有若干值等同于中位数。</p>
+<p>设连续随机变量X的分布函数为F(X)，那么满足条件P(X≤m)=F(m)=1/2的数称为X或分布F的中位数。</p>
+<p>对于一组有限个数的数据来说，其中位数是这样的一种数：这群数据的一半的数据比它大，而另外一半数据比它小。</p>
+<p>计算有限个数的数据的中位数的方法是：把所有的同类数据按照大小的顺序排列。如果数据的个数是奇数，则中间那个数据就是这群数据的中位数；如果数据的个数是偶数，则中间那2个数据的算术平均值就是这群数据的中位数。</p>
+<p><strong>公式</strong></p>
+<p>根据定义，若实数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>x</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">x_1,x_2,...,x_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>按大小顺序（顺序，降序皆可）排列<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>x</mi><mn>1</mn><msup><mrow></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mo separator="true">,</mo><msubsup><mi>x</mi><mn>2</mn><msup><mrow></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><msubsup><mi>x</mi><mi>n</mi><msup><mrow></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup></mrow><annotation encoding="application/x-tex">x_1^{'},x_2^{'},...x_n^{'}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190588em;vertical-align:-0.24810799999999997em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.4518920000000004em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.4518920000000004em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>，则实数数列<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x=(x_1,x_2,...,x_n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>的中位数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Q_{\frac{1}{2}}(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.23702em;vertical-align:-0.48701999999999995em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.7537800000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8443142857142858em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.48701999999999995em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>为：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>Q</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.3599999999999999em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msubsup><mi>x</mi><mfrac><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><mn>2</mn></mfrac><msup><mrow></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mspace width="1em"></mspace></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">f</mi></mrow><mtext> </mtext><mtext> </mtext><mi>n</mi><mtext> </mtext><mtext> </mtext><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mtext> </mtext><mtext> </mtext><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi><mi mathvariant="normal">d</mi><mtext> </mtext><mtext> </mtext><mi mathvariant="normal">n</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">.</mi></mrow></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo fence="true">(</mo><msubsup><mi>x</mi><mfrac><mi>n</mi><mn>2</mn></mfrac><msup><mrow></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mo>+</mo><msubsup><mi>x</mi><mrow><mfrac><mi>n</mi><mn>2</mn></mfrac><mo>+</mo><mn>1</mn></mrow><msup><mrow></mrow><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mo fence="true">)</mo></mrow><mspace width="1em"></mspace></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">f</mi></mrow><mtext> </mtext><mtext> </mtext><mi>n</mi><mtext> </mtext><mtext> </mtext><mrow><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mtext> </mtext><mtext> </mtext><mi mathvariant="normal">e</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mtext> </mtext><mtext> </mtext><mi mathvariant="normal">n</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">m</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">.</mi></mrow></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">Q_{\frac{1}{2}}(x)=\begin{cases}
+x_{\frac{n+1}{2}}^{'}\quad &amp;{\rm if} \,\,n\,\, {\rm is\,\, odd \,\,number.} \\\\
+\frac{1}{2}\left(x_{\frac{n}{2}}^{'}+x_{\frac{n}{2}+1}^{'}\right)\quad &amp;{\rm if} \,\,n\,\, {\rm is\,\, even \,\,number.}
+\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.23702em;vertical-align:-0.48701999999999995em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.7537800000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8443142857142858em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.48701999999999995em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:4.87684em;vertical-align:-2.1884200000000003em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.6500200000000005em;"><span style="top:-1.8999899999999998em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-1.89499em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-2.18999em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-2.20499em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-3.15001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.2950099999999996em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.59001em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.60501em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎪</span></span></span><span style="top:-4.90002em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15002em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.68842em;"><span style="top:-4.83042em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.61198em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8443142857142857em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span><span style="top:-3.363em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.6288199999999999em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span></span></span><span style="top:-3.193599999999999em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"></span></span><span style="top:-1.6115999999999997em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.7189200000000002em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6915428571428572em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span></span></span></span><span style="top:-3.363em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5218799999999999em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.94248em;"><span style="top:-2.7189200000000002em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen nulldelimiter sizing reset-size3 size6"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6915428571428572em;"><span style="top:-2.656em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.2255000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line mtight" style="border-bottom-width:0.049em;"></span></span><span style="top:-3.384em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.344em;"><span></span></span></span></span></span><span class="mclose nulldelimiter sizing reset-size3 size6"></span></span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.363em;margin-right:0.05em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8278285714285715em;"><span style="top:-2.931em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5218799999999999em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:1em;"></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.1884200000000003em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.68842em;"><span style="top:-4.83042em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">i</span><span class="mord mathrm" style="margin-right:0.07778em;">f</span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">i</span><span class="mord mathrm">s</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathrm">o</span><span class="mord mathrm">d</span><span class="mord mathrm">d</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathrm">n</span><span class="mord mathrm">u</span><span class="mord mathrm">m</span><span class="mord mathrm">b</span><span class="mord mathrm">e</span><span class="mord mathrm">r</span><span class="mord mathrm">.</span></span></span></span></span><span style="top:-1.6116000000000001em;"><span class="pstrut" style="height:3.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">i</span><span class="mord mathrm" style="margin-right:0.07778em;">f</span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">i</span><span class="mord mathrm">s</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathrm">e</span><span class="mord mathrm" style="margin-right:0.01389em;">v</span><span class="mord mathrm">e</span><span class="mord mathrm">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathrm">n</span><span class="mord mathrm">u</span><span class="mord mathrm">m</span><span class="mord mathrm">b</span><span class="mord mathrm">e</span><span class="mord mathrm">r</span><span class="mord mathrm">.</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.18842em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>其中<code>odd number</code>表示奇数，<code>even number</code>表示偶数。</p>
+<h2 id="题解"><a class="markdownIt-Anchor" href="#题解"></a> 题解</h2>
+<p>参考题解里面的一个<a href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/he-bing-yi-hou-zhao-gui-bing-guo-cheng-zhong-zhao-/">解答</a>，太详细了，这里直接转载贴图然后再加以说明。</p>
+<h3 id="配图1"><a class="markdownIt-Anchor" href="#配图1"></a> 配图1</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-25-12.png" alt></p>
+<h3 id="配图2"><a class="markdownIt-Anchor" href="#配图2"></a> 配图2</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-26-22.png" alt></p>
+<h3 id="配图3"><a class="markdownIt-Anchor" href="#配图3"></a> 配图3</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-26-40.png" alt></p>
+<h3 id="配图4"><a class="markdownIt-Anchor" href="#配图4"></a> 配图4</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-26-55.png" alt></p>
+<h3 id="配图5"><a class="markdownIt-Anchor" href="#配图5"></a> 配图5</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-11.png" alt></p>
+<h3 id="配图6"><a class="markdownIt-Anchor" href="#配图6"></a> 配图6</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-25.png" alt></p>
+<h3 id="配图7"><a class="markdownIt-Anchor" href="#配图7"></a> 配图7</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-40.png" alt></p>
+<h3 id="配图8"><a class="markdownIt-Anchor" href="#配图8"></a> 配图8</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-27-57.png" alt></p>
+<h3 id="配图9"><a class="markdownIt-Anchor" href="#配图9"></a> 配图9</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-28-16.png" alt></p>
+<h3 id="配图10"><a class="markdownIt-Anchor" href="#配图10"></a> 配图10</h3>
+<p><img src="https://machinelearning-1255641038.cos.ap-chengdu.myqcloud.com/Datacruiser_Blog_Sources/LeetCode_Tencent50/Task17%204.%20Median%20of%20Two%20Sorted%20Arrays/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9F%AD%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%EF%BC%8C%E9%95%BF%E6%95%B0%E7%BB%84%E7%9A%84%E2%80%9C%E8%BE%B9%E7%95%8C%E7%BA%BF%E2%80%9D%E8%87%AA%E5%8A%A8%E7%A1%AE%E5%AE%9A%EF%BC%88Python%20%E4%BB%A3%E7%A0%81%E3%80%81Java%20%E4%BB%A3%E7%A0%81%EF%BC%89%20-%20%E5%AF%BB%E6%89%BE%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0%20-%20%E5%8A%9B%E6%89%A3%EF%BC%88LeetCode%EF%BC%89%202019-08-21%2020-28-38.png" alt></p>
+<p>贴了这么多图，这里再用文字总结一下。上述方法的核心就是直接依据中位数的定义，在两个数组之间采用二分法找到两个数组作为一个整体时符合定义的分界线，然后根据两个数组元素个数的奇偶性来求出中位数的值。</p>
+<p>这里有一个小trick，分别找出第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">(m+n+1)/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">/</span><span class="mord">2</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mo>+</mo><mi>n</mi><mo>+</mo><mn>2</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">(m+n+2)/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">)</span><span class="mord">/</span><span class="mord">2</span></span></span></span>个元素，然后求平均值即可，这对于数组总体元素奇偶性都能够适用。</p>
+<p>然后，为了找到符合中位数定义的分界线，其实可以转化为在两个有序数组中找到第K个元素，主要可以分为以下几步：</p>
+<ul>
+<li>定义一个寻找两个有序数组中第K个元素的函数用来递归调用，并将K初始化为m+n的中间值</li>
+<li>用两个变量<code>i</code>和<code>j</code>来标记<code>nums1</code>和<code>nums2</code>的起始位置</li>
+<li>处理边界条件
+<ul>
+<li>当一个数组的起始位置大于等于其数组长度的时候，那么就可以直接在另外一个数组当中找</li>
+<li>如果K=1的时候，那么直接比较两个数组起始位置上面的数字，返回较小的那个值即可</li>
+</ul>
+</li>
+<li>一般情况下，对K进行二分，分别在两个数组当中查找第K/2个元素
+<ul>
+<li>确认数组中到底存不存在第K/2个数字，存在就取出来，不存在就赋值为整型最大值</li>
+<li>如果某一个数组没有第K/2个数字，淘汰另外一个数组前K/2个数字</li>
+<li>比较两个数组当中第K/2小的数字 <code>midValue1</code> 和 <code>midValue2</code>的大小，如果 <code>midValue1</code>小的化，我们可以淘汰 <code>nums1</code>中的前K/2个元素，随后将 <code>nums1</code>的起始位置后移K/2个，并且 <code>K=K-K/2</code>，调用递归</li>
+</ul>
+</li>
+</ul>
+<h1 id="代码"><a class="markdownIt-Anchor" href="#代码"></a> 代码</h1>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义辅助比较函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">min</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span>(a &gt; b) <span class="keyword">return</span> b;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> a;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义递归调用该函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">findKth</span><span class="params">(<span class="type">int</span>* nums1, <span class="type">int</span> i, <span class="type">int</span> nums1Size, <span class="type">int</span>* nums2, <span class="type">int</span> j, <span class="type">int</span> nums2Size, <span class="type">int</span> k)</span></span><br><span class="line">{</span><br><span class="line">    <span class="keyword">if</span>(i &gt;= nums1Size)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">return</span> nums2[j + k - <span class="number">1</span>];</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span>(j &gt;= nums2Size)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">return</span> nums1[i + k - <span class="number">1</span>];</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(k == <span class="number">1</span>)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">return</span> min(nums1[i], nums2[j]);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> midValue1 = (i + k / <span class="number">2</span> - <span class="number">1</span> &lt; nums1Size) ? nums1[i + k / <span class="number">2</span> <span class="number">-1</span>] : INT_MAX;</span><br><span class="line">    <span class="type">int</span> midValue2 = (j + k / <span class="number">2</span> - <span class="number">1</span> &lt; nums2Size) ? nums2[j + k / <span class="number">2</span> <span class="number">-1</span>] : INT_MAX;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(midValue1 &lt; midValue2)</span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">return</span> findKth(nums1, i + k / <span class="number">2</span>, nums1Size, nums2, j, nums2Size, k - k / <span class="number">2</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    {</span><br><span class="line">        <span class="keyword">return</span> findKth(nums1, i, nums1Size, nums2, j + k / <span class="number">2</span>, nums2Size, k - k / <span class="number">2</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// return (arg1 &gt; arg2) - (arg1 &lt; arg2); // possible shortcut</span></span><br><span class="line">    <span class="comment">// return arg1 - arg2; // erroneous shortcut (fails if INT_MIN is present)</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> <span class="title function_">findMedianSortedArrays</span><span class="params">(<span class="type">int</span>* nums1, <span class="type">int</span> nums1Size, <span class="type">int</span>* nums2, <span class="type">int</span> nums2Size)</span></span><br><span class="line">{</span><br><span class="line">    <span class="type">int</span> m  = nums1Size, n = nums2Size;</span><br><span class="line">    <span class="type">int</span> left = (m + n + <span class="number">1</span>) / <span class="number">2</span>, right = (m + n + <span class="number">2</span>) / <span class="number">2</span>; <span class="comment">//初始化K的位置，找到以后返回两者平均值即可</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (findKth(nums1, <span class="number">0</span>, m, nums2, <span class="number">0</span>, n, left) + findKth(nums1, <span class="number">0</span> , m, nums2, <span class="number">0</span>, n, right)) / <span class="number">2.0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h1>
+<ul>
+<li><a href="https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/he-bing-yi-hou-zhao-gui-bing-guo-cheng-zhong-zhao-/">二分查找短数组的“边界线”，长数组的“边界线”自动确定（Python 代码、Java 代码）<br>
+</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/" rel="tag"># C语言</a>
+              <a href="/tags/%E6%95%B0%E7%BB%84/" rel="tag"># 数组</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/20/Leetcode-Tencent-50-Task16-292-Nim-Game/" rel="prev" title="Leetcode Tencent 50 Task16 292. Nim Game">
+                  <i class="fa fa-angle-left"></i> Leetcode Tencent 50 Task16 292. Nim Game
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/25/Leetcode-Tencent-50-Task18-11-Container-With-Most-Water/" rel="next" title="Leetcode Tencent 50 Task20 11. Container With Most Water">
+                  Leetcode Tencent 50 Task20 11. Container With Most Water <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

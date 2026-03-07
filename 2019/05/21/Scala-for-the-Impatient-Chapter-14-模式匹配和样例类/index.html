@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第十四章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 14 模式匹配和样例类">
+<meta property="og:url" content="https://datacruiser.github.io/2019/05/21/Scala-for-the-Impatient-Chapter-14-%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%92%8C%E6%A0%B7%E4%BE%8B%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第十四章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-05-21T15:04:13.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.869Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/05/21/Scala-for-the-Impatient-Chapter-14-%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%92%8C%E6%A0%B7%E4%BE%8B%E7%B1%BB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/05/21/Scala-for-the-Impatient-Chapter-14-%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%92%8C%E6%A0%B7%E4%BE%8B%E7%B1%BB/","path":"2019/05/21/Scala-for-the-Impatient-Chapter-14-模式匹配和样例类/","title":"Scala for the Impatient Chapter 14 模式匹配和样例类"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 14 模式匹配和样例类 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/05/21/Scala-for-the-Impatient-Chapter-14-%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%92%8C%E6%A0%B7%E4%BE%8B%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 14 模式匹配和样例类 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第十四章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 14 模式匹配和样例类
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-05-21 15:04:13" itemprop="dateCreated datePublished" datetime="2019-05-21T15:04:13+00:00">2019-05-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/05/21/Scala-for-the-Impatient-Chapter-14-%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%92%8C%E6%A0%B7%E4%BE%8B%E7%B1%BB/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/21/Scala-for-the-Impatient-Chapter-14-模式匹配和样例类/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第十四章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p>JDK发行包有一个src.zip文件包含了JDK的大多数源代码。解压并搜索样例标签(用正则表达式case [^:]+:)。然后查找以//开头并包含[Ff]alls?thr的注释，捕获类似// Falls through或// just fall thru这样的注释。假定JDK的程序员们遵守Java编码习惯，在该写注释的地方写下了这些注释，有多少百分比的样例是会掉入到下一个分支的？</p>
+<p>虽然题目有点看不懂，不过参考以下链接还是写了一段程序跑一跑：</p>
+<p><a href="https://github.com/BasileDuPlessis/scala-for-the-impatient/blob/master/src/main/scala/com/basile/scala/ch14/Ex01.scala">scala for the impatient ch14</a></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"><span class="keyword">import</span> java.nio.file.attribute.<span class="type">BasicFileAttributes</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex01</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="keyword">import</span> java.nio.file._</span><br><span class="line">  <span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line">  <span class="keyword">import</span> scala.language.implicitConversions</span><br><span class="line"></span><br><span class="line">  <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">makeFileVisitor</span></span>(f: (<span class="type">Path</span>) =&gt; <span class="type">Unit</span>) =  <span class="keyword">new</span> <span class="type">SimpleFileVisitor</span>[<span class="type">Path</span>] {</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">visitFile</span></span>(file: <span class="type">Path</span>, attrs: <span class="type">BasicFileAttributes</span>): <span class="type">FileVisitResult</span> = {</span><br><span class="line">      f(file)</span><br><span class="line">      <span class="type">FileVisitResult</span>.<span class="type">CONTINUE</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> (cf, cc) = (<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">  <span class="keyword">val</span> matchComment = (f: <span class="type">Path</span>) =&gt; {</span><br><span class="line">    <span class="keyword">val</span> rf = <span class="string">"""(?s)case [^:]+:[^:]+?/[/*] [Ff]alls? thr"""</span>.r</span><br><span class="line">    <span class="keyword">val</span> rc = <span class="string">"""case [^:]+:"""</span>.r</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> str = <span class="type">Source</span>.fromFile(f.toString, <span class="string">"ISO-8859-1"</span>).getLines.mkString</span><br><span class="line"></span><br><span class="line">    cf += rf.findAllIn(str).length</span><br><span class="line">    cc += rc.findAllIn(str).length</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="type">Files</span>.walkFileTree(<span class="type">FileSystems</span>.getDefault().getPath(<span class="string">"src"</span>), matchComment)</span><br><span class="line">  println(cf)</span><br><span class="line">  println(cc)</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex01</span> </span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">May</span> <span class="number">21</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">58</span>:<span class="number">58</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>利用模式匹配，编写一个swap函数，接受一个整数的对偶，返回对偶的两个组成部件互换位置的新对偶。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex02</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">swap</span></span>(p: (<span class="type">Int</span>, <span class="type">Int</span>)): (<span class="type">Int</span>, <span class="type">Int</span>) = p <span class="keyword">match</span> {</span><br><span class="line">    <span class="keyword">case</span> (x, y) =&gt; (y, x)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  println(swap(<span class="number">20</span>, <span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex02</span> </span><br><span class="line">(<span class="number">5</span>,<span class="number">20</span>)</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">3</span> s, completed <span class="type">May</span> <span class="number">21</span>, <span class="number">2019</span> <span class="number">5</span>:<span class="number">53</span>:<span class="number">26</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>利用模式匹配，编写一个swap函数，交换数组中的前两个元素的位置，前提条件是数组长度至少为2。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex03</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">swap</span></span>(a: <span class="type">Array</span>[<span class="type">Any</span>]) = a <span class="keyword">match</span> {</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Array</span>(first, second, end @ _*) <span class="keyword">if</span> a.length &gt;=<span class="number">2</span> =&gt; <span class="type">Array</span>(second, first) ++ end</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  println(swap(<span class="type">Array</span>(<span class="string">"1"</span>, <span class="number">2</span>, <span class="string">"3"</span>, <span class="number">4</span>)).deep.mkString(<span class="string">" "</span>))</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex03</span> </span><br><span class="line"><span class="number">2</span> <span class="number">1</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">May</span> <span class="number">21</span>, <span class="number">2019</span> <span class="number">6</span>:<span class="number">36</span>:<span class="number">59</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>添加一个样例类Multiple，作为Item的子类。举例来说，Multiple(10,Article(“Blackwell Toster”,29.95))描述的是10个烤面包机。当然了，你应该可以在第二个参数的位置接受任何Item，无论是Bundle还是另一个Multiple。扩展price函数以应对新的样例。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex04</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Article</span>(<span class="params">description: <span class="type">String</span>, price: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">Item</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Bundle</span>(<span class="params">description: <span class="type">String</span>, discount: <span class="type">Double</span>, items: <span class="type">Item</span>*</span>) <span class="keyword">extends</span> <span class="title">Item</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Multiple</span>(<span class="params">quantity: <span class="type">Int</span>, items: <span class="type">Item</span></span>) <span class="keyword">extends</span> <span class="title">Item</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">price</span></span>(item: <span class="type">Item</span>): <span class="type">Double</span> = item <span class="keyword">match</span> {</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Article</span>(_, p) =&gt; p</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Bundle</span>(_, disc, its @ _*) =&gt; its.map(price _).sum - disc</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Multiple</span>(n, it) =&gt; n * price(it)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> m = <span class="type">Multiple</span>(<span class="number">100</span>, <span class="type">Article</span>(<span class="string">"Dr No"</span>, <span class="number">4.00</span>))</span><br><span class="line">  println(<span class="string">"价格为："</span> + price(m))</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex04</span> </span><br><span class="line">价格为：<span class="number">400.0</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">5</span> s, completed <span class="type">May</span> <span class="number">21</span>, <span class="number">2019</span> <span class="number">7</span>:<span class="number">57</span>:<span class="number">57</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>我们可以用列表制作只在叶子节点存放值的树。举例来说，列表((3 8) 2 (5))描述的是如下这样一棵树:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	  •</span><br><span class="line">/ | \</span><br><span class="line">  •  <span class="number">2</span>  •</span><br><span class="line"> / \    |</span><br><span class="line"><span class="number">3</span>   <span class="number">8</span>   <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>不过，有些列表元素是数字，而另一些是列表。在Scala中，你不能拥有异构的列表，因此你必须使用List[Any]。编写一个leafSum函数，计算所有叶子节点中的元素之和，用模式匹配来区分数字和列表。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex05</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> l = <span class="type">List</span>(<span class="type">List</span>(<span class="number">3</span>,<span class="number">8</span>),<span class="number">2</span>,<span class="type">List</span>(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">leafSum</span></span>(l: <span class="type">List</span>[<span class="type">Any</span>]): <span class="type">Int</span> = l.map(_ <span class="keyword">match</span> {</span><br><span class="line">    <span class="keyword">case</span> l: <span class="type">List</span>[<span class="type">Any</span>] =&gt; leafSum(l)</span><br><span class="line">    <span class="keyword">case</span> x: <span class="type">Int</span> =&gt; x</span><br><span class="line">    <span class="keyword">case</span> _ =&gt; <span class="number">0</span></span><br><span class="line">  }).sum</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"元素之和为："</span> + leafSum(l))</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex05</span> </span><br><span class="line">元素之和为：<span class="number">18</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">May</span> <span class="number">23</span>, <span class="number">2019</span> <span class="number">10</span>:<span class="number">30</span>:<span class="number">49</span> <span class="type">AM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>制作这样的树更好的做法是使用样例类。我们不妨从二叉树开始。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sealed</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree</span></span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaf</span>(<span class="params">value : <span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>(<span class="params">left : <span class="type">BinaryTree</span>,right : <span class="type">BinaryTree</span></span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br></pre></td></tr></table></figure>
+<p>编写一个函数计算所有叶子节点中的元素之和。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex06</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">sealed</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaf</span>(<span class="params">value: <span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>(<span class="params">left: <span class="type">BinaryTree</span>, right: <span class="type">BinaryTree</span></span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> n = <span class="type">Node</span>(<span class="type">Node</span>(<span class="type">Leaf</span>(<span class="number">3</span>), <span class="type">Leaf</span>(<span class="number">8</span>)), <span class="type">Leaf</span>(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">leafSum</span></span>(bt: <span class="type">BinaryTree</span>): <span class="type">Int</span> = bt <span class="keyword">match</span> {</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Node</span>(left, right) =&gt; leafSum(left) + leafSum(right)</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Leaf</span>(value) =&gt; value</span><br><span class="line">    <span class="keyword">case</span> _ =&gt; <span class="number">0</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"元素之和为："</span> + leafSum(n))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex06</span> </span><br><span class="line">元素之和为：<span class="number">16</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">5</span> s, completed <span class="type">May</span> <span class="number">23</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">01</span>:<span class="number">43</span> <span class="type">AM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>扩展前一个练习中的树，使得每个节点可以有任意多的后代，并重新实现leafSum函数。第五题中的树应该能够通过下述代码表示：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Node</span>(<span class="type">Node</span>(<span class="type">Leaf</span>(<span class="number">3</span>),<span class="type">Leaf</span>(<span class="number">8</span>)),<span class="type">Leaf</span>(<span class="number">2</span>),<span class="type">Node</span>(<span class="type">Leaf</span>(<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex07</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">sealed</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaf</span>(<span class="params">value: <span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>(<span class="params">bt: <span class="type">BinaryTree</span>*</span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> n = <span class="type">Node</span>(<span class="type">Node</span>(<span class="type">Leaf</span>(<span class="number">3</span>), <span class="type">Leaf</span>(<span class="number">8</span>)), <span class="type">Leaf</span>(<span class="number">2</span>), <span class="type">Node</span>(<span class="type">Leaf</span>(<span class="number">5</span>)))</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">leafSum</span></span>(bt: <span class="type">BinaryTree</span>): <span class="type">Int</span> = bt <span class="keyword">match</span> {</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Node</span>(bts @ _*) =&gt; bts.map(leafSum).sum</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Leaf</span>(value) =&gt; value</span><br><span class="line">    <span class="keyword">case</span> _ =&gt; <span class="number">0</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"元素之和为："</span> + leafSum(n))</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex07</span> </span><br><span class="line">元素之和为：<span class="number">18</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">8</span> s, completed <span class="type">May</span> <span class="number">23</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">12</span>:<span class="number">35</span> <span class="type">AM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>扩展前一个练习中的树，使得每个非叶子节点除了后代之外，能够存放一个操作符。然后编写一个eval函数来计算它的值。举例来说：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	  +</span><br><span class="line">/ | \</span><br><span class="line">  *  <span class="number">2</span>  -</span><br><span class="line"> / \    |</span><br><span class="line"><span class="number">3</span>   <span class="number">8</span>   <span class="number">5</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上面这棵树的值为(3 * 8) + 2 + (-5) = 21</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex08</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">sealed</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BinaryTree</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Leaf</span>(<span class="params">value: <span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line">  <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>(<span class="params">op: <span class="type">Char</span>, leafs: <span class="type">BinaryTree</span>*</span>) <span class="keyword">extends</span> <span class="title">BinaryTree</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> n = <span class="type">Node</span>('+', <span class="type">Node</span>('*', <span class="type">Leaf</span>(<span class="number">3</span>), <span class="type">Leaf</span>(<span class="number">8</span>)), <span class="type">Leaf</span>(<span class="number">2</span>), <span class="type">Node</span>('-', <span class="type">Leaf</span>(<span class="number">5</span>)))</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">eval</span></span>(bt: <span class="type">BinaryTree</span>): <span class="type">Int</span> = bt <span class="keyword">match</span>{</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Node</span>('+', bts @ _*) =&gt; bts.map(eval).sum</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Node</span>('-', bts @ _*) =&gt; bts.map(eval).foldLeft(<span class="number">0</span>)(_ - _)</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Node</span>('*', bts @ _*) =&gt; bts.map(eval).product</span><br><span class="line">    <span class="keyword">case</span> <span class="type">Leaf</span>(value) =&gt; value</span><br><span class="line">    <span class="keyword">case</span> _ =&gt; <span class="number">0</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"这颗二叉树的计算值为："</span> + eval(n))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex08</span> </span><br><span class="line">这颗二叉树的计算值为：<span class="number">21</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">6</span> s, completed <span class="type">May</span> <span class="number">23</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">29</span>:<span class="number">30</span> <span class="type">AM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>编写一个函数，计算List[Option[Int]]中所有非None值之和。不得使用match语句。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex09</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">sum</span></span>(list: <span class="type">List</span>[<span class="type">Option</span>[<span class="type">Int</span>]]): <span class="type">Int</span> = (<span class="keyword">for</span> (<span class="type">Some</span>(v) &lt;- list) <span class="keyword">yield</span> v).sum</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> list: <span class="type">List</span>[<span class="type">Option</span>[<span class="type">Int</span>]] = <span class="type">List</span>(<span class="type">Some</span>(<span class="number">1</span>), <span class="type">Some</span>(<span class="number">2</span>), <span class="type">Some</span>(<span class="number">3</span>), <span class="type">Some</span>(<span class="number">4</span>), <span class="type">None</span>)</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"列表的和为："</span> + sum(list))</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex09</span> </span><br><span class="line">列表的和为：<span class="number">10</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">10</span> s, completed <span class="type">May</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">48</span>:<span class="number">53</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>编写一个函数，将两个类型为Double=&gt;Option[Double]的函数组合在一起，产生另一个同样类型的函数。如果其中一个函数返回None，则组合函数也应返回None。例如：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span></span>(x : <span class="type">Double</span>) = <span class="keyword">if</span> ( x &gt;= <span class="number">0</span>) <span class="type">Some</span>(sqrt(x)) <span class="keyword">else</span> <span class="type">None</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g</span></span>(x : <span class="type">Double</span>) = <span class="keyword">if</span> ( x != <span class="number">1</span>) <span class="type">Some</span>( <span class="number">1</span> / ( x - <span class="number">1</span>)) <span class="keyword">else</span> <span class="type">None</span></span><br><span class="line"><span class="keyword">val</span> h = compose(f,g)</span><br></pre></td></tr></table></figure>
+<p>h(2)将得到Some(1)，而h(1)和h(0)将得到None。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chpater14</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex10</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line"></span><br><span class="line">  <span class="keyword">import</span> scala.math._</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">f</span></span>(x: <span class="type">Double</span>) = <span class="keyword">if</span> (x &gt;= <span class="number">0</span>) <span class="type">Some</span>(sqrt(x)) <span class="keyword">else</span> <span class="type">None</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">g</span></span>(x: <span class="type">Double</span>) = <span class="keyword">if</span> (x != <span class="number">1</span>) <span class="type">Some</span> (<span class="number">1</span> / (x - <span class="number">1</span>)) <span class="keyword">else</span> <span class="type">None</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">compose</span></span>(f: <span class="type">Double</span> =&gt; <span class="type">Option</span>[<span class="type">Double</span>], g: <span class="type">Double</span> =&gt; <span class="type">Option</span>[<span class="type">Double</span>]): <span class="type">Double</span> =&gt; <span class="type">Option</span>[<span class="type">Double</span>] = {</span><br><span class="line">    (x: <span class="type">Double</span>) =&gt; (f(x), g(x)) <span class="keyword">match</span> {</span><br><span class="line">      <span class="keyword">case</span> (<span class="type">Some</span>(_), r @ <span class="type">Some</span>(_)) =&gt; r</span><br><span class="line">      <span class="keyword">case</span> _ =&gt; <span class="type">None</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> h = compose(f, g)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (x &lt;- <span class="number">0</span> until <span class="number">3</span>)</span><br><span class="line">    println(h(x))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chpater14.<span class="type">Ex10</span> </span><br><span class="line"><span class="type">Some</span>(<span class="number">-1.0</span>)</span><br><span class="line"><span class="type">None</span></span><br><span class="line"><span class="type">Some</span>(<span class="number">1.0</span>)</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">3</span> s, completed <span class="type">May</span> <span class="number">24</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">12</span>:<span class="number">25</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/15/Scala-for-the-Impatient-Chapter-13-%E7%BB%83%E4%B9%A0/" rel="prev" title="Scala for the Impatient Chapter 13 练习">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 13 练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/26/Scala-for-the-Impatient-Chapter-15-%E6%B3%A8%E8%A7%A3/" rel="next" title="Scala for the Impatient Chapter 15 注解">
+                  Scala for the Impatient Chapter 15 注解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

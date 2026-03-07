@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第三章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 3 练习">
+<meta property="og:url" content="https://datacruiser.github.io/2019/04/20/Scala-for-the-Impatient-Chapter-3-%E7%BB%83%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第三章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-20T23:11:48.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.870Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/04/20/Scala-for-the-Impatient-Chapter-3-%E7%BB%83%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/04/20/Scala-for-the-Impatient-Chapter-3-%E7%BB%83%E4%B9%A0/","path":"2019/04/20/Scala-for-the-Impatient-Chapter-3-练习/","title":"Scala for the Impatient Chapter 3 练习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 3 练习 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/04/20/Scala-for-the-Impatient-Chapter-3-%E7%BB%83%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 3 练习 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第三章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 3 练习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-20 23:11:48" itemprop="dateCreated datePublished" datetime="2019-04-20T23:11:48+00:00">2019-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/04/20/Scala-for-the-Impatient-Chapter-3-%E7%BB%83%E4%B9%A0/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/20/Scala-for-the-Impatient-Chapter-3-练习/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第三章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p>编写一段代码，将 a 设置为一个 n 个随机整数的数组，要求随机数介于0（包含）和 n（不包含）之间。</p>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createArray</span></span>(n: <span class="type">Int</span>): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line"><span class="keyword">val</span> arr=<span class="keyword">new</span> <span class="type">Array</span>[<span class="type">Int</span>](n)</span><br><span class="line"><span class="keyword">val</span> rand=<span class="keyword">new</span> <span class="type">Random</span>()</span><br><span class="line"><span class="keyword">for</span>(element &lt;- arr)</span><br><span class="line"><span class="keyword">yield</span> rand.nextInt(n)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">createArray</span></span>(n: <span class="type">Int</span>): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">     | <span class="keyword">val</span> arr=<span class="keyword">new</span> <span class="type">Array</span>[<span class="type">Int</span>](n)</span><br><span class="line">     | <span class="keyword">val</span> rand=<span class="keyword">new</span> <span class="type">Random</span>()</span><br><span class="line">     | <span class="keyword">for</span>(element &lt;- arr)</span><br><span class="line">     | <span class="keyword">yield</span> rand.nextInt(n)</span><br><span class="line">     | }</span><br><span class="line">createArray: (n: <span class="type">Int</span>)<span class="type">Array</span>[<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; createArray(<span class="number">10</span>)</span><br><span class="line">res57: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>编写一个循环，将整数数组中相邻的元素置换。例如，<code>Array(1, 2, 3, 4, 5)</code>置换后变为<code>Array(2, 1, 4, 3, 5)</code>。</p>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swap</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]) = {</span><br><span class="line">	<span class="keyword">for</span>(i &lt;- <span class="number">0</span> until (arr.length - <span class="number">1</span>, <span class="number">2</span>)){</span><br><span class="line">		<span class="keyword">val</span> t = arr(i)</span><br><span class="line">		arr(i) = arr(i + <span class="number">1</span>)</span><br><span class="line">		arr(i + <span class="number">1</span>) = t</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">swap</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]) = {</span><br><span class="line">     |   <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until (arr.length - <span class="number">1</span>, <span class="number">2</span>)){</span><br><span class="line">     |           <span class="keyword">val</span> t = arr(i)</span><br><span class="line">     |           arr(i) = arr(i + <span class="number">1</span>)</span><br><span class="line">     |           arr(i + <span class="number">1</span>) = t</span><br><span class="line">     |   }</span><br><span class="line">     | }</span><br><span class="line">swap: (arr: <span class="type">Array</span>[<span class="type">Int</span>])<span class="type">Unit</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> ts = <span class="type">Array</span>(<span class="number">1</span>,<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> ,<span class="number">5</span> ,<span class="number">6</span>)</span><br><span class="line">ts: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; ts</span><br><span class="line">res62: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; swap(ts)</span><br><span class="line"></span><br><span class="line">scala&gt; ts</span><br><span class="line">res64: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>重复前一个练习，不过这一次生成一个新的值交换过的数组。用 for/yield。</p>
+<p>实现代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swapYield</span></span>(arr:<span class="type">Array</span>[<span class="type">Int</span>]) = {</span><br><span class="line">	<span class="keyword">for</span>(i &lt;- <span class="number">0</span> until arr.length) <span class="keyword">yield</span> {</span><br><span class="line">		<span class="keyword">if</span>(i &lt; (arr.length - <span class="number">1</span>) &amp;&amp; i % <span class="number">2</span> == <span class="number">0</span>) arr(i+<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(i &lt;= (arr.length - <span class="number">1</span>) &amp;&amp; i % <span class="number">2</span> == <span class="number">1</span>) arr(i<span class="number">-1</span>)</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(i == (arr.length - <span class="number">1</span>) &amp;&amp; i % <span class="number">2</span> == <span class="number">0</span>) arr(i)</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这里面有个坑，对于数组内元素个数的奇偶性需要做一个判断，以避免最后元素的处理发生错误。</p>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">swapYield</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]) = {</span><br><span class="line">     |   <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until arr.length) <span class="keyword">yield</span> {</span><br><span class="line">     |           <span class="keyword">if</span>(i &lt; (arr.length - <span class="number">1</span>) &amp;&amp; i % <span class="number">2</span> == <span class="number">0</span>) arr(i+<span class="number">1</span>)</span><br><span class="line">     |           <span class="keyword">else</span> <span class="keyword">if</span>(i &lt;= (arr.length - <span class="number">1</span>) &amp;&amp; i % <span class="number">2</span> == <span class="number">1</span>) arr(i<span class="number">-1</span>)</span><br><span class="line">     |           <span class="keyword">else</span> <span class="keyword">if</span>(i == (arr.length - <span class="number">1</span>) &amp;&amp; i % <span class="number">2</span> == <span class="number">0</span>) arr(i)</span><br><span class="line">     |   }</span><br><span class="line">     | }</span><br><span class="line">swapYield: (arr: <span class="type">Array</span>[<span class="type">Int</span>])scala.collection.immutable.<span class="type">IndexedSeq</span>[<span class="type">AnyVal</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; e</span><br><span class="line">res83: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; a</span><br><span class="line">res84: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; swapYield(a)</span><br><span class="line">res85: scala.collection.immutable.<span class="type">IndexedSeq</span>[<span class="type">AnyVal</span>] = <span class="type">Vector</span>(<span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; swapYield(e)</span><br><span class="line">res86: scala.collection.immutable.<span class="type">IndexedSeq</span>[<span class="type">AnyVal</span>] = <span class="type">Vector</span>(<span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>给定一个整数数组，产出一个新的数组，包含原数组中的所有正值，以原有顺序排列，之后的元素是所有0或负值，以原有顺序排列。</p>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">signArr</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">    <span class="keyword">val</span> buff = <span class="keyword">new</span> <span class="type">ArrayBuffer</span>[<span class="type">Int</span>]()</span><br><span class="line">    buff ++= (<span class="keyword">for</span>(ele &lt;- arr <span class="keyword">if</span> ele &gt; <span class="number">0</span>) <span class="keyword">yield</span> ele)</span><br><span class="line">    buff ++= (<span class="keyword">for</span>(ele &lt;- arr <span class="keyword">if</span> ele == <span class="number">0</span>) <span class="keyword">yield</span> ele)</span><br><span class="line">    buff ++= (<span class="keyword">for</span>(ele &lt;- arr <span class="keyword">if</span> ele &lt; <span class="number">0</span>) <span class="keyword">yield</span> ele)</span><br><span class="line">    buff.toArray</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">signArr</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">     |     <span class="keyword">val</span> buff = <span class="keyword">new</span> <span class="type">ArrayBuffer</span>[<span class="type">Int</span>]()</span><br><span class="line">     |     buff ++= (<span class="keyword">for</span>(ele &lt;- arr <span class="keyword">if</span> ele &gt; <span class="number">0</span>) <span class="keyword">yield</span> ele)</span><br><span class="line">     |     buff ++= (<span class="keyword">for</span>(ele &lt;- arr <span class="keyword">if</span> ele == <span class="number">0</span>) <span class="keyword">yield</span> ele)</span><br><span class="line">     |     buff ++= (<span class="keyword">for</span>(ele &lt;- arr <span class="keyword">if</span> ele &lt; <span class="number">0</span>) <span class="keyword">yield</span> ele)</span><br><span class="line">     |     buff.toArray</span><br><span class="line">     | }</span><br><span class="line">signArr: (arr: <span class="type">Array</span>[<span class="type">Int</span>])<span class="type">Array</span>[<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> t = <span class="type">Array</span>(<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">-10</span>,<span class="number">0</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">-100</span>)</span><br><span class="line">t: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">-10</span>, <span class="number">0</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">-100</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; signArr(t)</span><br><span class="line">res87: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">0</span>, <span class="number">-10</span>, <span class="number">-100</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>如何计算 Array[Double]的平均值？<br>
+计算平均值可以分两步，首先使用<code> sum</code>函数进行求和，然后将求和的值除以<code> Array.length</code>，代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arrAvg</span></span>(arr: <span class="type">Array</span>[<span class="type">Double</span>]): <span class="type">Double</span> = {</span><br><span class="line">arr.sum / arr.length</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">arrAvg</span></span>(arr: <span class="type">Array</span>[<span class="type">Double</span>]): <span class="type">Double</span> = {</span><br><span class="line">     | arr.sum / arr.length</span><br><span class="line">     | }</span><br><span class="line">arrAvg: (arr: <span class="type">Array</span>[<span class="type">Double</span>])<span class="type">Double</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> arr = <span class="type">Array</span>(<span class="number">10.0</span>, <span class="number">100</span>, <span class="number">20</span>, <span class="number">15</span>, <span class="number">25</span>)</span><br><span class="line">arr: <span class="type">Array</span>[<span class="type">Double</span>] = <span class="type">Array</span>(<span class="number">10.0</span>, <span class="number">100.0</span>, <span class="number">20.0</span>, <span class="number">15.0</span>, <span class="number">25.0</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; arrAvg(arr)</span><br><span class="line">res90: <span class="type">Double</span> = <span class="number">34.0</span></span><br></pre></td></tr></table></figure>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>如果重新组织 Array[Int]的元素将它们以反序排列？对于 ArrayBuffer[Int]你又会怎么做呢？<br>
+对于 Array 的反转可以将 Array 头尾的元素互换，对于 ArrayBuffer 的反转，查询了ScalaDoc，可以直接调用<code> reverse</code>函数。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="function"><span class="keyword">def</span> <span class="title">reverse</span></span>: <span class="type">Repr</span></span><br><span class="line"><span class="type">Returns</span> <span class="keyword">new</span> general sequence <span class="keyword">with</span> elements in reversed order.</span><br><span class="line"></span><br><span class="line"><span class="type">Note</span>: will not terminate <span class="keyword">for</span> infinite-sized collections.</span><br><span class="line">returns</span><br><span class="line"><span class="type">A</span> <span class="keyword">new</span> general sequence <span class="keyword">with</span> all elements of <span class="keyword">this</span> general sequence in reversed order.</span><br></pre></td></tr></table></figure>
+<p>实现代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Array的反转</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">revertArr</span></span>(arr:<span class="type">Array</span>[<span class="type">Int</span>]) = {</span><br><span class="line">	<span class="keyword">for</span>(i &lt;- <span class="number">0</span> until (arr. length / <span class="number">2</span>)) {</span><br><span class="line">		<span class="keyword">val</span> t = arr(i)</span><br><span class="line">		arr(i) = arr(arr.length<span class="number">-1</span>-i)</span><br><span class="line">		arr(arr.length<span class="number">-1</span>-i) = t</span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// ArrayBuffer的反转，直接调用reverse函数</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">ArrayBuffer</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">revertBuf</span></span>(arr:<span class="type">ArrayBuffer</span>[<span class="type">Int</span>]) = {</span><br><span class="line">	arr.reverse</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">revertArr</span></span>(arr:<span class="type">Array</span>[<span class="type">Int</span>]) = {</span><br><span class="line">     |   <span class="keyword">for</span>(i &lt;- <span class="number">0</span> until (arr. length / <span class="number">2</span>)) {</span><br><span class="line">     |           <span class="keyword">val</span> t = arr(i)</span><br><span class="line">     |           arr(i) = arr(arr.length<span class="number">-1</span>-i)</span><br><span class="line">     |           arr(arr.length<span class="number">-1</span>-i) = t</span><br><span class="line">     |   }</span><br><span class="line">     | }</span><br><span class="line">revertArr: (arr: <span class="type">Array</span>[<span class="type">Int</span>])<span class="type">Unit</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.mutable.<span class="type">ArrayBuffer</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">ArrayBuffer</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">revertBuf</span></span>(arr:<span class="type">ArrayBuffer</span>[<span class="type">Int</span>]) = {</span><br><span class="line">     |   arr.reverse</span><br><span class="line">     | }</span><br><span class="line">revertBuf: (arr: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Int</span>])scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; a</span><br><span class="line">res91: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; revertArr(a)</span><br><span class="line"></span><br><span class="line">scala&gt; a</span><br><span class="line">res95: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">111</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> ab = <span class="keyword">new</span> <span class="type">ArrayBuffer</span>[<span class="type">Int</span>]()</span><br><span class="line">ab: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Int</span>] = <span class="type">ArrayBuffer</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; ab ++= a</span><br><span class="line">res99: ab.<span class="keyword">type</span> = <span class="type">ArrayBuffer</span>(<span class="number">111</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; ab</span><br><span class="line">res100: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Int</span>] = <span class="type">ArrayBuffer</span>(<span class="number">111</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; revertBuf(ab)</span><br><span class="line">res101: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Int</span>] = <span class="type">ArrayBuffer</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">111</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>编写一段代码，产生数组中的所有值，去掉重复项。（提示：查看 Scaladoc）</p>
+<p>查看 Scaladoc，发现有一个去重函数<code> distinct</code>：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">distinct</span></span>: <span class="type">Array</span>[<span class="type">T</span>]</span><br><span class="line"><span class="type">Builds</span> a <span class="keyword">new</span> sequence from <span class="keyword">this</span> sequence without any duplicate elements.</span><br><span class="line"></span><br><span class="line"><span class="type">Note</span>: will not terminate <span class="keyword">for</span> infinite-sized collections.</span><br><span class="line">returns</span><br><span class="line"><span class="type">A</span> <span class="keyword">new</span> sequence which contains the first occurrence of every element of <span class="keyword">this</span> sequence.</span><br><span class="line"><span class="type">Definition</span> <span class="type">Classes</span></span><br><span class="line"><span class="type">SeqLike</span> → <span class="type">GenSeqLike</span></span><br></pre></td></tr></table></figure>
+<p>然后编写代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">removeDuplicate</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">    <span class="keyword">val</span> b = <span class="keyword">new</span> <span class="type">ArrayBuffer</span>[<span class="type">Int</span>]()</span><br><span class="line">    b ++= arr.distinct</span><br><span class="line">    b.toArray</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">removeDuplicate</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">     |     <span class="keyword">val</span> b = <span class="keyword">new</span> <span class="type">ArrayBuffer</span>[<span class="type">Int</span>]()</span><br><span class="line">     |     b ++= arr.distinct</span><br><span class="line">     |     b.toArray</span><br><span class="line">     | }</span><br><span class="line">removeDuplicate: (arr: <span class="type">Array</span>[<span class="type">Int</span>])<span class="type">Array</span>[<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> rd = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span> , <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">10</span>,<span class="number">11</span>,<span class="number">10</span>)</span><br><span class="line">rd: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; removeDuplicate(rd)</span><br><span class="line">res102: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+<p>不过从 ScalaDoc 来看，<code>distinct</code>函数是支持泛型的，但是我们写的<code> removeDuplicate</code>只支持<code> Int</code>类型，后面还需要改进。</p>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>重新编写3.4节结尾的示例。收集负值元素的下标，反序，去掉最后一个下标，然后对每一个下标调用<code> a.remove(i)</code>。比较这样做的效率和3.4节中另外两种方法的效率。</p>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">removeRevLast</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">    <span class="keyword">val</span> indexes = <span class="keyword">for</span> (i &lt;- <span class="number">0</span> until arr.length <span class="keyword">if</span> arr(i) &lt; <span class="number">0</span>) <span class="keyword">yield</span> i <span class="comment">//收集所有负值元素的下标</span></span><br><span class="line">    <span class="keyword">val</span> dropIndexes = indexes.reverse.dropRight(<span class="number">1</span>) <span class="comment">//反序并将最后一个下标去除</span></span><br><span class="line">    <span class="keyword">val</span> tmp = arr.toBuffer <span class="comment">//调用 toBuff定义一个 ArrayBuffer并拷贝原数组</span></span><br><span class="line">    <span class="keyword">for</span> (index &lt;- dropIndexes)</span><br><span class="line">        tmp.remove(index) <span class="comment">//对每一个需要被删除的下标删除元素</span></span><br><span class="line">    tmp.toArray <span class="comment">//返回处理后的数组</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">removeRevLast</span></span>(arr: <span class="type">Array</span>[<span class="type">Int</span>]): <span class="type">Array</span>[<span class="type">Int</span>] = {</span><br><span class="line">     |     <span class="keyword">val</span> indexes = <span class="keyword">for</span> (i &lt;- <span class="number">0</span> until arr.length <span class="keyword">if</span> arr(i) &lt; <span class="number">0</span>) <span class="keyword">yield</span> i <span class="comment">//收集所有负值元素的下标</span></span><br><span class="line">     |     <span class="keyword">val</span> dropIndexes = indexes.reverse.dropRight(<span class="number">1</span>) <span class="comment">//反序并将最后一个下标去除</span></span><br><span class="line">     |     <span class="keyword">val</span> tmp = arr.toBuffer <span class="comment">//调用 toBuff定义一个 ArrayBuffer并拷贝原数组</span></span><br><span class="line">     |     <span class="keyword">for</span> (index &lt;- dropIndexes)</span><br><span class="line">     |         tmp.remove(index) <span class="comment">//对每一个需要被删除的下标删除元素</span></span><br><span class="line">     |     tmp.toArray <span class="comment">//返回处理后的数组</span></span><br><span class="line">     | }</span><br><span class="line">removeRevLast: (arr: <span class="type">Array</span>[<span class="type">Int</span>])<span class="type">Array</span>[<span class="type">Int</span>]</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> rrl = <span class="type">Array</span>(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,<span class="number">23</span>)</span><br><span class="line">rrl: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">23</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; removeRevLast(rrl)</span><br><span class="line">res103: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">-1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">23</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>创建一个用<code> java.TimeZone.getAvailableIDs</code>返回的时区集合，判断条件是他们在美洲。去掉"America/" 前缀并排序。</p>
+<p>代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> americaTimeZone = java.util.<span class="type">TimeZone</span>.getAvailableIDs</span><br><span class="line"><span class="keyword">val</span> filteredTimeZone = java.util.<span class="type">TimeZone</span>.getAvailableIDs.filter(_.take(<span class="string">"America/"</span>.length)==<span class="string">"America/"</span>)</span><br><span class="line"><span class="keyword">val</span> sortedTimeZone = filteredTimeZone.map(_.drop(<span class="string">"America/"</span>.length)).sorted</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> americaTimeZone = java.util.<span class="type">TimeZone</span>.getAvailableIDs</span><br><span class="line">americaTimeZone: <span class="type">Array</span>[<span class="type">String</span>] = <span class="type">Array</span>(<span class="type">Africa</span>/<span class="type">Abidjan</span>, <span class="type">Africa</span>/<span class="type">Accra</span>, <span class="type">Africa</span>/<span class="type">Addis_Ababa</span>, <span class="type">Africa</span>/<span class="type">Algiers</span>, <span class="type">Africa</span>/<span class="type">Asmara</span>, <span class="type">Africa</span>/<span class="type">Asmera</span>, <span class="type">Africa</span>/<span class="type">Bamako</span>, <span class="type">Africa</span>/<span class="type">Bangui</span>, <span class="type">Africa</span>/<span class="type">Banjul</span>, <span class="type">Africa</span>/<span class="type">Bissau</span>, <span class="type">Africa</span>/<span class="type">Blantyre</span>, <span class="type">Africa</span>/<span class="type">Brazzaville</span>, <span class="type">Africa</span>/<span class="type">Bujumbura</span>, <span class="type">Africa</span>/<span class="type">Cairo</span>, <span class="type">Africa</span>/<span class="type">Casablanca</span>, <span class="type">Africa</span>/<span class="type">Ceuta</span>, <span class="type">Africa</span>/<span class="type">Conakry</span>, <span class="type">Africa</span>/<span class="type">Dakar</span>, <span class="type">Africa</span>/<span class="type">Dar_es_Salaam</span>, <span class="type">Africa</span>/<span class="type">Djibouti</span>, <span class="type">Africa</span>/<span class="type">Douala</span>, <span class="type">Africa</span>/<span class="type">El_Aaiun</span>, <span class="type">Africa</span>/<span class="type">Freetown</span>, <span class="type">Africa</span>/<span class="type">Gaborone</span>, <span class="type">Africa</span>/<span class="type">Harare</span>, <span class="type">Africa</span>/<span class="type">Johannesburg</span>, <span class="type">Africa</span>/<span class="type">Juba</span>, <span class="type">Africa</span>/<span class="type">Kampala</span>, <span class="type">Africa</span>/<span class="type">Khartoum</span>, <span class="type">Africa</span>/<span class="type">Kigali</span>, <span class="type">Africa</span>/<span class="type">Kinshasa</span>, <span class="type">Africa</span>/<span class="type">Lagos</span>, <span class="type">Africa</span>/<span class="type">Libreville</span>, <span class="type">Africa</span>/<span class="type">Lome</span>, <span class="type">Africa</span>/<span class="type">Luanda</span>, <span class="type">Africa</span>/<span class="type">Lubumbashi</span>, <span class="type">Africa</span>/<span class="type">Lusaka</span>, <span class="type">Africa</span>/<span class="type">Malabo</span>, <span class="type">Africa</span>/<span class="type">Maputo</span>, <span class="type">Africa</span>/<span class="type">Maseru</span>, <span class="type">Africa</span>/<span class="type">Mbabane</span>, <span class="type">Africa</span>/<span class="type">Mogadishu</span>, <span class="type">Africa</span>/<span class="type">Monrovia</span>, <span class="type">Africa</span>/<span class="type">Nairobi</span>, <span class="type">Africa</span>/<span class="type">Ndjamena</span>, <span class="type">A</span>...</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> filteredTimeZone = java.util.<span class="type">TimeZone</span>.getAvailableIDs.filter(_.take(<span class="string">"America/"</span>.length)==<span class="string">"America/"</span>)</span><br><span class="line">filteredTimeZone: <span class="type">Array</span>[<span class="type">String</span>] = <span class="type">Array</span>(<span class="type">America</span>/<span class="type">Adak</span>, <span class="type">America</span>/<span class="type">Anchorage</span>, <span class="type">America</span>/<span class="type">Anguilla</span>, <span class="type">America</span>/<span class="type">Antigua</span>, <span class="type">America</span>/<span class="type">Araguaina</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Buenos_Aires</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Catamarca</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">ComodRivadavia</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Cordoba</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Jujuy</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">La_Rioja</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Mendoza</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Rio_Gallegos</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Salta</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">San_Juan</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">San_Luis</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Tucuman</span>, <span class="type">America</span>/<span class="type">Argentina</span>/<span class="type">Ushuaia</span>, <span class="type">America</span>/<span class="type">Aruba</span>, <span class="type">America</span>/<span class="type">Asuncion</span>, <span class="type">America</span>/<span class="type">Atikokan</span>, <span class="type">America</span>/<span class="type">Atka</span>, <span class="type">America</span>/<span class="type">Bahia</span>, <span class="type">America</span>/<span class="type">Bahia_Banderas</span>, <span class="type">America</span>/<span class="type">Barbados</span>, <span class="type">America</span>/<span class="type">Belem</span>, <span class="type">America</span>/<span class="type">Belize</span>, <span class="type">America</span>/<span class="type">Blanc</span>-<span class="type">Sablon</span>, <span class="type">America</span>/<span class="type">Boa_Vista</span>, <span class="type">America</span>/<span class="type">Bogota</span>, <span class="type">America</span>/<span class="type">Boise</span>, <span class="type">America</span>/<span class="type">Buenos_Aires</span>, <span class="type">America</span>/<span class="type">Cambridge_Bay</span>, <span class="type">Ameri</span>...</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> sortedTimeZone = filteredTimeZone.map(_.drop(<span class="string">"America/"</span>.length)).sorted</span><br><span class="line">sortedTimeZone: <span class="type">Array</span>[<span class="type">String</span>] = <span class="type">Array</span>(<span class="type">Adak</span>, <span class="type">Anchorage</span>, <span class="type">Anguilla</span>, <span class="type">Antigua</span>, <span class="type">Araguaina</span>, <span class="type">Argentina</span>/<span class="type">Buenos_Aires</span>, <span class="type">Argentina</span>/<span class="type">Catamarca</span>, <span class="type">Argentina</span>/<span class="type">ComodRivadavia</span>, <span class="type">Argentina</span>/<span class="type">Cordoba</span>, <span class="type">Argentina</span>/<span class="type">Jujuy</span>, <span class="type">Argentina</span>/<span class="type">La_Rioja</span>, <span class="type">Argentina</span>/<span class="type">Mendoza</span>, <span class="type">Argentina</span>/<span class="type">Rio_Gallegos</span>, <span class="type">Argentina</span>/<span class="type">Salta</span>, <span class="type">Argentina</span>/<span class="type">San_Juan</span>, <span class="type">Argentina</span>/<span class="type">San_Luis</span>, <span class="type">Argentina</span>/<span class="type">Tucuman</span>, <span class="type">Argentina</span>/<span class="type">Ushuaia</span>, <span class="type">Aruba</span>, <span class="type">Asuncion</span>, <span class="type">Atikokan</span>, <span class="type">Atka</span>, <span class="type">Bahia</span>, <span class="type">Bahia_Banderas</span>, <span class="type">Barbados</span>, <span class="type">Belem</span>, <span class="type">Belize</span>, <span class="type">Blanc</span>-<span class="type">Sablon</span>, <span class="type">Boa_Vista</span>, <span class="type">Bogota</span>, <span class="type">Boise</span>, <span class="type">Buenos_Aires</span>, <span class="type">Cambridge_Bay</span>, <span class="type">Campo_Grande</span>, <span class="type">Cancun</span>, <span class="type">Caracas</span>, <span class="type">Catamarca</span>, <span class="type">Cayenne</span>, <span class="type">Cayman</span>, <span class="type">Chicago</span>, <span class="type">Chihuahua</span>, <span class="type">Coral_Harbour</span>, <span class="type">Cordoba</span>, <span class="type">Costa_Rica</span>, <span class="type">Creston</span>, <span class="type">Cuiaba</span>, <span class="type">Curacao</span>, <span class="type">Danmarkshavn</span>, <span class="type">Dawson</span>, <span class="type">Dawson_Creek</span>, <span class="type">Denver</span>, <span class="type">Detroit</span>, <span class="type">Dominica</span>, <span class="type">Edmonton</span>, <span class="type">Eirunepe</span>, <span class="type">El_Salvador</span>, <span class="type">Ensenada</span>, <span class="type">Fort_Nelson</span>, <span class="type">Fort_Wayne</span>,...</span><br></pre></td></tr></table></figure>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>引入<code> java.awt.datatransfer._</code>并构建一个类型为<code> SystemFlavorMap</code>类型的对象，然后以DataFlavor.imageFlavor为参数调用getNativesForFlavor方法，以Scala缓冲保存返回值。 (为什么用这样一个晦涩难懂的类？因为在Java标准库中很难找到使用java.util.List的代码)</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> flavors = <span class="type">SystemFlavorMap</span>.getDefaultFlavorMap().asInstancesOf[<span class="type">SystemFlavorMap</span>]</span><br><span class="line">&lt;console&gt;:<span class="number">14</span>: error: value asInstancesOf is not a member of java.awt.datatransfer.<span class="type">FlavorMap</span></span><br><span class="line">       <span class="keyword">val</span> flavors = <span class="type">SystemFlavorMap</span>.getDefaultFlavorMap().asInstancesOf[<span class="type">SystemFlavorMap</span>]</span><br><span class="line">                                                           ^</span><br><span class="line"><span class="comment">//说明一下，整条语句无法执行，提示java.awt.datatransfer.FlavorMap当中没有 asInstancesOf这个成员，翻阅了 javaDoc，确实没有这个方法，这个方法是在 Scala 的抽象类 Any 当中，代码如下：</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="function"><span class="keyword">def</span> <span class="title">asInstanceOf</span></span>[<span class="type">T0</span>]: <span class="type">T0</span></span><br><span class="line"><span class="type">Cast</span> the receiver <span class="class"><span class="keyword">object</span> <span class="title">to</span> <span class="title">be</span> <span class="title">of</span> <span class="title">type</span> <span class="title">T0</span>.</span></span><br><span class="line"></span><br><span class="line"><span class="type">Note</span> that the success of a cast at runtime is modulo <span class="type">Scala</span>'s erasure semantics. <span class="type">Therefore</span> the expression <span class="number">1.</span>asInstanceOf[<span class="type">String</span>] will <span class="keyword">throw</span> a <span class="type">ClassCastException</span> at runtime, <span class="keyword">while</span> the expression <span class="type">List</span>(<span class="number">1</span>).asInstanceOf[<span class="type">List</span>[<span class="type">String</span>]] will not. <span class="type">In</span> the latter example, because the <span class="class"><span class="keyword">type</span> <span class="title">argument</span> <span class="title">is</span> <span class="title">erased</span> <span class="title">as</span> <span class="title">part</span> <span class="title">of</span> <span class="title">compilation</span> <span class="title">it</span> <span class="title">is</span> <span class="title">not</span> <span class="title">possible</span> <span class="title">to</span> <span class="title">check</span> <span class="title">whether</span> <span class="title">the</span> <span class="title">contents</span> <span class="title">of</span> <span class="title">the</span> <span class="title">list</span> <span class="title">are</span> <span class="title">of</span> <span class="title">the</span> <span class="title">requested</span> <span class="title">type</span>.</span></span><br><span class="line">returns</span><br><span class="line">the receiver <span class="keyword">object</span>.</span><br><span class="line"><span class="type">Exceptions</span> thrown</span><br><span class="line"><span class="type">ClassCastException</span> <span class="keyword">if</span> the receiver <span class="class"><span class="keyword">object</span> <span class="title">is</span> <span class="title">not</span> <span class="title">an</span> <span class="title">instance</span> <span class="title">of</span> <span class="title">the</span> <span class="title">erasure</span> <span class="title">of</span> <span class="title">type</span> <span class="title">T0</span>.</span></span><br><span class="line"><span class="comment">//然后，将对象的创建和asInstanceOf方法调用分两步执行就可以了</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> flavors = <span class="type">SystemFlavorMap</span>.getDefaultFlavorMap()</span><br><span class="line">flavors: java.awt.datatransfer.<span class="type">FlavorMap</span> = java.awt.datatransfer.<span class="type">SystemFlavorMap</span>@<span class="number">30364216</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> systemflavors = flavors.asInstanceOf[<span class="type">SystemFlavorMap</span>]</span><br><span class="line">systemflavors: java.awt.datatransfer.<span class="type">SystemFlavorMap</span> = java.awt.datatransfer.<span class="type">SystemFlavorMap</span>@<span class="number">30364216</span></span><br><span class="line"></span><br><span class="line">scala&gt; println(systemflavors.getNativesForFlavor(<span class="type">DataFlavor</span>.imageFlavor).toArray.toBuffer.mkString(<span class="string">","</span>))</span><br><span class="line"><span class="type">PNG</span>,<span class="type">JFIF</span>,<span class="type">TIFF</span></span><br><span class="line"></span><br><span class="line">scala&gt; systemflavors.getNativesForFlavor(<span class="type">DataFlavor</span>.imageFlavor).toArray</span><br><span class="line">res2: <span class="type">Array</span>[<span class="type">Object</span>] = <span class="type">Array</span>(<span class="type">PNG</span>, <span class="type">JFIF</span>, <span class="type">TIFF</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; systemflavors.getNativesForFlavor(<span class="type">DataFlavor</span>.imageFlavor).toArray.mkString(<span class="string">","</span>)</span><br><span class="line">res3: <span class="type">String</span> = <span class="type">PNG</span>,<span class="type">JFIF</span>,<span class="type">TIFF</span></span><br><span class="line"></span><br><span class="line">scala&gt; systemflavors.getNativesForFlavor(<span class="type">DataFlavor</span>.imageFlavor).toBuffer</span><br><span class="line">&lt;console&gt;:<span class="number">16</span>: error: value toBuffer is not a member of java.util.<span class="type">List</span>[<span class="type">String</span>]</span><br><span class="line">       systemflavors.getNativesForFlavor(<span class="type">DataFlavor</span>.imageFlavor).toBuffer</span><br><span class="line">                                                                 ^</span><br></pre></td></tr></table></figure>
+<p>需要说明两点，首先，创建对象和类型转换需要分两步完成，另外，<code>java.util.List[String]</code>当中没有<code> toBuffer</code>方法，只有<code>toArray</code>方法，根据题意以<code> Scala</code>缓存保存返回值，则需要先调用<code> toArray</code>，然后再调用<code> toBuffer</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/20/Scala-for-the-Impatient-Chapter-2-%E7%BB%83%E4%B9%A0/" rel="prev" title="Scala for the Impatient Chapter 2 练习">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 2 练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/22/Scala-for-the-Impatient-Chapter-4-%E7%BB%83%E4%B9%A0/" rel="next" title="Scala for the Impatient Chapter 4 练习">
+                  Scala for the Impatient Chapter 4 练习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

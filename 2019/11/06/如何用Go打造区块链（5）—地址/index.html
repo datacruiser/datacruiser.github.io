@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Proj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用Go打造区块链（5）—地址">
+<meta property="og:url" content="https://datacruiser.github.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Proj">
+<meta property="og:locale">
+<meta property="og:image" content="https://jeiwan.net/images/signing-scheme.png">
+<meta property="og:image" content="https://jeiwan.net/images/address-generation-scheme.png">
+<meta property="article:published_time" content="2019-11-06T19:33:42.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.872Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="go">
+<meta property="article:tag" content="hash">
+<meta property="article:tag" content="工作证明">
+<meta property="article:tag" content="交易">
+<meta property="article:tag" content="命令行">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeiwan.net/images/signing-scheme.png">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/","path":"2019/11/06/如何用Go打造区块链（5）—地址/","title":"如何用Go打造区块链（5）—地址"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何用Go打造区块链（5）—地址 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8Dintroduction"><span class="nav-number">1.</span> <span class="nav-text"> 介绍（Introduction）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AF%94%E7%89%B9%E5%B8%81%E5%9C%B0%E5%9D%80bitcoin-address"><span class="nav-number">2.</span> <span class="nav-text"> 比特币地址（Bitcoin Address）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86public-ley-cryptography"><span class="nav-number">3.</span> <span class="nav-text"> 公钥加密（Public-ley Cryptography）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8Ddigital-signatures"><span class="nav-number">4.</span> <span class="nav-text"> 数字签名（Digital Signatures）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E7%A0%81%E5%AD%A6elliptic-curve-cryptography"><span class="nav-number">5.</span> <span class="nav-text"> 椭圆曲线密码学（Elliptic Curve Cryptography）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#base58"><span class="nav-number">6.</span> <span class="nav-text"> Base58</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E7%9A%84%E5%AE%9E%E7%8E%B0implementing-addresses"><span class="nav-number">7.</span> <span class="nav-text"> 地址的实现（Implementing Addresses）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%AD%BE%E5%90%8Dimplementing-signatures"><span class="nav-number">8.</span> <span class="nav-text"> 实现签名（Implementing Signatures）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AE%BAconclusion"><span class="nav-number">9.</span> <span class="nav-text"> 结论（Conclusion）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5links"><span class="nav-number">10.</span> <span class="nav-text"> 链接（Links:）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何用Go打造区块链（5）—地址 | Datacruiser's Blog">
+      <meta itemprop="description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Project](https://ethereum.org/)就是用go原生实现的。这一系列的文章是由[Ivan Kuznetsov](https://jeiwan.net/)所写，本人觉得是一个结合Go语言学习区块链技术的好资料，后面将用自己的语言翻译一遍，从第一篇开始，顺便对Go语言以及区块链有一个初步的认识。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何用Go打造区块链（5）—地址
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-06 19:33:42" itemprop="dateCreated datePublished" datetime="2019-11-06T19:33:42+00:00">2019-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/06/如何用Go打造区块链（5）—地址/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Project](https://ethereum.org/)就是用go原生实现的。这一系列的文章是由[Ivan Kuznetsov](https://jeiwan.net/)所写，本人觉得是一个结合Go语言学习区块链技术的好资料，后面将用自己的语言翻译一遍，从第一篇开始，顺便对Go语言以及区块链有一个初步的认识。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="介绍introduction"><a class="markdownIt-Anchor" href="#介绍introduction"></a> 介绍（Introduction）</h1>
+<p>在 <a href="http://datacruiser.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%884%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">上一篇文章</a>中，我们开始实现了交易记录。大家也了解到了交易记录的内在本质：没有用户账户数据，不需要你的个人信息（比如姓名、护照号、身份证号码等）存储在比特币系统当中。但是依然需要一些东西能够证明你是交易记录输出的所有者（输出当中锁定着输出拥有者的币值）。这是需要有比特币地址（Bitcoin addresses）的原因。到目前为止我使用用户随机定义IDE字符串为地址，现在是时候实现实际的地址了，就像它在比特币中所实现的那样。</p>
+<blockquote>
+<p>这部分的代码改动很大，依然没有意义去解释所有的变动。可以到<a href="https://github.com/Jeiwan/blockchain_go/compare/part_4...part_5#files_bucket">这个页面</a>去查看与上一篇文章之间的代码变动。</p>
+</blockquote>
+<h1 id="比特币地址bitcoin-address"><a class="markdownIt-Anchor" href="#比特币地址bitcoin-address"></a> 比特币地址（Bitcoin Address）</h1>
+<p>这是一个比特币地址的例子：<a href="https://www.blockchain.com/btc/address/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</a>。这是第一个比特币地址，传闻属于中本聪本人。比特币地址是公开的。假如你想要向某人发送一些比特币，你需要知道他们的地址。但是地址（尽管是独一无二的）并不能证明你就是某一个“钱包”的主人。事实上，这样的地址只是一种公钥（public keys）大众可读的映射（human readable representation）。在比特币当中，通过一对存储在你的电脑或者其它你有权限进入的电脑的秘钥，公钥（public keys）和私钥来证明你对比特币的所有权。比特币依靠 一些列的加密算法来产生这些秘钥，确保在这个世界上没有人可以在没有物理得到你的秘钥的情况下进入你的比特币，让我们来讨论这些算法先。</p>
+<h1 id="公钥加密public-ley-cryptography"><a class="markdownIt-Anchor" href="#公钥加密public-ley-cryptography"></a> 公钥加密（Public-ley Cryptography）</h1>
+<p>公钥加密算法需要一对秘钥：公钥和私钥。公钥并不敏感，可以透露给别人。相应的，私钥不能透露：因为私钥是所有者的身份证明，只有所有者才有权限查看。你就是你的私钥（在加密货币的世界里，必然的）。</p>
+<p>本质上，一个比特币钱包就是一对这样的密钥（公钥和私钥）。当你安装钱包应用或者用一个比特币客户端来产生一个新的地址，一对密钥就这样的为了产生了。控制私钥的人掌握着所有发到这个地址的比特币。</p>
+<p>私钥和公钥在表现上只是随机字节序列，因此无法直接阅读或者在屏幕上面打印。这也是为什么比特币采用一种将公钥转换为可读字符串算法的原因。</p>
+<blockquote>
+<p>如果你曾经使用过一个比特币钱包应用，它就像一个专门为你产生的助记口诀。这样的字段将代替私钥来使用并且能够通过它们产生私钥。这个机制在<a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-039</a>中实现。</p>
+</blockquote>
+<p>好了，现在我们知道在比特币系统中用什么来标识用户。但是如何检查交易记录输出的所有权关系以及存储在里面的比特币？</p>
+<h1 id="数字签名digital-signatures"><a class="markdownIt-Anchor" href="#数字签名digital-signatures"></a> 数字签名（Digital Signatures）</h1>
+<p>在数学以及密码学上，有一个数字签名的概念—能够保证以下几点的算法：</p>
+<ul>
+<li>从发送者到接收者的数据传递不会改变数据</li>
+<li>数据由一个确定的发送者创建</li>
+<li>发送者不能否认发送数据</li>
+</ul>
+<p>通过对数据应用签名算法（对数据进行签名），用户可以取得一个签名，随着这个签名可以得到验证。数字签名发生在私钥的使用上，然后需要一个公钥才能够得到验证。</p>
+<p>为了对数据进行数字签名，我们需要以下东西：</p>
+<ul>
+<li>待签名的数据</li>
+<li>私钥</li>
+</ul>
+<p>签名过程中所产生的签名将存储在交易记录输入当中。为了验证签名，需要具备以下条件：</p>
+<ul>
+<li>被签过名的数据</li>
+<li>签名</li>
+<li>公钥</li>
+</ul>
+<p>简单地说，验证过程可以描述如下：确认这个签名就是用一个私钥从这个数据中获得并用于产生相应的公钥。</p>
+<blockquote>
+<p>数据签名不是加密，你无法从一个签名当中重构出数据。它与哈希过程类似：你用对数据跑一遍哈希算法然后取得一个代表数据的独一无二的哈希值。签名与哈希之前的区别在于密钥对：这让签名的验证变得可能。<br>
+但是密钥对也可用于数据加密：私钥用于加密，公钥用于解密。虽然比特币并没有采用加密算法。</p>
+</blockquote>
+<p>比特币中每一个交易记录输入都被创建这个交易记录的人签过名。每一个交易记录在存入区块之前都必须得到验证。验证（除了其它程序）意味着：</p>
+<ul>
+<li>确认输入有权限使用来自上一个交易记录的输出</li>
+<li>确认交易记录的签名是正确的</li>
+</ul>
+<p><img src="https://jeiwan.net/images/signing-scheme.png" alt></p>
+<p>签名及验证过程示意图</p>
+<p>现在让我们来看看一个交易记录的生命周期：</p>
+<ul>
+<li>开始的时候，只有创始区块包含币基交易记录。币基交易记录当中并没有实际的输入，因此并不需要签名。币基交易记录的输出包含一个哈希计算过的公钥（采用RIPEMD16(SHA256(PubKey))进行计算）</li>
+<li>当一个人发送一个比特币，将创建一个交易记录。这个交易记录的输入将于前面一个交易记录的输出相对应。每一个输入将存储一个未哈希计算过的公钥和整个交易记录的签名</li>
+<li>比特币网络中的其他收到这个交易记录的节点将会对它进行验证。除了其它事情，它们会确认：一个输入公钥的哈希与相对应的输出的哈希相匹配（这个确保发送者只是花了属于他们自己的比特币）；签名是正确的（确保交易记录由实际的比特币拥有者创建）</li>
+<li>当一个挖矿节点准备去挖一个新的区块时，它首先在区块中放一个交易记录然后开始挖矿</li>
+<li>当一个区块被挖出来以后，网络上的其它节点会收到一个信息，表示有一个新的区块产生并在大家验证以后被加入到区块链中</li>
+<li>在区块被加入到区块链当中，交易记录便完成了，它的输出可以被新的交易记录引用</li>
+</ul>
+<h1 id="椭圆曲线密码学elliptic-curve-cryptography"><a class="markdownIt-Anchor" href="#椭圆曲线密码学elliptic-curve-cryptography"></a> 椭圆曲线密码学（Elliptic Curve Cryptography）</h1>
+<p>正如之前所描述的，公钥和私钥是随机字节序列。因为私钥会用于比特币拥有者的身份证明，因此需要一个条件：随机数算法必须能够产生真随机字节。我们并不希望产生一个会被多个人拥有的私钥。</p>
+<p>比特币用椭圆曲线来产生私钥。椭圆曲线是一个复杂的数学概念，我们并不打算在这里详细解释（如果你够好奇，可以参考<a href>椭圆曲线的产生</a>，警告：数学公式！）。我们所要知道的是这些曲线可以用来产生真的大随机数。比特币中所使用的曲线可以随机从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mtext> </mtext><msup><mn>2</mn><mn>2</mn></msup><mn>56</mn></mrow><annotation encoding="application/x-tex">0~2^256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">0</span><span class="mspace nobreak"> </span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord">5</span><span class="mord">6</span></span></span></span>之间取一个数（大约<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>7</mn></msup><mn>7</mn></mrow><annotation encoding="application/x-tex">10^77</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span><span class="mord">7</span></span></span></span>，在可见的宇宙范围内大约有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>7</mn></msup><mn>8</mn></mrow><annotation encoding="application/x-tex">10^78</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span><span class="mord">8</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup><mn>2</mn></mrow><annotation encoding="application/x-tex">10^82</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mord">2</span></span></span></span>个原子。）如此大的上限基本确保不太可能产生两次产生同一个私钥。</p>
+<p>此外，比特币（包括我们）采用<code>ECDSA（Elliptic Curve Digital Signature Algorithm）</code>算法来对交易记录进行签名。</p>
+<h1 id="base58"><a class="markdownIt-Anchor" href="#base58"></a> Base58</h1>
+<p>现在让我回到前面提到过的比特币地址：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa.</span><br></pre></td></tr></table></figure>
+<p>现在我们知道它是人类可读的一串公钥。如果我们对它进行解码，下面是公钥看起来的样子（以16进制书写的一串字节码）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0062E907</span>B15CBF27D5425399EBF6F0FB50EBB88F18C29B7D93</span><br></pre></td></tr></table></figure>
+<p>比特币采用 <code>Base58 </code>算法将公钥转换为人类可读的格式。这个算法与著名的<code>Base64</code>算法类似，不过采用更短的字母表：一些字符从字母表中删除以避免相似字符攻击。因此，以下字符不再字母表中：0（数字零），O（字母O），I（字母i），l（小写L），因为它们看起来很容易混淆。此外，+和/也没有。</p>
+<p>让我们看一下如何从一个公钥产生地址的示意：</p>
+<p><img src="https://jeiwan.net/images/address-generation-scheme.png" alt></p>
+<p>这样，前面所提到的解码后的比特币地址（Bitcoin Address）包含三部分：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Version  Public key hash                           Checksum</span><br><span class="line"><span class="number">00</span>       <span class="number">62E907</span>B15CBF27D5425399EBF6F0FB50EBB88F18  C29B7D93</span><br></pre></td></tr></table></figure>
+<p>因为哈希函数是单向不可逆的，从哈希值获得公钥是不可能的。但是我们可以通过将公钥代入存储的哈希函数看它所产生的哈希值并进行比较以确认某一个公钥是否对应一个特定的哈希。</p>
+<p>好了，所有的相关概念已经介绍清楚了，让我们来写一些代码吧。在写代码的过程当中有些概念会变得更为清晰。</p>
+<h1 id="地址的实现implementing-addresses"><a class="markdownIt-Anchor" href="#地址的实现implementing-addresses"></a> 地址的实现（Implementing Addresses）</h1>
+<p>我们将从钱包结构体开始：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Wallet <span class="keyword">struct</span> {</span><br><span class="line">	PrivateKey ecdsa.PrivateKey</span><br><span class="line">	PublicKey  []<span class="type">byte</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Wallets <span class="keyword">struct</span> {</span><br><span class="line">	Wallets <span class="keyword">map</span>[<span class="type">string</span>]*Wallet</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewWallet</span><span class="params">()</span></span> *Wallet {</span><br><span class="line">	private, public := newKeyPair()</span><br><span class="line">	wallet := Wallet{private, public}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &amp;wallet</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newKeyPair</span><span class="params">()</span></span> (ecdsa.PrivateKey, []<span class="type">byte</span>) {</span><br><span class="line">	curve := elliptic.P256()</span><br><span class="line">	private, err := ecdsa.GenerateKey(curve, rand.Reader)</span><br><span class="line">	pubKey := <span class="built_in">append</span>(private.PublicKey.X.Bytes(), private.PublicKey.Y.Bytes()...)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> *private, pubKey</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>一个钱包只是一对密钥。我们同样需要钱包门（Wallets）类型来保存钱包的一个集合，保存到一个文件，并从文件中载入钱包。在钱包的构造函数当中一对新的密钥产生。<code>newKeyPair </code>函数非常清晰明了：<code>ECDSA</code>是基于椭圆曲线算法，所以我们需要一个。下一步，通过曲线产生一个私钥，公钥从私钥产生。有一点需要注意：在基于椭圆曲线的算法当中，公钥是曲线上面的点。这样，一个公钥是一个（X，Y）坐标的组合。在比特币当中，这些坐标被连接起来然后现成一个公钥。</p>
+<p>现在，让我们来产生一个地址：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(w Wallet)</span></span> GetAddress() []<span class="type">byte</span> {</span><br><span class="line">	pubKeyHash := HashPubKey(w.PublicKey)</span><br><span class="line"></span><br><span class="line">	versionedPayload := <span class="built_in">append</span>([]<span class="type">byte</span>{version}, pubKeyHash...)</span><br><span class="line">	checksum := checksum(versionedPayload)</span><br><span class="line"></span><br><span class="line">	fullPayload := <span class="built_in">append</span>(versionedPayload, checksum...)</span><br><span class="line">	address := Base58Encode(fullPayload)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> address</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HashPubKey</span><span class="params">(pubKey []<span class="type">byte</span>)</span></span> []<span class="type">byte</span> {</span><br><span class="line">	publicSHA256 := sha256.Sum256(pubKey)</span><br><span class="line"></span><br><span class="line">	RIPEMD160Hasher := ripemd160.New()</span><br><span class="line">	_, err := RIPEMD160Hasher.Write(publicSHA256[:])</span><br><span class="line">	publicRIPEMD160 := RIPEMD160Hasher.Sum(<span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> publicRIPEMD160</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">checksum</span><span class="params">(payload []<span class="type">byte</span>)</span></span> []<span class="type">byte</span> {</span><br><span class="line">	firstSHA := sha256.Sum256(payload)</span><br><span class="line">	secondSHA := sha256.Sum256(firstSHA[:])</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> secondSHA[:addressChecksumLen]</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>下面是将一个公钥转化为一个 <code>Base58 </code>地址的步骤：</p>
+<ul>
+<li>取得公钥然后用<code>RIPEMD160(SHA256(PubKey) </code>算法对它进行两次哈希计算</li>
+<li>预先将地址产生算法的版本给哈希</li>
+<li>用<code>SHA256(SHA256(payload))</code> 哈希计算步骤2的结果来获得 <code>checksum</code>。<code>checksum</code> 是所得哈希值的前四个字节</li>
+<li>将<code>checksum</code> 加到<code>version + PubKeyHash</code> 组合后面</li>
+<li>对<code>version + PubKeyHash + checksum</code> 组合进行<code> Base58</code> 编码</li>
+</ul>
+<p>根据以上步骤，我们可以获得一个实际的比特币地址，你甚至可以到 <a href="http://blockchain.info">blockchain.info</a> 上去检查它的余额。但是我能够确保不过你尝试多少次所能够查询到的余额都是0。这就是选择合适的公钥加密算法如此重要的原因：考虑到私钥是随机数，产生相同随机数的机会应该尽可能地低。理想的，应该是几乎不可能。</p>
+<p>同时，你并不需要连接到一个比特币节点就能够产生地址。地址产生算法采用了由许多程序语言和库实现的开源算法组合。</p>
+<p>现在我们需要修改输入和输出代码来使用前面产生的地址：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TXInput <span class="keyword">struct</span> {</span><br><span class="line">	Txid      []<span class="type">byte</span></span><br><span class="line">	Vout      <span class="type">int</span></span><br><span class="line">	Signature []<span class="type">byte</span></span><br><span class="line">	PubKey    []<span class="type">byte</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(in *TXInput)</span></span> UsesKey(pubKeyHash []<span class="type">byte</span>) <span class="type">bool</span> {</span><br><span class="line">	lockingHash := HashPubKey(in.PubKey)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> bytes.Compare(lockingHash, pubKeyHash) == <span class="number">0</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> TXOutput <span class="keyword">struct</span> {</span><br><span class="line">	Value      <span class="type">int</span></span><br><span class="line">	PubKeyHash []<span class="type">byte</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(out *TXOutput)</span></span> Lock(address []<span class="type">byte</span>) {</span><br><span class="line">	pubKeyHash := Base58Decode(address)</span><br><span class="line">	pubKeyHash = pubKeyHash[<span class="number">1</span> : <span class="built_in">len</span>(pubKeyHash)<span class="number">-4</span>]</span><br><span class="line">	out.PubKeyHash = pubKeyHash</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(out *TXOutput)</span></span> IsLockedWithKey(pubKeyHash []<span class="type">byte</span>) <span class="type">bool</span> {</span><br><span class="line">	<span class="keyword">return</span> bytes.Compare(out.PubKeyHash, pubKeyHash) == <span class="number">0</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>注意，我们不再使用 <code>ScriptPubKey </code>和 <code>ScriptSig </code>字段，因为我们并不打算实现一个脚本语言。相应的的，<code>ScriptSig </code>分解为签名过的<code>PubKey </code>字段，而 <code>ScriptPubKey </code>被重命名为 <code>PubKeyHash</code>。我们将实现比特币中的输出 锁定/解锁 以及输出签名的逻辑，不过采用了其它的方法。</p>
+<p><code>UsesKey</code> 方法检查一个输入是否可以用一个特定的密钥去解锁一个输出。需要注意的输入存储的是原始的公钥（未哈希计算过的），但是这个函数采用的是哈希过的。 <code>IsLockedWithKey </code>检查提供的公钥哈希是否是用于去锁定输出。这是对<code>UsesKey </code>函数的补充，它们都在 <code>FindUnspendTransactions </code>当中用于构建交易记录之间的连接。</p>
+<p>锁将输出简单地锁定了。当我们向其他人发送比特币，我只知道它们的地址，地址也是函数的唯一参数。然后地址被解码，然后抽取出公钥哈希值存入 PubKeyHash 字段。</p>
+<p>现在，让我检查一下一切工作正常：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go createwallet</span><br><span class="line">Your <span class="built_in">new</span> address: <span class="number">13</span>Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt</span><br><span class="line"></span><br><span class="line">$ blockchain_go createwallet</span><br><span class="line">Your <span class="built_in">new</span> address: <span class="number">15</span>pUhCbtrGh3JUx5iHnXjfpyHyTgawvG5h</span><br><span class="line"></span><br><span class="line">$ blockchain_go createwallet</span><br><span class="line">Your <span class="built_in">new</span> address: <span class="number">1</span>Lhqun1E9zZZhodiTqxfPQBcwr1CVDV2sy</span><br><span class="line"></span><br><span class="line">$ blockchain_go createblockchain -address <span class="number">13</span>Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt</span><br><span class="line"><span class="number">0000005420</span>fbfdafa00c093f56e033903ba43599fa7cd9df40458e373eee724d</span><br><span class="line"></span><br><span class="line">Done!</span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">13</span>Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt</span><br><span class="line">Balance of <span class="string">'13Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt'</span>: <span class="number">10</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go send -from <span class="number">15</span>pUhCbtrGh3JUx5iHnXjfpyHyTgawvG5h -to <span class="number">13</span>Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt -amount <span class="number">5</span></span><br><span class="line"><span class="number">2017</span>/<span class="number">09</span>/<span class="number">12</span> <span class="number">13</span>:<span class="number">08</span>:<span class="number">56</span> ERROR: Not enough funds</span><br><span class="line"></span><br><span class="line">$ blockchain_go send -from <span class="number">13</span>Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt -to <span class="number">15</span>pUhCbtrGh3JUx5iHnXjfpyHyTgawvG5h -amount <span class="number">6</span></span><br><span class="line"><span class="number">00000019</span>afa909094193f64ca06e9039849709f5948fbac56cae7b1b8f0ff162</span><br><span class="line"></span><br><span class="line">Success!</span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">13</span>Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt</span><br><span class="line">Balance of <span class="string">'13Uu7B1vDP4ViXqHFsWtbraM3EfQ3UkWXt'</span>: <span class="number">4</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">15</span>pUhCbtrGh3JUx5iHnXjfpyHyTgawvG5h</span><br><span class="line">Balance of <span class="string">'15pUhCbtrGh3JUx5iHnXjfpyHyTgawvG5h'</span>: <span class="number">6</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">1</span>Lhqun1E9zZZhodiTqxfPQBcwr1CVDV2sy</span><br><span class="line">Balance of <span class="string">'1Lhqun1E9zZZhodiTqxfPQBcwr1CVDV2sy'</span>: <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>非常好！现在让我们来实现交易记录签名。</p>
+<h1 id="实现签名implementing-signatures"><a class="markdownIt-Anchor" href="#实现签名implementing-signatures"></a> 实现签名（Implementing Signatures）</h1>
+<p>交易记录必须签过名，因为在比特币中这是保证一个人无法使用不属于他的比特币的唯一方式。如果一个签名是非法的，交易记录也会被认为是非法的，无法加入到区块链当中。</p>
+<p>我们已经有实现交易记录签名的所有东西，除了一件事情：用来签名的数据。交易记录的哪部分实际上是签过名的？或者一整个交易记录整体的签名？数字签名的选择非常重要。要求是用来签名的数据必须包含能够用唯一的方式识别数据的信息。举个例子，如果 对输出包含的币值进行签名是没有意义的，因为这个签名并不会考虑发送者和接收者。</p>
+<p>考虑到交易记录解锁前一个输出，重新分配它们的币值，然后锁定新的输出，以下数据必须进行数字签名：</p>
+<ul>
+<li>未解锁输出中保存的公钥哈希值。这会识别一个交易记录的“发送者”。</li>
+<li>新的锁定的输出中存储的公钥哈希值。这会识别一个交易的“接收者”。</li>
+<li>新输出所包含的币值。</li>
+</ul>
+<blockquote>
+<p>在比特币当中，锁定/解锁的逻辑存储在脚本当中，分别存储在输入的 ScriptSigand 字段和输出的 ScriptPubKey 字段。因为比特币允许不同类型的脚本，它还会对 ScriptPubKey 的全部内容进行签名。</p>
+</blockquote>
+<p>正如你所看到的，我们并不需要对输入当中存储的公钥进行签名。正因为如此，在比特币当中，这不是一个签过名的交易记录，而是它的带从引用的输出中来输入存储的 ScriptPubKey 字段的截取过的拷贝。</p>
+<blockquote>
+<p>取得整理过的交易记录拷贝的详细过程在这里描述。这个可能有些过期，但是我无法找到一个更可靠的信息来源。</p>
+</blockquote>
+<p>Ok，这看起来有些复杂，那么就让我们开始编程吧。我们从 <code>Sign </code>方法开始：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tx *Transaction)</span></span> Sign(privKey ecdsa.PrivateKey, prevTXs <span class="keyword">map</span>[<span class="type">string</span>]Transaction) {</span><br><span class="line">	<span class="keyword">if</span> tx.IsCoinbase() {</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	txCopy := tx.TrimmedCopy()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> inID, vin := <span class="keyword">range</span> txCopy.Vin {</span><br><span class="line">		prevTx := prevTXs[hex.EncodeToString(vin.Txid)]</span><br><span class="line">		txCopy.Vin[inID].Signature = <span class="literal">nil</span></span><br><span class="line">		txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash</span><br><span class="line">		txCopy.ID = txCopy.Hash()</span><br><span class="line">		txCopy.Vin[inID].PubKey = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">		r, s, err := ecdsa.Sign(rand.Reader, &amp;privKey, txCopy.ID)</span><br><span class="line">		signature := <span class="built_in">append</span>(r.Bytes(), s.Bytes()...)</span><br><span class="line"></span><br><span class="line">		tx.Vin[inID].Signature = signature</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这个方法以一个私钥和之前的交易记录的<code>map</code>数据为输入。正如之前所言，为了对一个交易记录进行签名，我们需要进入这个交易记录当中的输入所引用的输出，因此我们需要存储这些输出的交易记录。</p>
+<p>让我们一条条过这个方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> tx.IsCoinbase() {</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>因为币基交易记录中没有实际的输入所以不会被签名。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txCopy := tx.TrimmedCopy()</span><br></pre></td></tr></table></figure>
+<p>截取过的交易记录拷贝会被签名，并不对整个交易记录：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tx *Transaction)</span></span> TrimmedCopy() Transaction {</span><br><span class="line">	<span class="keyword">var</span> inputs []TXInput</span><br><span class="line">	<span class="keyword">var</span> outputs []TXOutput</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, vin := <span class="keyword">range</span> tx.Vin {</span><br><span class="line">		inputs = <span class="built_in">append</span>(inputs, TXInput{vin.Txid, vin.Vout, <span class="literal">nil</span>, <span class="literal">nil</span>})</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, vout := <span class="keyword">range</span> tx.Vout {</span><br><span class="line">		outputs = <span class="built_in">append</span>(outputs, TXOutput{vout.Value, vout.PubKeyHash})</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	txCopy := Transaction{tx.ID, inputs, outputs}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> txCopy</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这份拷贝会包含所有的输入和输出，但是 <code>TXInput.Signature </code>和<code>TXInput.PubKey </code>字段会被设为 <code>nil</code>。</p>
+<p>下一步，我们会遍历这份拷贝中的所有输入：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> inID, vin := <span class="keyword">range</span> txCopy.Vin {</span><br><span class="line">	prevTx := prevTXs[hex.EncodeToString(vin.Txid)]</span><br><span class="line">	txCopy.Vin[inID].Signature = <span class="literal">nil</span></span><br><span class="line">	txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash</span><br></pre></td></tr></table></figure>
+<p>在每一个输入当中，签名被设置为 <code>nil</code> （只是再次确认），并且 <code>PubKey </code>被设为引用的输出的 <code>PubKeyHash</code>。在这个时候，所有的交易记录，除了当前的交易记录都是“空的”（empty）。它们的 <code>Signature </code>和 <code>PubKey </code>字段被设为 <code>nil</code>。这样，输入会被单独的签名，虽然在我们的程序当中这并不需要，但是比特币允许交易记录包含引用不同地址的输入。</p>
+<p>```go`<br>
+<a href="http://txCopy.ID">txCopy.ID</a> = txCopy.Hash()<br>
+txCopy.Vin[inID].PubKey = nil</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">`Hash `方法将交易记录序列化并用`SHA-256 `算法进行哈希值计算。得到的哈希值是我们要进行签名的数据。得到这个哈希值以后我们应该重新设置 `PubKey `字段，以让他们对后面的遍历没有影响。</span><br><span class="line"></span><br><span class="line">现在，最关键的代码段：</span><br><span class="line"></span><br><span class="line">```go</span><br><span class="line">	r, s, err := ecdsa.Sign(rand.Reader, &amp;privKey, txCopy.ID)</span><br><span class="line">	signature := append(r.Bytes(), s.Bytes()...)</span><br><span class="line"></span><br><span class="line">	tx.Vin[inID].Signature = signature</span><br></pre></td></tr></table></figure>
+<p>我们用<code>privKey </code>对<code>txCopy.ID</code>进行签名。一个<code>ECDSA</code>签名是一对数字，是我们组合并存储在输入的 <code>Signature </code>字段当中的数字。</p>
+<p>接下来，验证函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(tx *Transaction)</span></span> Verify(prevTXs <span class="keyword">map</span>[<span class="type">string</span>]Transaction) <span class="type">bool</span> {</span><br><span class="line">	txCopy := tx.TrimmedCopy()</span><br><span class="line">	curve := elliptic.P256()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> inID, vin := <span class="keyword">range</span> tx.Vin {</span><br><span class="line">		prevTx := prevTXs[hex.EncodeToString(vin.Txid)]</span><br><span class="line">		txCopy.Vin[inID].Signature = <span class="literal">nil</span></span><br><span class="line">		txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash</span><br><span class="line">		txCopy.ID = txCopy.Hash()</span><br><span class="line">		txCopy.Vin[inID].PubKey = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">		r := big.Int{}</span><br><span class="line">		s := big.Int{}</span><br><span class="line">		sigLen := <span class="built_in">len</span>(vin.Signature)</span><br><span class="line">		r.SetBytes(vin.Signature[:(sigLen / <span class="number">2</span>)])</span><br><span class="line">		s.SetBytes(vin.Signature[(sigLen / <span class="number">2</span>):])</span><br><span class="line"></span><br><span class="line">		x := big.Int{}</span><br><span class="line">		y := big.Int{}</span><br><span class="line">		keyLen := <span class="built_in">len</span>(vin.PubKey)</span><br><span class="line">		x.SetBytes(vin.PubKey[:(keyLen / <span class="number">2</span>)])</span><br><span class="line">		y.SetBytes(vin.PubKey[(keyLen / <span class="number">2</span>):])</span><br><span class="line"></span><br><span class="line">		rawPubKey := ecdsa.PublicKey{curve, &amp;x, &amp;y}</span><br><span class="line">		<span class="keyword">if</span> ecdsa.Verify(&amp;rawPubKey, txCopy.ID, &amp;r, &amp;s) == <span class="literal">false</span> {</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这个方法非常简单明了。首先，我们需要同样的交易记录拷贝：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txCopy := tx.TrimmedCopy()</span><br></pre></td></tr></table></figure>
+<p>接下来，我们需要与产生密钥对相同的曲线：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curve := elliptic.P256()</span><br></pre></td></tr></table></figure>
+<p>接下来，我们检查每一个输入当中的签名：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> inID, vin := <span class="keyword">range</span> tx.Vin {</span><br><span class="line">	prevTx := prevTXs[hex.EncodeToString(vin.Txid)]</span><br><span class="line">	txCopy.Vin[inID].Signature = <span class="literal">nil</span></span><br><span class="line">	txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash</span><br><span class="line">	txCopy.ID = txCopy.Hash()</span><br><span class="line">	txCopy.Vin[inID].PubKey = <span class="literal">nil</span></span><br></pre></td></tr></table></figure>
+<p>这段是与<code>Sign</code> 方法中完全相同的，因为在验证阶段我们需要与签名时完全一样的数据。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">r := big.Int{}</span><br><span class="line">s := big.Int{}</span><br><span class="line">sigLen := <span class="built_in">len</span>(vin.Signature)</span><br><span class="line">r.SetBytes(vin.Signature[:(sigLen / <span class="number">2</span>)])</span><br><span class="line">s.SetBytes(vin.Signature[(sigLen / <span class="number">2</span>):])</span><br><span class="line"></span><br><span class="line">x := big.Int{}</span><br><span class="line">y := big.Int{}</span><br><span class="line">keyLen := <span class="built_in">len</span>(vin.PubKey)</span><br><span class="line">x.SetBytes(vin.PubKey[:(keyLen / <span class="number">2</span>)])</span><br><span class="line">y.SetBytes(vin.PubKey[(keyLen / <span class="number">2</span>):])</span><br></pre></td></tr></table></figure>
+<p>这里解压存储在<code>TXInput.Signature</code> 和<code>TXInput.PubKey</code> 中的数据，因为一个签名是一对数字，而一个公钥是一对坐标。早先的时候为了保存，我们将他们组合在一起，现在我们需要将它们解压出来在加密当中使用。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	rawPubKey := ecdsa.PublicKey{curve, &amp;x, &amp;y}</span><br><span class="line">	<span class="keyword">if</span> ecdsa.Verify(&amp;rawPubKey, txCopy.ID, &amp;r, &amp;s) == <span class="literal">false</span> {</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>现在我们用从输入获取的公钥创建一个 <code>ecdsa.PublicKey</code>，然后将从输入获取的签名传递给<code>ecdsa.Verify </code>并执行验证。加入所有的输入都能够得到验证，返回<code>true</code>；即便只有一个输入验证失败，返回<code> false</code>。</p>
+<p>现在，我们需要一个函数来获得之前的交易记录。因为这需要与区块链交互，我们将它定义成一个 <code>Blockchain </code>的方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(bc *Blockchain)</span></span> FindTransaction(ID []<span class="type">byte</span>) (Transaction, <span class="type">error</span>) {</span><br><span class="line">	bci := bc.Iterator()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> {</span><br><span class="line">		block := bci.Next()</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> _, tx := <span class="keyword">range</span> block.Transactions {</span><br><span class="line">			<span class="keyword">if</span> bytes.Compare(tx.ID, ID) == <span class="number">0</span> {</span><br><span class="line">				<span class="keyword">return</span> *tx, <span class="literal">nil</span></span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> <span class="built_in">len</span>(block.PrevBlockHash) == <span class="number">0</span> {</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> Transaction{}, errors.New(<span class="string">"Transaction is not found"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(bc *Blockchain)</span></span> SignTransaction(tx *Transaction, privKey ecdsa.PrivateKey) {</span><br><span class="line">	prevTXs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]Transaction)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, vin := <span class="keyword">range</span> tx.Vin {</span><br><span class="line">		prevTX, err := bc.FindTransaction(vin.Txid)</span><br><span class="line">		prevTXs[hex.EncodeToString(prevTX.ID)] = prevTX</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	tx.Sign(privKey, prevTXs)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(bc *Blockchain)</span></span> VerifyTransaction(tx *Transaction) <span class="type">bool</span> {</span><br><span class="line">	prevTXs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]Transaction)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, vin := <span class="keyword">range</span> tx.Vin {</span><br><span class="line">		prevTX, err := bc.FindTransaction(vin.Txid)</span><br><span class="line">		prevTXs[hex.EncodeToString(prevTX.ID)] = prevTX</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> tx.Verify(prevTXs)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这些函数非常简单：<code>FindTransaction</code> 函数通过ID（这个需要遍历区块链中的所有区块）来找交易记录；<code>SignTransaction</code> 函数获得一个交易记录，找到它所引用的交易记录然后对它进行签名；<code>VerifyTransaction </code>函数同样，只是对交易记录进行验证。</p>
+<p>现在，我们需要实际签名和验证交易记录。签名在 <code>NewUTXOTransaction</code> 函数当中：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewUTXOTransaction</span><span class="params">(from, to <span class="type">string</span>, amount <span class="type">int</span>, bc *Blockchain)</span></span> *Transaction {</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	tx := Transaction{<span class="literal">nil</span>, inputs, outputs}</span><br><span class="line">	tx.ID = tx.Hash()</span><br><span class="line">	bc.SignTransaction(&amp;tx, wallet.PrivateKey)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &amp;tx</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>验证发生在将一个交易记录放入一个区块之前：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(bc *Blockchain)</span></span> MineBlock(transactions []*Transaction) {</span><br><span class="line">	<span class="keyword">var</span> lastHash []<span class="type">byte</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, tx := <span class="keyword">range</span> transactions {</span><br><span class="line">		<span class="keyword">if</span> bc.VerifyTransaction(tx) != <span class="literal">true</span> {</span><br><span class="line">			log.Panic(<span class="string">"ERROR: Invalid transaction"</span>)</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">	...</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>然后就这样！让我们再一次确认所有的步骤和流程：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go createwallet</span><br><span class="line">Your <span class="built_in">new</span> address: <span class="number">1</span>AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR</span><br><span class="line"></span><br><span class="line">$ blockchain_go createwallet</span><br><span class="line">Your <span class="built_in">new</span> address: <span class="number">1</span>NE86r4Esjf53EL7fR86CsfTZpNN42Sfab</span><br><span class="line"></span><br><span class="line">$ blockchain_go createblockchain -address <span class="number">1</span>AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR</span><br><span class="line"><span class="number">000000122348</span>da06c19e5c513710340f4c307d884385da948a205655c6a9d008</span><br><span class="line"></span><br><span class="line">Done!</span><br><span class="line"></span><br><span class="line">$ blockchain_go send -from <span class="number">1</span>AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR -to <span class="number">1</span>NE86r4Esjf53EL7fR86CsfTZpNN42Sfab -amount <span class="number">6</span></span><br><span class="line"><span class="number">0000000</span>f3dbb0ab6d56c4e4b9f7479afe8d5a5dad4d2a8823345a1a16cf3347b</span><br><span class="line"></span><br><span class="line">Success!</span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">1</span>AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR</span><br><span class="line">Balance of <span class="string">'1AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR'</span>: <span class="number">4</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">1</span>NE86r4Esjf53EL7fR86CsfTZpNN42Sfab</span><br><span class="line">Balance of <span class="string">'1NE86r4Esjf53EL7fR86CsfTZpNN42Sfab'</span>: <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>非常棒！一切正常！</p>
+<p>让我们将 <code>NewUTXOTransaction </code>函数中的<code>bc.SignTransaction(&amp;tx, wallet.PrivateKey) </code>注释掉来确保不能对未签名的交易记录进行挖矿：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewUTXOTransaction</span><span class="params">(from, to <span class="type">string</span>, amount <span class="type">int</span>, bc *Blockchain)</span></span> *Transaction {</span><br><span class="line">   ...</span><br><span class="line">	tx := Transaction{<span class="literal">nil</span>, inputs, outputs}</span><br><span class="line">	tx.ID = tx.Hash()</span><br><span class="line">	<span class="comment">// bc.SignTransaction(&amp;tx, wallet.PrivateKey)</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &amp;tx</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">$ <span class="keyword">go</span> install</span><br><span class="line">$ blockchain_go send -from <span class="number">1</span>AmVdDvvQ977oVCpUqz7zAPUEiXKrX5avR -to <span class="number">1</span>NE86r4Esjf53EL7fR86CsfTZpNN42Sfab -amount <span class="number">1</span></span><br><span class="line"><span class="number">2017</span>/<span class="number">09</span>/<span class="number">12</span> <span class="number">16</span>:<span class="number">28</span>:<span class="number">15</span> ERROR: Invalid transaction</span><br></pre></td></tr></table></figure>
+<h1 id="结论conclusion"><a class="markdownIt-Anchor" href="#结论conclusion"></a> 结论（Conclusion）</h1>
+<p>我们能够走得这么远实现这么多比特币的关键特性非常了不起。除了网络部分，我们几乎实现了所有，在下一部分，我们将完成交易记录部分。</p>
+<h1 id="链接links"><a class="markdownIt-Anchor" href="#链接links"></a> 链接（Links:）</h1>
+<ul>
+<li><a href="https://github.com/Jeiwan/blockchain_go/tree/part_5">Full source codes</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Public-key_cryptography">Public-key cryptography</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Digital_signature">Digital signatures</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Elliptic_curve">Elliptic curve</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">Elliptic curve cryptography</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses">Technical background of Bitcoin addresses</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Address">Address</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Base58Check_encoding">Base58</a></li>
+<li><a href="https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/">A gentle introduction to elliptic curve cryptography</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/go/" rel="tag"># go</a>
+              <a href="/tags/hash/" rel="tag"># hash</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E/" rel="tag"># 工作证明</a>
+              <a href="/tags/%E4%BA%A4%E6%98%93/" rel="tag"># 交易</a>
+              <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag"># 命令行</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%884%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="如何用Go打造区块链（4）—交易记录（一）">
+                  <i class="fa fa-angle-left"></i> 如何用Go打造区块链（4）—交易记录（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="next" title="如何用Go打造区块链（6）—交易记录（二）">
+                  如何用Go打造区块链（6）—交易记录（二） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

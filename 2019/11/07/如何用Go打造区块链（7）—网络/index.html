@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Proj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用Go打造区块链（7）—网络">
+<meta property="og:url" content="https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%887%EF%BC%89%E2%80%94%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Proj">
+<meta property="og:locale">
+<meta property="og:image" content="https://jeiwan.net/images/p2p-network.png">
+<meta property="article:published_time" content="2019-11-07T20:06:24.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.872Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="go">
+<meta property="article:tag" content="hash">
+<meta property="article:tag" content="工作证明">
+<meta property="article:tag" content="交易">
+<meta property="article:tag" content="命令行">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeiwan.net/images/p2p-network.png">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%887%EF%BC%89%E2%80%94%E7%BD%91%E7%BB%9C/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%887%EF%BC%89%E2%80%94%E7%BD%91%E7%BB%9C/","path":"2019/11/07/如何用Go打造区块链（7）—网络/","title":"如何用Go打造区块链（7）—网络"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何用Go打造区块链（7）—网络 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D-introduction"><span class="nav-number">1.</span> <span class="nav-text"> 介绍 Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BD%91%E7%BB%9C-blockchain-network"><span class="nav-number">2.</span> <span class="nav-text"> 区块链网络 Blockchain Network</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E8%A7%92%E8%89%B2-node-roles"><span class="nav-number">3.</span> <span class="nav-text"> 节点角色 Node Roles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%AE%80%E5%8C%96-network-simplification"><span class="nav-number">4.</span> <span class="nav-text"> 网络简化 Network simplification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-implementation"><span class="nav-number">5.</span> <span class="nav-text"> 实现 Implementation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%83%85%E6%99%AF-the-scenario"><span class="nav-number">6.</span> <span class="nav-text"> 情景 The Scenario</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC-version"><span class="nav-number">7.</span> <span class="nav-text"> 版本 version</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%8C%BA%E5%9D%97-getblocks"><span class="nav-number">8.</span> <span class="nav-text"> 获得区块 getblocks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#inv"><span class="nav-number">9.</span> <span class="nav-text"> inv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#getdata"><span class="nav-number">10.</span> <span class="nav-text"> getdata</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#block-and-tx"><span class="nav-number">11.</span> <span class="nav-text"> block and tx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C-result"><span class="nav-number">12.</span> <span class="nav-text"> 结果 Result</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA-conclusion"><span class="nav-number">13.</span> <span class="nav-text"> 结论 Conclusion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#links"><span class="nav-number">14.</span> <span class="nav-text"> Links:</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%887%EF%BC%89%E2%80%94%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何用Go打造区块链（7）—网络 | Datacruiser's Blog">
+      <meta itemprop="description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Project](https://ethereum.org/)就是用go原生实现的。这一系列的文章是由[Ivan Kuznetsov](https://jeiwan.net/)所写，本人觉得是一个结合Go语言学习区块链技术的好资料，后面将用自己的语言翻译一遍，从第一篇开始，顺便对Go语言以及区块链有一个初步的认识。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何用Go打造区块链（7）—网络
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-07 20:06:24" itemprop="dateCreated datePublished" datetime="2019-11-07T20:06:24+00:00">2019-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%887%EF%BC%89%E2%80%94%E7%BD%91%E7%BB%9C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/07/如何用Go打造区块链（7）—网络/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Project](https://ethereum.org/)就是用go原生实现的。这一系列的文章是由[Ivan Kuznetsov](https://jeiwan.net/)所写，本人觉得是一个结合Go语言学习区块链技术的好资料，后面将用自己的语言翻译一遍，从第一篇开始，顺便对Go语言以及区块链有一个初步的认识。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="介绍-introduction"><a class="markdownIt-Anchor" href="#介绍-introduction"></a> 介绍 Introduction</h1>
+<p>到目前为止，我们构建了一个含有以下特征的区块链：匿名、安全、以及随机产生地址；区块链数据存储；PoW系统；可靠的交易记录存储方式。这些特征都非常关键，但是这还不够。能够让这些特征升华的，并且让加密货币变得可能的，是网络（network）。这样的区块链实现如果只能在单一的电脑上面运行有什么用？这些基础加密特性有什么有，如果仅有一个用户？网络让这些机制工作并发挥作用。</p>
+<p>你可以将这些区块链的特征视为基本准则，你会发现与人类希望共同生活和成长的准则类似。一种社会性的安排。区块链网络是遵从同样准则的程序社区，也正是遵从这些准则让这个网络变得活力四射。同样的，当人们分享共同的想法，他们将变得更强，然后可以一起构建更美好的生活。如果其中有人遵从不一样的准则，他们将在一个隔离的社会（国家、社区等）里生活。同样的，如果有一个区块链节点执行不一样的规则，它们将形成一个单独的网络。</p>
+<p>这个非常重要：没有一个有共识的网络或者大部分节点有共识的网络，这些规则就毫无用处。</p>
+<blockquote>
+<p>免责声明：不幸的是，我没有足够的时间去实现一个真正的P2P网络原型。在这篇文章当中，我会证明一个最平常的情景，会涉及不同类型的节点。提高这个场景然后将它实现为一个真正的P2P 网络会是各位读者一个绝好的挑战和实践！我也不能保证除了本文所实现的情景以外的其它情景能够解决问题。对不起！<br>
+这部分介绍了关键的代码变化，因此在这里解释所有的代码不是特别有意义。可以参看<a href="https://github.com/Jeiwan/blockchain_go/compare/part_6...part_7#files_bucket">这个页面</a>看与上一部分文章之间的代码变动。</p>
+</blockquote>
+<h1 id="区块链网络-blockchain-network"><a class="markdownIt-Anchor" href="#区块链网络-blockchain-network"></a> 区块链网络 Blockchain Network</h1>
+<p>区块链网络是去中心化的，这意味着没有服务器提供服务，然后客户端通过服务区获取或处理数据。在区块链网络当中分布着不同的节点（nodes），每一个节点都是网络上完整（full-fledged）的节点。一个节点就是所有：即是节点也是服务器。这个非常重要，必须牢牢记住，因为这与普通的 web 应用完全不同。</p>
+<p>区块链网络是一个 P2P （Peer-to-Peer）网络，这意味着各个节点与其它节点之间直接连接。它的拓扑结构是平的，在节点规则当中没有层级关系。下面是它的示意图：</p>
+<p><img src="https://jeiwan.net/images/p2p-network.png" alt></p>
+<p><a href="https://www.freepik.com/dooder">(Business vector created by Dooder - Freepik.com)</a></p>
+<p>这样的网络当中的节点更难以实现，因为它们需要执行很多的操作。每一个节点都要与其它不同的节点之间互动，它需要获得其它节点的状态，并与自己的状态对比，如果发现自己的状态不是最新的还需要更新自己的状态。</p>
+<h1 id="节点角色-node-roles"><a class="markdownIt-Anchor" href="#节点角色-node-roles"></a> 节点角色 Node Roles</h1>
+<p>除了要全能以外，区块链节点可以在网络中扮演不同的角色。如下所示：</p>
+<ul>
+<li>矿机。</li>
+</ul>
+<p>这样的节点运行在超强性能或者专门的硬件（比如ASIC）上，它们的唯一目标就是尽快挖到新的区块。矿机仅在采用PoW机制的区块链上能够工作，因为挖矿本身实际上就是求解PoW谜题。打个比方，在采用PoS（Proof-of-Stake）机制的区块链上，并没有挖矿。</p>
+<ul>
+<li>全能节点。</li>
+</ul>
+<p>这些节点验证由矿机挖到的区块并确认交易记录。为了做这件事情，它们必须要有区块链的整个网站拷贝。这样的节点也履行一些日常的操作，比如帮助其它节点去发现彼此。一个网络必须要有很多全能节点，这个非常重要，因为是这些节点在做这样的决定：它们决定着一个区块或者交易记录是否合法有效。</p>
+<ul>
+<li>简单支付验证 SPV.</li>
+</ul>
+<p>简单支付验证（Simplified Payment Verification）。承担简单支付验证的节点并不保存区块链的完整拷贝，但是它们依然可以验证交易记录（并不是所有的，是一个子集，举个例子，比如发往特定地址的的）。一个SPV 节点依赖于一个全能节点获取数据，一个全能节点会有很多个SPV节点连接。SPV节点让钱包应用变得可能：你不用下载整个区块链，但是依然可以验证你的交易记录。</p>
+<h1 id="网络简化-network-simplification"><a class="markdownIt-Anchor" href="#网络简化-network-simplification"></a> 网络简化 Network simplification</h1>
+<p>为了在我们的区块链中实现网络，我们需要简化一些东西。问题在于我们并没有很多台电脑用来模拟一个拥有很多节点的网络。我们原本可以使用虚拟机或者 Docker 来解决这个问题，但是这会让事情变得更加复杂：我们的目的原本关注于区块链的实现，但是你必须又要提供虚拟机或者 Docker的应对措施。因此，我们要在单机上同时运行多个拥有不同地址的节点。为了取得这样的效果，我们将不同的端口视为不同的节点，以代替IP 地址。举了例子，会有以下不同地址的节点：127.0.0.1:3000, 127.0.0.1:3001, 127.0.0.1:3002等。我们将调用端口节点ID 并用<code> NODE_IDenvironment</code> 变量来设置它们。这样，你可以打开多个命令行窗口，设置不同的<code>NODE_IDs</code> 就有不同的节点运行。</p>
+<p>这个方法也要求不同的区块链和钱包文件。它们现在依赖于节点 ID并被命名为 blockchain_3000.db, blockchain_30001.db and wallet_3000.db, wallet_30001.db等。</p>
+<h1 id="实现-implementation"><a class="markdownIt-Anchor" href="#实现-implementation"></a> 实现 Implementation</h1>
+<p>那么问题来了，当我们下载比特币内核并首次运行会发生什么？它必须连接到一些节点去下载区块链的最先状态。假如你的电脑不被有些比特币识别，那么这个让你下载区块链的节点又在哪里呢？</p>
+<p>在比特币内核中硬编码一个节点地址会是一个错误：节点会被攻击或者关机，导致新的节点无法加入网络。相应的，在比特币内核当中，有硬编码的 DNS seeds 。它们不是节点，是知道一些节点IP地址的DNS 服务器。当你开始一个全新的比特币内核是，它会连接到其中的一个 种子（seed）然后获得一份全能节点的列表，然后从它们那里下载区块链。</p>
+<p>在我们的实现当中，目前也是集中式的。我们会有以下三个节点：</p>
+<ul>
+<li>中央节点。这是其它所有节点都会连接的，也是与其它节点交互数据的节点。</li>
+<li>一个挖矿节点。这个节点会在内存池保存新的交易记录，并且当有足够的交易记录时，会挖一个新的区块。</li>
+<li>一个钱包节点。这个节点用于在钱包之前转移币。不像SPV节点，它保存一份完整的区块链拷贝。</li>
+</ul>
+<h1 id="情景-the-scenario"><a class="markdownIt-Anchor" href="#情景-the-scenario"></a> 情景 The Scenario</h1>
+<p>这篇文章的目的是实现以下场景：</p>
+<ul>
+<li>中央节点创建一个区块链。</li>
+<li>其它节点（钱包节点）连接到中央节点并下载区块链。</li>
+<li>还有一个挖矿节点将连到中央节点并从中央节点下载区块链。</li>
+<li>钱包节点创建交易记录。</li>
+<li>挖矿节点接收交易记录并将它保存在自己的内存池当中。</li>
+<li>当内存池中的交易记录足够多时，矿工便开始挖新的区块。</li>
+<li>当一个新的区块被挖出来，它将会被发送到中央节点。</li>
+<li>钱包节点会与中央节点同步。</li>
+<li>钱包节点的用户会检查它们的支付是否成功。</li>
+<li>这就是比特币看起来的样子。即便我们没有准备构建一个实际的P2P网络，但是我们所实现的也是一个实际的、主要以及最重要的比特币案例。</li>
+</ul>
+<h1 id="版本-version"><a class="markdownIt-Anchor" href="#版本-version"></a> 版本 version</h1>
+<p>节点之间都过消息的方式进行沟通交流。当一个新节点运行，它会从一个DNS种子获得一些已有节点的地址，便向它们发送版本消息，在我们的实现中看起来像下面的样子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> version <span class="keyword">struct</span> {</span><br><span class="line">    Version    <span class="type">int</span></span><br><span class="line">    BestHeight <span class="type">int</span></span><br><span class="line">    AddrFrom   <span class="type">string</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>我们只有一个区块链版本，所以在 <code>Version</code> 结构体的字段中并没有保存任何重要信息。<code>BestHeight</code> 字段保存节点的区块链的长度。<code>AddFrom </code>保存发送者的地址。</p>
+<p>当一个节点收到一个版本信息时它应该干什么？它将以自己的版本信息进行回应。某种意义上，这就像握手：双方之间没有一方的主动示意互动便不可能。但这又不仅仅是礼貌：版本用于寻找一个更长的区块。当一个节点收到一个版本信息它将检查节点的区块链是否比BestHeigh 字段中的值长。假如不是，节点会要求与下载缺失的区块。</p>
+<p>为了收到消息，我们需要一个服务器：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> nodeAddress <span class="type">string</span></span><br><span class="line"><span class="keyword">var</span> knownNodes = []<span class="type">string</span>{<span class="string">"localhost:3000"</span>}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">StartServer</span><span class="params">(nodeID, minerAddress <span class="type">string</span>)</span></span> {</span><br><span class="line">    nodeAddress = fmt.Sprintf(<span class="string">"localhost:%s"</span>, nodeID)</span><br><span class="line">    miningAddress = minerAddress</span><br><span class="line">    ln, err := net.Listen(protocol, nodeAddress)</span><br><span class="line">    <span class="keyword">defer</span> ln.Close()</span><br><span class="line"></span><br><span class="line">    bc := NewBlockchain(nodeID)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> nodeAddress != knownNodes[<span class="number">0</span>] {</span><br><span class="line">        sendVersion(knownNodes[<span class="number">0</span>], bc)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> {</span><br><span class="line">        conn, err := ln.Accept()</span><br><span class="line">        <span class="keyword">go</span> handleConnection(conn, bc)</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>首先，我们硬解码中央节点的地址：一开始，每一个节点都必须知道要连接到哪里。<code>minerAddress</code> 参数指定了挖矿奖励的接收地址。下面这段：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> nodeAddress != knownNodes[<span class="number">0</span>] {</span><br><span class="line">    sendVersion(knownNodes[<span class="number">0</span>], bc)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>意味着假如目前的节点不是中央节点，它必须向中央节点发送版本信息并确认它的区块链是否过时了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sendVersion</span><span class="params">(addr <span class="type">string</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    bestHeight := bc.GetBestHeight()</span><br><span class="line">    payload := gobEncode(version{nodeVersion, bestHeight, nodeAddress})</span><br><span class="line"></span><br><span class="line">    request := <span class="built_in">append</span>(commandToBytes(<span class="string">"version"</span>), payload...)</span><br><span class="line"></span><br><span class="line">    sendData(addr, request)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>我们的消息，在底层的角度看，是字节序列。前面12个字节指定了命令名字（“version”，在这个案例中），后面的字节包含 <code>gob-encoded</code> 信息结构体。<code>commandToBytes</code> 看起来是这样的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">commandToBytes</span><span class="params">(command <span class="type">string</span>)</span></span> []<span class="type">byte</span> {</span><br><span class="line">    <span class="keyword">var</span> bytes [commandLength]<span class="type">byte</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, c := <span class="keyword">range</span> command {</span><br><span class="line">        bytes[i] = <span class="type">byte</span>(c)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> bytes[:]</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>它创建了一个 12-byte 的缓冲，并用命令名去覆盖它，让剩下的字节留空。相应的逆函数如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bytesToCommand</span><span class="params">(bytes []<span class="type">byte</span>)</span></span> <span class="type">string</span> {</span><br><span class="line">    <span class="keyword">var</span> command []<span class="type">byte</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, b := <span class="keyword">range</span> bytes {</span><br><span class="line">        <span class="keyword">if</span> b != <span class="number">0x0</span> {</span><br><span class="line">            command = <span class="built_in">append</span>(command, b)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> fmt.Sprintf(<span class="string">"%s"</span>, command)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>当一个节点收到一个命令，它调用<code>bytesToCommand</code>获取命令名字并以正确的操作执行命令体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleConnection</span><span class="params">(conn net.Conn, bc *Blockchain)</span></span> {</span><br><span class="line">    request, err := ioutil.ReadAll(conn)</span><br><span class="line">    command := bytesToCommand(request[:commandLength])</span><br><span class="line">    fmt.Printf(<span class="string">"Received %s command\n"</span>, command)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> command {</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"version"</span>:</span><br><span class="line">        handleVersion(request, bc)</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        fmt.Println(<span class="string">"Unknown command!"</span>)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    conn.Close()</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>OK，版本命令的处理内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleVersion</span><span class="params">(request []<span class="type">byte</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    <span class="keyword">var</span> buff bytes.Buffer</span><br><span class="line">    <span class="keyword">var</span> payload verzion</span><br><span class="line"></span><br><span class="line">    buff.Write(request[commandLength:])</span><br><span class="line">    dec := gob.NewDecoder(&amp;buff)</span><br><span class="line">    err := dec.Decode(&amp;payload)</span><br><span class="line"></span><br><span class="line">    myBestHeight := bc.GetBestHeight()</span><br><span class="line">    foreignerBestHeight := payload.BestHeight</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> myBestHeight &lt; foreignerBestHeight {</span><br><span class="line">        sendGetBlocks(payload.AddrFrom)</span><br><span class="line">    } <span class="keyword">else</span> <span class="keyword">if</span> myBestHeight &gt; foreignerBestHeight {</span><br><span class="line">        sendVersion(payload.AddrFrom, bc)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> !nodeIsKnown(payload.AddrFrom) {</span><br><span class="line">        knownNodes = <span class="built_in">append</span>(knownNodes, payload.AddrFrom)</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>首先，我们需要解码 <code>request </code>然后获取 <code>payload</code>。这与其它所有的操作函数类似，所以在后面的片段当中我将省略这部分代码。</p>
+<p>然后一个节点比较它的 <code>BestHeight </code>与从信息中得到的大小。假如节点的区块链更长，它将回应自己的版本信息；否则，它会发送 <code>getblocks </code>消息。</p>
+<h1 id="获得区块-getblocks"><a class="markdownIt-Anchor" href="#获得区块-getblocks"></a> 获得区块 getblocks</h1>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> getblocks <span class="keyword">struct</span> {</span><br><span class="line">    AddrFrom <span class="type">string</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p><code>getblocks </code>意味着“给我看看你有什么区块”（在比特币当中，要比这个要复杂得多）。需要注意的是，这并不是说“给我你所有的区块”，而是给我一个区块哈希值的列表。这样有助于降低网络负荷，因为区块可以从不同的节点下载，而且我们也不愿意从一个节点下载Gb级别以上的数据。</p>
+<p>处理命令简单如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleGetBlocks</span><span class="params">(request []<span class="type">byte</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    ...</span><br><span class="line">    blocks := bc.GetBlockHashes()</span><br><span class="line">    sendInv(payload.AddrFrom, <span class="string">"block"</span>, blocks)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>在我们的简单实现当中，<code>handleGetBlocks </code>会返回所有的区块哈希值。</p>
+<h1 id="inv"><a class="markdownIt-Anchor" href="#inv"></a> inv</h1>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> inv <span class="keyword">struct</span> {</span><br><span class="line">    AddrFrom <span class="type">string</span></span><br><span class="line">    Type     <span class="type">string</span></span><br><span class="line">    Items    [][]<span class="type">byte</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>比特币使用 <code>inv </code>来告诉其它节点当前节点有什么区块和交易记录。同样的，它不包含所有的区块和交易记录，只是它们的哈希值。<code>Type </code>字段表明它们是区块还是交易记录。</p>
+<p><code>inv </code>命令的处理要稍微难一些：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleInv</span><span class="params">(request []<span class="type">byte</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    ...</span><br><span class="line">    fmt.Printf(<span class="string">"Recevied inventory with %d %s\n"</span>, <span class="built_in">len</span>(payload.Items), payload.Type)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload.Type == <span class="string">"block"</span> {</span><br><span class="line">        blocksInTransit = payload.Items</span><br><span class="line"></span><br><span class="line">        blockHash := payload.Items[<span class="number">0</span>]</span><br><span class="line">        sendGetData(payload.AddrFrom, <span class="string">"block"</span>, blockHash)</span><br><span class="line"></span><br><span class="line">        newInTransit := [][]<span class="type">byte</span>{}</span><br><span class="line">        <span class="keyword">for</span> _, b := <span class="keyword">range</span> blocksInTransit {</span><br><span class="line">            <span class="keyword">if</span> bytes.Compare(b, blockHash) != <span class="number">0</span> {</span><br><span class="line">                newInTransit = <span class="built_in">append</span>(newInTransit, b)</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        blocksInTransit = newInTransit</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload.Type == <span class="string">"tx"</span> {</span><br><span class="line">        txID := payload.Items[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> mempool[hex.EncodeToString(txID)].ID == <span class="literal">nil</span> {</span><br><span class="line">            sendGetData(payload.AddrFrom, <span class="string">"tx"</span>, txID)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>如果区块哈希被转移了，我们要将它们保存在 <code>blockInTransit </code>变量当中以便跟踪下载的区块。这允许我们从不同的节点下载区块。当我们将区块放到传输状态以后，我向 <code>inv </code>信息的发送者下达 <code>getdata </code>命令然后更新 <code>blockInTransit</code>。在一个实际的<code>P2P </code>网络当中，我们需要在不同的节点之间传送区块。</p>
+<p>在我们的实现当中，我们从不用 <code>inv </code>多个哈希值。这是为什么当 <code>payload.Type == "tx"</code>只是获取了第一个哈希值。然后我们检查我们的内存池中是否已经有这个哈希，如果没有，下达 <code>getdata </code>命令。</p>
+<h1 id="getdata"><a class="markdownIt-Anchor" href="#getdata"></a> getdata</h1>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> getdata <span class="keyword">struct</span> {</span><br><span class="line">    AddrFrom <span class="type">string</span></span><br><span class="line">    Type     <span class="type">string</span></span><br><span class="line">    ID       []<span class="type">byte</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p><code>getdata </code>是针对特定区块或者交易记录的请求，它可以只包含一个区块／交易记录 ID。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleGetData</span><span class="params">(request []<span class="type">byte</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> payload.Type == <span class="string">"block"</span> {</span><br><span class="line">        block, err := bc.GetBlock([]<span class="type">byte</span>(payload.ID))</span><br><span class="line"></span><br><span class="line">        sendBlock(payload.AddrFrom, &amp;block)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload.Type == <span class="string">"tx"</span> {</span><br><span class="line">        txID := hex.EncodeToString(payload.ID)</span><br><span class="line">        tx := mempool[txID]</span><br><span class="line"></span><br><span class="line">        sendTx(payload.AddrFrom, &amp;tx)</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这个函数的处理方式非常简单：如果它们需要一个区块，返回一个区块；如果它们需要一个交易记录，返回交易记录。注意，我们并不检查实际上我们是否有这样的区块或者交易记录。这是一个瑕疵：）</p>
+<h1 id="block-and-tx"><a class="markdownIt-Anchor" href="#block-and-tx"></a> block and tx</h1>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> block <span class="keyword">struct</span> {</span><br><span class="line">    AddrFrom <span class="type">string</span></span><br><span class="line">    Block    []<span class="type">byte</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> tx <span class="keyword">struct</span> {</span><br><span class="line">    AddFrom     <span class="type">string</span></span><br><span class="line">    Transaction []<span class="type">byte</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>正是这些消息实际上在做着数据传送的事情。</p>
+<p>处理<code>block </code>消息非常简单：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleBlock</span><span class="params">(request []<span class="type">byte</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    blockData := payload.Block</span><br><span class="line">    block := DeserializeBlock(blockData)</span><br><span class="line"></span><br><span class="line">    fmt.Println(<span class="string">"Recevied a new block!"</span>)</span><br><span class="line">    bc.AddBlock(block)</span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"Added block %x\n"</span>, block.Hash)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(blocksInTransit) &gt; <span class="number">0</span> {</span><br><span class="line">        blockHash := blocksInTransit[<span class="number">0</span>]</span><br><span class="line">        sendGetData(payload.AddrFrom, <span class="string">"block"</span>, blockHash)</span><br><span class="line"></span><br><span class="line">        blocksInTransit = blocksInTransit[<span class="number">1</span>:]</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        UTXOSet := UTXOSet{bc}</span><br><span class="line">        UTXOSet.Reindex()</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>当我们收到一个新的区块，我们将它放到我们的区块链。假如还有更多的区块需要下载，我们将从已下载其之前区块的节点下载。当我们最终下载完全部区块，<code>UTXO set </code>会重新索引。</p>
+<blockquote>
+<p>TODO：在将它加入到区块链之前，我们需要验证每一个进来的区块，而不是无条件地信任。<br>
+TODO：如果区块链很大的话，这会花很多时间去重新索引整个 UTXO set，因此采用UTXOSet.Update(block)，而不是运行UTXOSet.Reindex()。</p>
+</blockquote>
+<p>处理 <code>tx </code>消息是最复杂的部分：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleTx</span><span class="params">(request []<span class="type">byte</span>, bc *Blockchain)</span></span> {</span><br><span class="line">    ...</span><br><span class="line">    txData := payload.Transaction</span><br><span class="line">    tx := DeserializeTransaction(txData)</span><br><span class="line">    mempool[hex.EncodeToString(tx.ID)] = tx</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> nodeAddress == knownNodes[<span class="number">0</span>] {</span><br><span class="line">        <span class="keyword">for</span> _, node := <span class="keyword">range</span> knownNodes {</span><br><span class="line">            <span class="keyword">if</span> node != nodeAddress &amp;&amp; node != payload.AddFrom {</span><br><span class="line">                sendInv(node, <span class="string">"tx"</span>, [][]<span class="type">byte</span>{tx.ID})</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(mempool) &gt;= <span class="number">2</span> &amp;&amp; <span class="built_in">len</span>(miningAddress) &gt; <span class="number">0</span> {</span><br><span class="line">        MineTransactions:</span><br><span class="line">            <span class="keyword">var</span> txs []*Transaction</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> id := <span class="keyword">range</span> mempool {</span><br><span class="line">                tx := mempool[id]</span><br><span class="line">                <span class="keyword">if</span> bc.VerifyTransaction(&amp;tx) {</span><br><span class="line">                    txs = <span class="built_in">append</span>(txs, &amp;tx)</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(txs) == <span class="number">0</span> {</span><br><span class="line">                fmt.Println(<span class="string">"All transactions are invalid! Waiting for new ones..."</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            cbTx := NewCoinbaseTX(miningAddress, <span class="string">""</span>)</span><br><span class="line">            txs = <span class="built_in">append</span>(txs, cbTx)</span><br><span class="line"></span><br><span class="line">            newBlock := bc.MineBlock(txs)</span><br><span class="line">            UTXOSet := UTXOSet{bc}</span><br><span class="line">            UTXOSet.Reindex()</span><br><span class="line"></span><br><span class="line">            fmt.Println(<span class="string">"New block is mined!"</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> _, tx := <span class="keyword">range</span> txs {</span><br><span class="line">                txID := hex.EncodeToString(tx.ID)</span><br><span class="line">                <span class="built_in">delete</span>(mempool, txID)</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> _, node := <span class="keyword">range</span> knownNodes {</span><br><span class="line">                <span class="keyword">if</span> node != nodeAddress {</span><br><span class="line">                    sendInv(node, <span class="string">"block"</span>, [][]<span class="type">byte</span>{newBlock.Hash})</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(mempool) &gt; <span class="number">0</span> {</span><br><span class="line">                <span class="keyword">goto</span> MineTransactions</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>最先要做的事情就是将新的交易记录放到内存池当中（再强调一遍，将交易记录放入内存池之前必须进行验证）。下一段：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> nodeAddress == knownNodes[<span class="number">0</span>] {</span><br><span class="line">    <span class="keyword">for</span> _, node := <span class="keyword">range</span> knownNodes {</span><br><span class="line">        <span class="keyword">if</span> node != nodeAddress &amp;&amp; node != payload.AddFrom {</span><br><span class="line">            sendInv(node, <span class="string">"tx"</span>, [][]<span class="type">byte</span>{tx.ID})</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>检查当前节点是否就是中央节点。在我们的实现当中，中央节点不进行挖矿作业。而是在网络当中转发新的交易记录给其它的节点。</p>
+<p>下一大段代码只针对挖矿节点。让我们将它分成几部分：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(mempool) &gt;= <span class="number">2</span> &amp;&amp; <span class="built_in">len</span>(miningAddress) &gt; <span class="number">0</span> {</span><br></pre></td></tr></table></figure>
+<p><code>miningAddress </code>只是在挖矿节点中设置。当有2个或2个以上的交易记录在当前挖矿节点的内存池当中的时候，挖矿便开始了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> id := <span class="keyword">range</span> mempool {</span><br><span class="line">    tx := mempool[id]</span><br><span class="line">    <span class="keyword">if</span> bc.VerifyTransaction(&amp;tx) {</span><br><span class="line">        txs = <span class="built_in">append</span>(txs, &amp;tx)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(txs) == <span class="number">0</span> {</span><br><span class="line">    fmt.Println(<span class="string">"All transactions are invalid! Waiting for new ones..."</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>首先，所有在内存池中的交易记录得到验证。非法的交易记录会被忽略，如果没有合法的交易记录，挖矿会被中断。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cbTx := NewCoinbaseTX(miningAddress, <span class="string">""</span>)</span><br><span class="line">txs = <span class="built_in">append</span>(txs, cbTx)</span><br><span class="line"></span><br><span class="line">newBlock := bc.MineBlock(txs)</span><br><span class="line">UTXOSet := UTXOSet{bc}</span><br><span class="line">UTXOSet.Reindex()</span><br><span class="line"></span><br><span class="line">fmt.Println(<span class="string">"New block is mined!"</span>)</span><br></pre></td></tr></table></figure>
+<p>验证过的交易记录会放入到区块当中，包括含有奖励的币基交易记录。在挖矿区块以后，<code>UTXO set</code>将重新索引。</p>
+<blockquote>
+<p>TODO：再一次强调，UTXOSet.Update 应该代替UTXOSet.Reindex使用。</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, tx := <span class="keyword">range</span> txs {</span><br><span class="line">    txID := hex.EncodeToString(tx.ID)</span><br><span class="line">    <span class="built_in">delete</span>(mempool, txID)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, node := <span class="keyword">range</span> knownNodes {</span><br><span class="line">    <span class="keyword">if</span> node != nodeAddress {</span><br><span class="line">        sendInv(node, <span class="string">"block"</span>, [][]<span class="type">byte</span>{newBlock.Hash})</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(mempool) &gt; <span class="number">0</span> {</span><br><span class="line">    <span class="keyword">goto</span> MineTransactions</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>当一个交易记录被挖出以后，它将从内存池中移除。任何知道当前节点的其它节点，收到含有新区块哈希值的 <code>inv </code>消息。在处理了这些消息以后它可以对这个区块提出要求。</p>
+<h1 id="结果-result"><a class="markdownIt-Anchor" href="#结果-result"></a> 结果 Result</h1>
+<p>让我们试一下我们之前定义的场景。</p>
+<p>首先，在第一个终端窗口设置<code>NODE_ID </code>为3000（export NODE_ID=3000）。为了不混淆哪个节点所对应的命令行，我将在在下一个段落之前在每段代码前面设置像NODE 3000 或者 NODE 3001的标签。</p>
+<ul>
+<li>NODE 3000</li>
+</ul>
+<p>新建一个钱包和一个区块链：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go createblockchain -address CENTREAL_NODE</span><br></pre></td></tr></table></figure>
+<p>(为了简洁和清晰，我将使用假地址)</p>
+<p>在这之后，区块链包含了单一的创世区块。我需要保存这个区块并在其它节点中使用。创世区块用来区分不同的区块链。（在比特币内核当中，创世区块是硬编码的）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp blockchain_3000.db blockchain_genesis.db </span><br></pre></td></tr></table></figure>
+<ul>
+<li>NODE 3001</li>
+</ul>
+<p>下一步，打开一个新的终端窗口并将节点ID设置为3001。这将是一个钱包节点。用<code>blockchain_go createwallet </code>新建一些地址，我们将它们命名为 <code>WALLET_1, WALLET_2, WALLET_3</code>。</p>
+<ul>
+<li>NODE 3000</li>
+</ul>
+<p>发一些币给钱包地址：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go send -from CENTREAL_NODE -to WALLET_1 -amount <span class="number">10</span> -mine</span><br><span class="line">$ blockchain_go send -from CENTREAL_NODE -to WALLET_2 -amount <span class="number">10</span> -mine</span><br></pre></td></tr></table></figure>
+<p>-mine 标签意味着区块会马上被同一个节点挖到。我们必须得有这个标签，因为开始的时候在网络当中并没有挖矿节点。</p>
+<p>开始节点：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go startnode</span><br></pre></td></tr></table></figure>
+<p>节点必须运行直到节点的最后。</p>
+<ul>
+<li>NODE 3001</li>
+</ul>
+<p>用之前保存的创世区块开始节点的区块链</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp blockchain_genesis.db blockchain_3001.db</span><br></pre></td></tr></table></figure>
+<p>运行这个节点：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go startnode</span><br></pre></td></tr></table></figure>
+<p>这会从中央节点下载所有的区块。为了检验一些正常，停止这个节点然后查询余额：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go getbalance -address WALLET_1</span><br><span class="line">Balance of <span class="string">'WALLET_1'</span>: <span class="number">10</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address WALLET_2</span><br><span class="line">Balance of <span class="string">'WALLET_2'</span>: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>同样，你也可以检查<code>CENTRAL_NODE</code>地址的余额，因为节点3001现在已经有它的区块链了：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go getbalance -address CENTRAL_NODE</span><br><span class="line">Balance of <span class="string">'CENTRAL_NODE'</span>: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>NODE 3002</li>
+</ul>
+<p>打开一个新的终端并将ID设置为3002，然后产生一个钱包。这将是一个挖矿节点。对区块链进行初始化：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp blockchain_genesis.db blockchain_3002.db</span><br></pre></td></tr></table></figure>
+<p>然后开始节点：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go startnode -miner MINER_WALLET</span><br></pre></td></tr></table></figure>
+<ul>
+<li>NODE 3001</li>
+</ul>
+<p>发一些币：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go send -from WALLET_1 -to WALLET_3 -amount <span class="number">1</span></span><br><span class="line">$ blockchain_go send -from WALLET_2 -to WALLET_4 -amount <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>NODE 3002</li>
+</ul>
+<p>非常快！切换到挖矿节点然后可以看到它挖了一个新的区块！也可以检查中央节点的输出。</p>
+<ul>
+<li>NODE 3001</li>
+</ul>
+<p>切换到钱包节点然后开始这个节点：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go startnode</span><br></pre></td></tr></table></figure>
+<p>它会下载新挖的区块！</p>
+<p>停止它，然后检查余额：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go getbalance -address WALLET_1</span><br><span class="line">Balance of <span class="string">'WALLET_1'</span>: <span class="number">9</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address WALLET_2</span><br><span class="line">Balance of <span class="string">'WALLET_2'</span>: <span class="number">9</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address WALLET_3</span><br><span class="line">Balance of <span class="string">'WALLET_3'</span>: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address WALLET_4</span><br><span class="line">Balance of <span class="string">'WALLET_4'</span>: <span class="number">1</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address MINER_WALLET</span><br><span class="line">Balance of <span class="string">'MINER_WALLET'</span>: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>嗯，就这样！</p>
+<h1 id="结论-conclusion"><a class="markdownIt-Anchor" href="#结论-conclusion"></a> 结论 Conclusion</h1>
+<p>这是系列文章的最后一部分。我原本可以发表更多的文章来实现一个P2P网络的现实原型，但是实在没有时间做这件事情。我希望这篇文章能够回答你们关于比特币技术的问题并提出一些新的问题，然后你们可以自己寻找答案。比特币技术当中还有很多更有趣的事情隐藏着！祝各位好运！</p>
+<p>P.S. 你可以开始通过实现<code>addr </code>消息来提高网络的性能，正如比特币网络协议当中所描述的，链接如下。这是非常重要的消息，因为它允许节点去发现彼此。我开始实现它，但是还没有完成。</p>
+<h1 id="links"><a class="markdownIt-Anchor" href="#links"></a> Links:</h1>
+<ul>
+<li><a href="https://github.com/Jeiwan/blockchain_go/tree/part_7">Source codes</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Protocol_documentation">Bitcoin protocol documentation</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Network">Bitcoin network</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/go/" rel="tag"># go</a>
+              <a href="/tags/hash/" rel="tag"># hash</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E/" rel="tag"># 工作证明</a>
+              <a href="/tags/%E4%BA%A4%E6%98%93/" rel="tag"># 交易</a>
+              <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag"># 命令行</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="如何用Go打造区块链（6）—交易记录（二）">
+                  <i class="fa fa-angle-left"></i> 如何用Go打造区块链（6）—交易记录（二）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/11/09/%E4%BB%80%E4%B9%88%E6%98%AF%E9%97%AA%E7%94%B5%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%A6%82%E4%BD%95%E8%AF%95%E7%94%A8-%E7%BF%BB%E8%AF%91/" rel="next" title="什么是闪电网络及如何试用-翻译">
+                  什么是闪电网络及如何试用-翻译 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

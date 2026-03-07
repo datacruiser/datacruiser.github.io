@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第十六章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 16 XML处理">
+<meta property="og:url" content="https://datacruiser.github.io/2019/05/30/Scala-for-the-Impatient-Chapter-16-XML%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第十六章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-05-30T09:21:04.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.869Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/05/30/Scala-for-the-Impatient-Chapter-16-XML%E5%A4%84%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/05/30/Scala-for-the-Impatient-Chapter-16-XML%E5%A4%84%E7%90%86/","path":"2019/05/30/Scala-for-the-Impatient-Chapter-16-XML处理/","title":"Scala for the Impatient Chapter 16 XML处理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 16 XML处理 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/05/30/Scala-for-the-Impatient-Chapter-16-XML%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 16 XML处理 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第十六章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 16 XML处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-05-30 09:21:04" itemprop="dateCreated datePublished" datetime="2019-05-30T09:21:04+00:00">2019-05-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/05/30/Scala-for-the-Impatient-Chapter-16-XML%E5%A4%84%E7%90%86/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/30/Scala-for-the-Impatient-Chapter-16-XML处理/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第十六章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p><code>&lt;fred/&gt;(0)</code>得到什么？<code>&lt;fred/&gt;(0)(0)</code>呢？为什么？</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="comment">//import scala.xml._</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex01</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> xml = &lt;fred/&gt;</span><br><span class="line">  println(xml(<span class="number">0</span>))</span><br><span class="line">  println(xml(<span class="number">0</span>)(<span class="number">0</span>))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex01</span> </span><br><span class="line">&lt;fred/&gt;</span><br><span class="line">&lt;fred/&gt;</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">26</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">42</span>:<span class="number">04</span> <span class="type">AM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>如下代码的值是什么？</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>Opening Bracket: [<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>Closing Bracket: ]<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>Opening Brace: {<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>Closing Brace: }<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>你如何修复它？</p>
+<p>以上代码将会报错，在XML语法当中，当大括号作为字面量时需要用<code>} }</code> （为了避免在hexo当中编译失败，在两个大括号当中加入空格，下同，实际上是不需要空格的）来表示<code>}</code>，用<code>{ {</code>表示<code>}</code>。修复后的代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex02</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> xml = &lt;ul&gt;</span><br><span class="line">              &lt;li&gt;<span class="type">Opening</span> bracket: [&lt;/li&gt;</span><br><span class="line">              &lt;li&gt;<span class="type">Closing</span> bracket: ]&lt;/li&gt;</span><br><span class="line">              &lt;li&gt;<span class="type">Opening</span> brace: { {&lt;/li&gt;</span><br><span class="line">              &lt;li&gt;<span class="type">Closing</span> brace: } }&lt;/li&gt;</span><br><span class="line">              &lt;/ul&gt;</span><br><span class="line"></span><br><span class="line">  println(xml)</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex02</span> </span><br><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;li&gt;<span class="type">Opening</span> bracket: [&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;<span class="type">Closing</span> bracket: ]&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;<span class="type">Opening</span> brace: {&lt;/li&gt;</span><br><span class="line">  &lt;li&gt;<span class="type">Closing</span> brace: }&lt;/li&gt;</span><br><span class="line">  &lt;/ul&gt;</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">2</span>:<span class="number">01</span>:<span class="number">41</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>对比</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>Fred<span class="tag">&lt;/<span class="name">li</span>&gt;</span> match { case <span class="tag">&lt;<span class="name">li</span>&gt;</span>{Text(t)}<span class="tag">&lt;/<span class="name">li</span>&gt;</span> =&gt; t }</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>{"Fred"}<span class="tag">&lt;/<span class="name">li</span>&gt;</span> match { case <span class="tag">&lt;<span class="name">li</span>&gt;</span>{Text(t)}<span class="tag">&lt;/<span class="name">li</span>&gt;</span> =&gt; t }</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>为什么他们的行为不同？</p>
+<p>两者的结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> xml_atom = &lt;li&gt;<span class="type">Fred</span>&lt;/li&gt; <span class="keyword">match</span> { <span class="keyword">case</span> &lt;li&gt;{<span class="type">Text</span>(t)}&lt;/li&gt; =&gt; t }</span><br><span class="line">xml_atom: <span class="type">String</span> = <span class="type">Fred</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> xml_text = &lt;li&gt;{<span class="string">"Fred"</span>}&lt;/li&gt; <span class="keyword">match</span> { <span class="keyword">case</span> &lt;li&gt;{<span class="type">Text</span>(t)}&lt;/li&gt; =&gt; t }</span><br><span class="line">scala.<span class="type">MatchError</span>: &lt;li&gt;<span class="type">Fred</span>&lt;/li&gt; (of <span class="class"><span class="keyword">class</span> <span class="title">scala</span>.<span class="title">xml</span>.<span class="title">Elem</span>)</span></span><br></pre></td></tr></table></figure>
+<p>这是因为内嵌的字符串并不会被转成Text节点，而是会被转成Atom[String]节点，这和普通的Text节点还是有区别的，区别在于Text是Atom[String]的子类，并且在你事后打算以Text节点的模式对它进行匹配时会失败。在这种情况下，你需要插入Text节点，而不是字符串。如果将代码修改如下就不会报错了。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex03</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> xml_atom = &lt;li&gt;<span class="type">Fred</span>&lt;/li&gt; <span class="keyword">match</span> { <span class="keyword">case</span> &lt;li&gt;{<span class="type">Text</span>(t)}&lt;/li&gt; =&gt; t }</span><br><span class="line">  <span class="keyword">val</span> xml_text = &lt;li&gt;{<span class="type">Text</span>(<span class="string">"Fred"</span>)}&lt;/li&gt; <span class="keyword">match</span> { <span class="keyword">case</span> &lt;li&gt;{<span class="type">Text</span>(t)}&lt;/li&gt; =&gt; t }</span><br><span class="line"></span><br><span class="line">  println(xml_atom)</span><br><span class="line">  println(xml_text)</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex03</span> </span><br><span class="line"><span class="type">Fred</span></span><br><span class="line"><span class="type">Fred</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">25</span>:<span class="number">42</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>读取一个XHTML文件并打印所有不带alt属性的img元素。</p>
+<p>Ex04.xml文件内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>第一个网页<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">alt</span>=<span class="string">"12"</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"1"</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"3"</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Scala代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml.<span class="type">XML</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex04</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter16"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> root = <span class="type">XML</span>.load(path + <span class="string">"/"</span> + <span class="string">"Ex04.xml"</span>)</span><br><span class="line">  <span class="keyword">val</span> image = (root \\ <span class="string">"img"</span>).filter { _ \ <span class="string">"@alt"</span> isEmpty }</span><br><span class="line"></span><br><span class="line">  image foreach println</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试输出如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex04</span> </span><br><span class="line">&lt;img src=<span class="string">"1"</span>/&gt;</span><br><span class="line">&lt;img src=<span class="string">"3"</span>/&gt;</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">56</span>:<span class="number">29</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>打印XHTML文件中所有图像的名称，即打印所有位于img元素内的src属性值。</p>
+<p>依然使用上面那个xml文件，编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml.<span class="type">XML</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex05</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter16"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> root = <span class="type">XML</span>.load(path + <span class="string">"/"</span> + <span class="string">"Ex04.xml"</span>)</span><br><span class="line">  (root \\ <span class="string">"img"</span>).foreach{</span><br><span class="line">    n =&gt; {</span><br><span class="line">      println(n \ <span class="string">"@src"</span>)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex05</span> </span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">5</span>:<span class="number">21</span>:<span class="number">21</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>读取XHTML文件并打印一个包含了文件中给出的所有超链接及其url的表格。即，打印所有a元素的child文本和href属性。</p>
+<p>Ex06.xml文件内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span> <span class="keyword">PUBLIC</span> <span class="string">"-//W3C//DTD XHTML 1.0 Transitional//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="string">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Xhtml Valid Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://www.google.com"</span>&gt;</span>Google<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://github.com"</span>&gt;</span>Github<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://www.tmall.com"</span>&gt;</span>Tmall<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Scala代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex06</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter16"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> root = <span class="type">XML</span>.load(path + <span class="string">"/"</span> + <span class="string">"Ex06.xml"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">//val links = (root \\ "a") map { (x: Node) =&gt; (x.attribute("href").getOrElse("").toString, x.text) } filter {_._1.startsWith("https")}</span></span><br><span class="line">  <span class="comment">//println(links.mkString("\n"))</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> tr = &lt;li&gt;&lt;/li&gt;</span><br><span class="line">  (root \\ <span class="string">"a"</span>).foreach{</span><br><span class="line">    n =&gt; {</span><br><span class="line">      tr = tr.copy(child = tr.child ++ &lt;tr&gt;{n}&lt;/tr&gt;)</span><br><span class="line">      println(n \\ <span class="string">"@href"</span>)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex06</span> </span><br><span class="line">https:<span class="comment">//www.google.com</span></span><br><span class="line">https:<span class="comment">//github.com</span></span><br><span class="line">https:<span class="comment">//www.tmall.com</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">69</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">7</span>:<span class="number">03</span>:<span class="number">48</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<p>运行时间较慢，需要耗费1分多钟。</p>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>编写一个函数，带一个类型为Map[String,String]的参数，返回一个dl元素，其中针对映射中每个键对应有一个dt，每个值对应有一个dd，例如：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Map</span>(“<span class="type">A</span>”-&gt;”<span class="number">1</span>”,”<span class="type">B</span>”-&gt;”<span class="number">2</span>”)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>应产出</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dl</span>&gt;</span><span class="tag">&lt;<span class="name">dt</span>&gt;</span>A<span class="tag">&lt;/<span class="name">dt</span>&gt;</span><span class="tag">&lt;<span class="name">dd</span>&gt;</span>l<span class="tag">&lt;/<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">dt</span>&gt;</span>B<span class="tag">&lt;/<span class="name">dt</span>&gt;</span><span class="tag">&lt;<span class="name">dd</span>&gt;</span>2<span class="tag">&lt;/<span class="name">dd</span>&gt;</span><span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter15</span><br><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml.<span class="type">Elem</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex07</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">mapToDl</span></span>(m: <span class="type">Map</span>[<span class="type">String</span>, <span class="type">String</span>]): <span class="type">Elem</span> = {</span><br><span class="line">    &lt;dl&gt;{ <span class="keyword">for</span> ((k,v) &lt;- m) <span class="keyword">yield</span> &lt;dt&gt;{k}&lt;/dt&gt;&lt;dd&gt;{v}&lt;/dd&gt; }&lt;/dl&gt;</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> m = <span class="type">Map</span>(<span class="string">"A"</span> -&gt; <span class="string">"1"</span>, <span class="string">"B"</span> -&gt; <span class="string">"2"</span>)</span><br><span class="line"></span><br><span class="line">  println(mapToDl(m))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex07</span> </span><br><span class="line">&lt;dl&gt;&lt;dt&gt;<span class="type">A</span>&lt;/dt&gt;&lt;dd&gt;<span class="number">1</span>&lt;/dd&gt;&lt;dt&gt;<span class="type">B</span>&lt;/dt&gt;&lt;dd&gt;<span class="number">2</span>&lt;/dd&gt;&lt;/dl&gt;</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">7</span>:<span class="number">14</span>:<span class="number">10</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>编写一个函数，接受dl元素，将它转成Map[String,String]。该函数应该是前一个练习中的<br>
+反向处理，前提是所有dt后代都是唯一的。</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml.{<span class="type">Elem</span>, <span class="type">Text</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex08</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">dlToMpa</span></span>(dl: <span class="type">Elem</span>): <span class="type">Map</span>[<span class="type">String</span>, <span class="type">String</span>] = {</span><br><span class="line">    <span class="keyword">val</span> keys, values = scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">String</span>]()</span><br><span class="line"></span><br><span class="line">    dl.child.foreach(</span><br><span class="line">      n =&gt; n <span class="keyword">match</span> {</span><br><span class="line">        <span class="keyword">case</span> &lt;dt&gt;{<span class="type">Text</span>(t)}&lt;/dt&gt; =&gt; keys.append(t)</span><br><span class="line">        <span class="keyword">case</span> &lt;dd&gt;{<span class="type">Text</span>(t)}&lt;/dd&gt; =&gt; values.append(t)</span><br><span class="line">      }</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    keys.zip(values).toMap</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> html = &lt;dl&gt;&lt;dt&gt;<span class="type">A</span>&lt;/dt&gt;&lt;dd&gt;<span class="number">1</span>&lt;/dd&gt;&lt;dt&gt;<span class="type">B</span>&lt;/dt&gt;&lt;dd&gt;<span class="number">2</span>&lt;/dd&gt;&lt;/dl&gt;</span><br><span class="line">  println(dlToMpa(html))</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex08</span> </span><br><span class="line"><span class="type">Map</span>(<span class="type">A</span> -&gt; <span class="number">1</span>, <span class="type">B</span> -&gt; <span class="number">2</span>)</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">3</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">7</span>:<span class="number">36</span>:<span class="number">55</span> <span class="type">PM</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>对一个XHTML文档进行变换，对所有不带alt属性的img元素添加一个alt=”TODO”属性，其他内容完全不变。</p>
+<p>Ex09.xml文件内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span> <span class="keyword">PUBLIC</span> <span class="string">"-//W3C//DTD XHTML 1.0 Transitional//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="string">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Xhtml Valid Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://datacruiser.io"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://zhihu.com"</span> <span class="attr">alt</span>=<span class="string">"imagex"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>核心代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"><span class="keyword">import</span> scala.xml.transform.{<span class="type">RuleTransformer</span>,<span class="type">RewriteRule</span>}</span><br><span class="line"><span class="keyword">import</span> scala.xml.{<span class="type">Attribute</span>,<span class="type">XML</span>,<span class="type">Node</span>,<span class="type">Elem</span>,<span class="type">Null</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex09</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter16"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> root = <span class="type">XML</span>.load(path + <span class="string">"/"</span> + <span class="string">"Ex09.xml"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> rule = <span class="keyword">new</span> <span class="type">RewriteRule</span> {</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">transform</span></span>(n: <span class="type">Node</span>) = n <span class="keyword">match</span> {</span><br><span class="line">      <span class="keyword">case</span> img @ &lt;img/&gt; <span class="keyword">if</span> img \ <span class="string">"@alt"</span> isEmpty =&gt;</span><br><span class="line">        img.asInstanceOf[<span class="type">Elem</span>] % <span class="type">Attribute</span>(<span class="literal">null</span>, <span class="string">"alt"</span>, <span class="string">"TODO"</span>, <span class="type">Null</span>)</span><br><span class="line">      <span class="keyword">case</span> _ =&gt; n</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> transformed = <span class="keyword">new</span> <span class="type">RuleTransformer</span>(rule).transform(root)</span><br><span class="line"></span><br><span class="line">  println(transformed)</span><br><span class="line">  </span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter16.<span class="type">Ex09</span> </span><br><span class="line">&lt;html xmlns=<span class="string">"http://www.w3.org/1999/xhtml"</span>&gt;&lt;head&gt;&lt;title&gt;<span class="type">Xhtml</span> <span class="type">Valid</span> <span class="type">Page</span>&lt;/title&gt;&lt;/head&gt;&lt;body&gt;</span><br><span class="line">        &lt;p&gt;</span><br><span class="line">            &lt;img alt=<span class="string">"TODO"</span> src=<span class="string">"http://datacruiser.io"</span>/&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">        &lt;p&gt;</span><br><span class="line">            &lt;img alt=<span class="string">"imagex"</span> src=<span class="string">"http://zhihu.com"</span>/&gt;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">    &lt;/body&gt;&lt;/html&gt;</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">65</span> s, completed <span class="type">May</span> <span class="number">31</span>, <span class="number">2019</span> <span class="number">7</span>:<span class="number">56</span>:<span class="number">46</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>编写一个函数，读取XHTML文档，执行前一个练习中的变换，并保存结果。确保保留了DTD以及所有CDATA内容。</p>
+<p>非函数版本的代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml.dtd.<span class="type">DocType</span></span><br><span class="line"><span class="keyword">import</span> scala.xml.parsing.<span class="type">ConstructingParser</span></span><br><span class="line"><span class="keyword">import</span> scala.xml.transform.{<span class="type">RewriteRule</span>, <span class="type">RuleTransformer</span>}</span><br><span class="line"><span class="keyword">import</span> scala.xml.{<span class="type">Attribute</span>, <span class="type">Elem</span>, <span class="type">Node</span>, <span class="type">Null</span>, <span class="type">XML</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex10</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter16"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> doc = <span class="type">ConstructingParser</span>.fromFile(<span class="keyword">new</span> <span class="type">File</span>(path + <span class="string">"/"</span> + <span class="string">"Ex09.xml"</span>),<span class="literal">true</span>).document</span><br><span class="line">  <span class="keyword">val</span> a = doc.docElem</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> rule = <span class="keyword">new</span> <span class="type">RewriteRule</span> {</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">transform</span></span>(n: <span class="type">Node</span>) = n <span class="keyword">match</span> {</span><br><span class="line">      <span class="keyword">case</span> img @ &lt;img/&gt; <span class="keyword">if</span> img \ <span class="string">"@alt"</span> isEmpty =&gt;</span><br><span class="line">        img.asInstanceOf[<span class="type">Elem</span>] % <span class="type">Attribute</span>(<span class="literal">null</span>, <span class="string">"alt"</span>, <span class="string">"TODO"</span>, <span class="type">Null</span>)</span><br><span class="line">      <span class="keyword">case</span> _ =&gt; n</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> transformed = <span class="keyword">new</span> <span class="type">RuleTransformer</span>(rule).transform(a)</span><br><span class="line"></span><br><span class="line">  <span class="type">XML</span>.save(path + <span class="string">"/"</span> + <span class="string">"Ex10.xml"</span>, transformed(<span class="number">0</span>), <span class="string">"UTF-8"</span>, <span class="literal">false</span>, <span class="type">DocType</span>(<span class="string">"html"</span>, doc.dtd.externalID, <span class="type">Nil</span>))</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>修改为函数版本如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter16</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.xml.dtd.<span class="type">DocType</span></span><br><span class="line"><span class="keyword">import</span> scala.xml.parsing.<span class="type">ConstructingParser</span></span><br><span class="line"><span class="keyword">import</span> scala.xml.transform.{<span class="type">RewriteRule</span>, <span class="type">RuleTransformer</span>}</span><br><span class="line"><span class="keyword">import</span> scala.xml.{<span class="type">Attribute</span>, <span class="type">Document</span>, <span class="type">Elem</span>, <span class="type">Node</span>, <span class="type">Null</span>, <span class="type">XML</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Ex10</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter16"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> doc = <span class="type">ConstructingParser</span>.fromFile(<span class="keyword">new</span> <span class="type">File</span>(path + <span class="string">"/"</span> + <span class="string">"Ex09.xml"</span>),<span class="literal">true</span>).document</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> rule = <span class="keyword">new</span> <span class="type">RewriteRule</span> {</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">transform</span></span>(n: <span class="type">Node</span>) = n <span class="keyword">match</span> {</span><br><span class="line">      <span class="keyword">case</span> img @ &lt;img/&gt; <span class="keyword">if</span> img \ <span class="string">"@alt"</span> isEmpty =&gt;</span><br><span class="line">        img.asInstanceOf[<span class="type">Elem</span>] % <span class="type">Attribute</span>(<span class="literal">null</span>, <span class="string">"alt"</span>, <span class="string">"TODO"</span>, <span class="type">Null</span>)</span><br><span class="line">      <span class="keyword">case</span> _ =&gt; n</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">imgTodo</span></span>(doc: <span class="type">Document</span>): <span class="type">Unit</span> = {</span><br><span class="line">    <span class="keyword">val</span> a = doc.docElem</span><br><span class="line">    <span class="keyword">val</span> transformer = <span class="keyword">new</span> <span class="type">RuleTransformer</span>(rule).transform(a)</span><br><span class="line">    <span class="type">XML</span>.save(path + <span class="string">"/"</span> + <span class="string">"Ex10.xml"</span>, transformed(<span class="number">0</span>), <span class="string">"UTF-8"</span>, <span class="literal">false</span>, <span class="type">DocType</span>(<span class="string">"html"</span>, doc.dtd.externalID, <span class="type">Nil</span>))</span><br><span class="line"></span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line"> imgTodo(doc)</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/26/Scala-for-the-Impatient-Chapter-15-%E6%B3%A8%E8%A7%A3/" rel="prev" title="Scala for the Impatient Chapter 15 注解">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 15 注解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/03/Scala-for-the-Impatient-Chapter-17-%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0/" rel="next" title="Scala for the Impatient Chapter 17 类型参数">
+                  Scala for the Impatient Chapter 17 类型参数 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

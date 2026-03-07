@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第八章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 8 练习">
+<meta property="og:url" content="https://datacruiser.github.io/2019/04/27/Scala-for-the-Impatient-Chapter-8-%E7%BB%83%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第八章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-27T11:22:32.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.870Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/04/27/Scala-for-the-Impatient-Chapter-8-%E7%BB%83%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/04/27/Scala-for-the-Impatient-Chapter-8-%E7%BB%83%E4%B9%A0/","path":"2019/04/27/Scala-for-the-Impatient-Chapter-8-练习/","title":"Scala for the Impatient Chapter 8 练习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 8 练习 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/04/27/Scala-for-the-Impatient-Chapter-8-%E7%BB%83%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 8 练习 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第八章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 8 练习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-27 11:22:32" itemprop="dateCreated datePublished" datetime="2019-04-27T11:22:32+00:00">2019-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/04/27/Scala-for-the-Impatient-Chapter-8-%E7%BB%83%E4%B9%A0/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/27/Scala-for-the-Impatient-Chapter-8-练习/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第八章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p>扩展如下的 BankAccount 类，新类 ChekingAccount 对每次存款和取款都收取1美元的手续费。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BankAccount</span>(<span class="params"><span class="type">InitialBalance</span>: <span class="type">Double</span></span>)</span>{</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">var</span> balance = initialBalance</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">deposit</span></span>(amount: <span class="type">Double</span>) = {balance += amount; balance}</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">withdraw</span></span>(amount: <span class="type">Double</span>) = {balance += amount; balance}</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">currentBalance</span> </span>= balance</span><br><span class="line">	}</span><br></pre></td></tr></table></figure>
+<p>编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CheckingAccount</span>(<span class="params"><span class="type">InitialBalance</span>: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">BankAccount</span>(<span class="params"><span class="type">InitialBalance</span>: <span class="type">Double</span></span>) </span>{</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">deposit</span></span>(amount: <span class="type">Double</span>): <span class="type">Double</span> = {</span><br><span class="line">    <span class="keyword">super</span>.deposit(amount - <span class="number">1</span>)</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">withdraw</span></span>(amount: <span class="type">Double</span>): <span class="type">Double</span> = {</span><br><span class="line">    <span class="keyword">super</span>.withdraw(amount + <span class="number">1</span>)</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">currentBalance</span></span>: <span class="type">Double</span> = <span class="keyword">super</span>.currentBalance</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">CheckingAccount</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> checkingAccount = <span class="keyword">new</span> <span class="type">CheckingAccount</span>(<span class="number">2000</span>)</span><br><span class="line">  <span class="keyword">val</span> deposit = <span class="number">1000</span></span><br><span class="line">  <span class="keyword">val</span> withdraw = <span class="number">800</span></span><br><span class="line">  checkingAccount.deposit(deposit)</span><br><span class="line">  println(<span class="string">"存入 :"</span> + deposit + <span class="string">"余额: "</span> + checkingAccount.currentBalance)</span><br><span class="line">  checkingAccount.withdraw(withdraw)</span><br><span class="line">  println(<span class="string">"取出 :"</span> + withdraw + <span class="string">"余额: "</span> + checkingAccount.currentBalance)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter8.<span class="type">CheckingAccount</span> </span><br><span class="line">存入 :<span class="number">1000</span>余额: <span class="number">2999.0</span></span><br><span class="line">取出 :<span class="number">800</span>余额: <span class="number">3800.0</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">3</span> s, completed <span class="type">Apr</span> <span class="number">27</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">15</span>:<span class="number">56</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>扩展前一个练习的 BankAccount类，新类 SavinigsAccount ，每个月有利息产生（earnMonthlyInterest 方法被调用），并且有每月三次免手续费的存款或取款。在 earnMonthlyInterest方法中重置交易次数。</p>
+<p>新类代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SavingsAccount</span>(<span class="params"><span class="type">InitialBalance</span>: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">BankAccount</span>(<span class="params"><span class="type">InitialBalance</span></span>)</span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> freeTradeCount = <span class="number">3</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> interstRate = <span class="number">0.01</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">currentCount</span> </span>= freeTradeCount <span class="comment">//用于后续测试用例时调用当前的免费次数</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">deposit</span></span>(amount: <span class="type">Double</span>): <span class="type">Double</span> = {</span><br><span class="line">    <span class="keyword">if</span>(freeTradeCount &gt; <span class="number">0</span>){</span><br><span class="line">      freeTradeCount -= <span class="number">1</span></span><br><span class="line">      <span class="keyword">super</span>.deposit(amount)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">super</span>.deposit(amount - <span class="number">1</span>)</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">withdraw</span></span>(amount: <span class="type">Double</span>): <span class="type">Double</span> = {</span><br><span class="line">    <span class="keyword">if</span>(freeTradeCount &gt; <span class="number">0</span>){</span><br><span class="line">      freeTradeCount -= <span class="number">1</span></span><br><span class="line">      <span class="keyword">super</span>.withdraw(amount)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">super</span>.withdraw(amount + <span class="number">1</span>)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">earnMonthlyInterest</span></span>(): <span class="type">Double</span> = {</span><br><span class="line">    freeTradeCount = <span class="number">3</span></span><br><span class="line">    <span class="keyword">super</span>.deposit(<span class="keyword">super</span>.deposit(<span class="number">0</span>) * interstRate)</span><br><span class="line">    <span class="keyword">super</span>.deposit(<span class="number">0</span>) * interstRate</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">saveingsAccount</span> <span class="keyword">extends</span> <span class="title">App</span></span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> depBal: <span class="type">Double</span> = <span class="number">1000</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> witBal: <span class="type">Double</span>  = <span class="number">200</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> interest: <span class="type">Double</span> = <span class="number">0.0</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> saveingsaccount: <span class="type">SavingsAccount</span> = <span class="keyword">new</span> <span class="type">SavingsAccount</span>(<span class="number">500</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(i &lt;- <span class="number">1</span> to <span class="number">32</span>){</span><br><span class="line">    <span class="keyword">if</span>(i &gt;= <span class="number">1</span> &amp;&amp; i &lt;= <span class="number">5</span>){</span><br><span class="line">      saveingsaccount.deposit(depBal)</span><br><span class="line">      println(i + <span class="string">"号存入: "</span> + depBal + <span class="string">"，余额: "</span> + saveingsaccount.currentBalance + <span class="string">"，剩余免费次数: "</span> + saveingsaccount.currentCount)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(i &gt;= <span class="number">29</span> &amp;&amp; i &lt;= <span class="number">31</span>){</span><br><span class="line">      <span class="keyword">if</span>(i == <span class="number">30</span>){</span><br><span class="line">        interest = saveingsaccount.earnMonthlyInterest()</span><br><span class="line">        saveingsaccount.deposit(interest) <span class="comment">//将产生的利息存回余额</span></span><br><span class="line">        saveingsaccount.currentCount </span><br><span class="line">      }</span><br><span class="line">      saveingsaccount.withdraw(witBal)</span><br><span class="line">      println(i + <span class="string">"号取出: "</span> + witBal + <span class="string">"，余额: "</span> + saveingsaccount.currentBalance + <span class="string">"，剩余免费次数: "</span> + saveingsaccount.currentCount)</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">  println(<span class="string">"一个月产生的利息："</span> + interest + <span class="string">"，剩余免费次数："</span> + saveingsaccount.currentCount)</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter8.saveingsAccount </span><br><span class="line"><span class="number">1</span>号存入: <span class="number">1000.0</span>，余额: <span class="number">1500.0</span>，剩余免费次数: <span class="number">2</span></span><br><span class="line"><span class="number">2</span>号存入: <span class="number">1000.0</span>，余额: <span class="number">2500.0</span>，剩余免费次数: <span class="number">1</span></span><br><span class="line"><span class="number">3</span>号存入: <span class="number">1000.0</span>，余额: <span class="number">3500.0</span>，剩余免费次数: <span class="number">0</span></span><br><span class="line"><span class="number">4</span>号存入: <span class="number">1000.0</span>，余额: <span class="number">4499.0</span>，剩余免费次数: <span class="number">0</span></span><br><span class="line"><span class="number">5</span>号存入: <span class="number">1000.0</span>，余额: <span class="number">5498.0</span>，剩余免费次数: <span class="number">0</span></span><br><span class="line"><span class="number">29</span>号取出: <span class="number">200.0</span>，余额: <span class="number">5699.0</span>，剩余免费次数: <span class="number">0</span></span><br><span class="line"><span class="number">30</span>号取出: <span class="number">200.0</span>，余额: <span class="number">6013.5499</span>，剩余免费次数: <span class="number">1</span></span><br><span class="line"><span class="number">31</span>号取出: <span class="number">200.0</span>，余额: <span class="number">6213.5499</span>，剩余免费次数: <span class="number">0</span></span><br><span class="line">一个月产生的利息：<span class="number">57.5599</span>，剩余免费次数：<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>翻开你喜欢的 Java 或 C++教科书，一定会找到用来讲解继承层级的示例，可能是员工、宠物、图形或类似的东西。用 Scala 来实现这个示例。</p>
+<p>这里找到了Daniel Liang的《Introduction to Java Comprehension Version》中的 Listing 11.1 和11.2，代码如下：</p>
+<ul>
+<li>Listing 11.1 SimpleGeometricObject.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SimpleGeometricObject</span> {</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">color</span> <span class="operator">=</span> <span class="string">"white"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> filled;</span><br><span class="line">    <span class="keyword">private</span> java.util.Date dateCreated;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Construct a default geometric object */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SimpleGeometricObject</span><span class="params">()</span> {</span><br><span class="line"></span><br><span class="line">        dateCreated = <span class="keyword">new</span> <span class="title class_">java</span>.util.Date();</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line">    <span class="comment">/** Construct a geometric object with the specified color * and filled value */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SimpleGeometricObject</span><span class="params">(String color, <span class="type">boolean</span> filled)</span> {</span><br><span class="line"></span><br><span class="line">        dateCreated = <span class="keyword">new</span> <span class="title class_">java</span>.util.Date(); <span class="built_in">this</span>.color = color; <span class="built_in">this</span>.filled = filled;</span><br><span class="line"></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Return color */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getColor</span><span class="params">()</span> { <span class="keyword">return</span> color; }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Set a new color */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setColor</span><span class="params">(String color)</span> { <span class="built_in">this</span>.color = color; }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Return filled. Since filled is boolean, its getter method is named isFilled */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isFilled</span><span class="params">()</span> {</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> filled;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Set a new filled */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setFilled</span><span class="params">(<span class="type">boolean</span> filled)</span> { <span class="built_in">this</span>.filled = filled; }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Get dateCreated */</span></span><br><span class="line">    <span class="keyword">public</span> java.util.Date <span class="title function_">getDateCreated</span><span class="params">()</span> { <span class="keyword">return</span> dateCreated; }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Return a string representation of this object */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> {</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"created on "</span> + dateCreated + <span class="string">"\ncolor: "</span> + color + <span class="string">" and filled: "</span> + filled;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Listing 11.2 CircleFromSimpleGeometricObject.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CircleFromSimpleGeometricObject</span> <span class="keyword">extends</span> <span class="title class_">SimpleGeometricObject</span> {</span><br><span class="line">        <span class="keyword">private</span> <span class="type">double</span> radius;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">CircleFromSimpleGeometricObject</span><span class="params">()</span> { }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">CircleFromSimpleGeometricObject</span><span class="params">(<span class="type">double</span> radius)</span> { <span class="built_in">this</span>.radius = radius; }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">CircleFromSimpleGeometricObject</span><span class="params">(<span class="type">double</span> radius, String color, <span class="type">boolean</span> filled)</span> {</span><br><span class="line">            <span class="built_in">this</span>.radius = radius;</span><br><span class="line">            setColor(color);</span><br><span class="line">            setFilled(filled);</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** Return radius */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">getRadius</span><span class="params">()</span> { <span class="keyword">return</span> radius; }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** Set a new radius */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setRadius</span><span class="params">(<span class="type">double</span> radius)</span> { <span class="built_in">this</span>.radius = radius; }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** Return area */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">getArea</span><span class="params">()</span> { <span class="keyword">return</span> radius * radius * Math.PI; }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** Return diameter */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">getDiameter</span><span class="params">()</span> { <span class="keyword">return</span> <span class="number">2</span> * radius; }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** Return perimeter */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">double</span> <span class="title function_">getPerimeter</span><span class="params">()</span> { <span class="keyword">return</span> <span class="number">2</span> * radius * Math.PI; }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** Print the circle info */</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printCircle</span><span class="params">()</span> {</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">"The circle is created "</span> + getDateCreated() + <span class="string">" and the radius is "</span> + radius);</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>如果用 scala，则实现如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Geometric</span>(<span class="params">color: <span class="type">String</span>, filled: <span class="type">Boolean</span>, dateCreated: java.util.<span class="type">Date</span></span>) </span>{</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">toString</span></span>: <span class="type">String</span> = <span class="string">"created on "</span> + dateCreated + <span class="string">"\ncolor: "</span> + color + <span class="string">" and filled: "</span> + filled</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Circle</span>(<span class="params">color: <span class="type">String</span>, filled: <span class="type">Boolean</span>, dateCreated: java.util.<span class="type">Date</span>, radius: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">Geometric</span>(<span class="params">color, filled, dateCreated</span>) </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">printCircle</span></span>(): <span class="type">Unit</span> = {</span><br><span class="line">    println(<span class="string">"The circle is created "</span> + dateCreated + <span class="string">" and the radius is "</span> + radius)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>定义一个抽象类 Item，加入方法 price 和 description。SimpleItem 是一个在构造器中给出价格和描述的物件。利用 val 可以重写 def 这个事实。Bundle 是一个可以包含其他物件的物件。其价格是打包中所有物件的价格之和。同时提供一个将物件添加到打包当中的机制。以及一个合适的 description 方法。</p>
+<p>根据题意，编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">price</span></span>: <span class="type">Double</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">description</span></span>: <span class="type">String</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleItem</span>(<span class="params">override val price: <span class="type">Double</span>, override val description: <span class="type">String</span></span>) <span class="keyword">extends</span> <span class="title">Item</span></span>{</span><br><span class="line">  <span class="comment">//利用 override 来重写原类中 def 的方法</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bundle</span>(<span class="params"></span>) <span class="keyword">extends</span> <span class="title">Item</span></span>{</span><br><span class="line">  <span class="keyword">val</span> itemList = scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Item</span>]() <span class="comment">//如果此处用 private 修饰，则后面 ItemTest 当中会访问不到</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">addItem</span></span>(item: <span class="type">Item</span>): <span class="type">Unit</span> ={</span><br><span class="line">    itemList += item</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">price</span></span>: <span class="type">Double</span> = {</span><br><span class="line">    <span class="keyword">var</span> itemPrice: <span class="type">Double</span> = <span class="number">0.0</span></span><br><span class="line">    itemList.foreach(i =&gt; itemPrice += itemPrice + i.price)</span><br><span class="line">    itemPrice</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">description</span></span>: <span class="type">String</span> = {</span><br><span class="line">    <span class="keyword">var</span> itemDescription = <span class="string">""</span></span><br><span class="line">    itemList.foreach(i =&gt; itemDescription = itemDescription + <span class="string">","</span> + i.description)</span><br><span class="line">    itemDescription</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ItemTest</span> <span class="keyword">extends</span> <span class="title">App</span></span>{</span><br><span class="line">  <span class="keyword">val</span> bundle = <span class="keyword">new</span> <span class="type">Bundle</span></span><br><span class="line">  <span class="keyword">val</span> priceArr = <span class="type">Array</span>(<span class="number">4299</span>, <span class="number">6888</span>, <span class="number">8999</span>, <span class="number">20888</span>)</span><br><span class="line">  <span class="keyword">val</span> descriptionArr = <span class="type">Array</span>(<span class="string">"Ipad"</span>, <span class="string">"Iphone XS"</span>, <span class="string">"MacBook"</span>, <span class="string">"MacBook Pro"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (i &lt;- <span class="number">0</span> until <span class="number">4</span>){</span><br><span class="line">    bundle.addItem(<span class="keyword">new</span> <span class="type">SimpleItem</span>(priceArr(i), descriptionArr(i)))</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"购物车信息如下："</span>)</span><br><span class="line">  bundle.itemList.foreach( item =&gt; println(<span class="string">"描述："</span> + item.description + <span class="string">", "</span> + <span class="string">"价格："</span> + item.price))</span><br><span class="line">  println(<span class="string">"所购物品清单如下："</span> + bundle.description)</span><br><span class="line">  println(<span class="string">"本次消费合计："</span> + bundle.price + <span class="string">" ¥"</span>)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter8.<span class="type">ItemTest</span> </span><br><span class="line">购物车信息如下：</span><br><span class="line">描述：<span class="type">Ipad</span>, 价格：<span class="number">4299.0</span></span><br><span class="line">描述：<span class="type">Iphone</span> <span class="type">XS</span>, 价格：<span class="number">6888.0</span></span><br><span class="line">描述：<span class="type">MacBook</span>, 价格：<span class="number">8999.0</span></span><br><span class="line">描述：<span class="type">MacBook</span> <span class="type">Pro</span>, 价格：<span class="number">20888.0</span></span><br><span class="line">所购物品清单如下：,<span class="type">Ipad</span>,<span class="type">Iphone</span> <span class="type">XS</span>,<span class="type">MacBook</span>,<span class="type">MacBook</span> <span class="type">Pro</span></span><br><span class="line">本次消费合计：<span class="number">100830.0</span>¥</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">7</span> s, completed <span class="type">Apr</span> <span class="number">28</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">11</span>:<span class="number">14</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>设计一个 Point 类，其 x 和 y 坐标可以通过构造器提供。提供一个子类 LabeledPoint，其构造器接受一个标签值和 x、y 坐标，比如：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="type">LabeledPoint</span>(<span class="string">"Black Thursday"</span>, <span class="number">1929</span>, <span class="number">230.07</span>)</span><br></pre></td></tr></table></figure>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>(<span class="params">val x: <span class="type">Double</span>, val y: <span class="type">Double</span></span>) </span>{</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">toString</span></span>: <span class="type">String</span> = <span class="string">"x坐标为："</span> + x + <span class="string">", "</span> + <span class="string">"y坐标为："</span> + y <span class="comment">//对 toString 方法进行重写</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LabeledPoint</span>(<span class="params">val label: <span class="type">String</span>, override val x: <span class="type">Double</span>, override val y: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">Point</span>(<span class="params">x, y</span>)</span>{</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">toString</span></span>: <span class="type">String</span> = <span class="string">"label = "</span> + label + <span class="string">", "</span> + <span class="keyword">super</span>.toString</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">PointTest</span> <span class="keyword">extends</span> <span class="title">App</span></span>{</span><br><span class="line">  <span class="keyword">val</span> point = <span class="keyword">new</span> <span class="type">Point</span>(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">  <span class="keyword">val</span> labeledPoint = <span class="keyword">new</span> <span class="type">LabeledPoint</span>(<span class="string">"*"</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">  println(point)</span><br><span class="line">  println(labeledPoint)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter8.<span class="type">PointTest</span> </span><br><span class="line">x坐标为：<span class="number">3.0</span>, y坐标为：<span class="number">4.0</span></span><br><span class="line">label = *, x坐标为：<span class="number">3.0</span>, y坐标为：<span class="number">4.0</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">3</span> s, completed <span class="type">Apr</span> <span class="number">28</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">33</span>:<span class="number">00</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>定义一个抽象类 Shape、一个抽象方法 centerPoint，以及该抽象类的子类 Rectangle 和 Circle。为子类提供合适的构造器，并重写 centerPoint 方法。</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>{</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">centerPoint</span></span>: <span class="type">Point</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span>(<span class="params">val p1: <span class="type">Point</span>, val p2: <span class="type">Point</span>, val p3: <span class="type">Point</span>, val p4: <span class="type">Point</span></span>) <span class="keyword">extends</span> <span class="title">Shape</span></span>{ <span class="comment">//给定四个点的坐标来构造长方形</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">centerPoint</span></span>: <span class="type">Point</span> = {</span><br><span class="line">    <span class="keyword">var</span> x: <span class="type">Double</span> = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">var</span> y: <span class="type">Double</span> = <span class="number">0.0</span></span><br><span class="line">    x = (p1.x + p2.x + p3.x +p4.x) / <span class="number">2</span></span><br><span class="line">    y = (p1.y + p2.y + p3.y +p4.y) / <span class="number">2</span></span><br><span class="line">    <span class="keyword">val</span> centerpoint = <span class="keyword">new</span> <span class="type">Point</span>(x, y)</span><br><span class="line">    centerpoint</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GeoCircle</span>(<span class="params">val cp: <span class="type">Point</span>, val radius: <span class="type">Double</span></span>) <span class="keyword">extends</span> <span class="title">Shape</span></span>{</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">centerPoint</span></span>: <span class="type">Point</span> = {</span><br><span class="line">    cp</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ShapeTest</span> <span class="keyword">extends</span> <span class="title">App</span></span>{</span><br><span class="line">  <span class="keyword">val</span> p1 = <span class="keyword">new</span> <span class="type">Point</span>(<span class="number">1</span>, <span class="number">5</span>)</span><br><span class="line">  <span class="keyword">val</span> p3 = <span class="keyword">new</span> <span class="type">Point</span>(<span class="number">1</span>, <span class="number">15</span>)</span><br><span class="line">  <span class="keyword">val</span> p2 = <span class="keyword">new</span> <span class="type">Point</span>(<span class="number">10</span>, <span class="number">5</span>)</span><br><span class="line">  <span class="keyword">val</span> p4 = <span class="keyword">new</span> <span class="type">Point</span>(<span class="number">10</span>, <span class="number">15</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> rect = <span class="keyword">new</span> <span class="type">Rectangle</span>(p1, p2, p3, p4)</span><br><span class="line">  println(<span class="string">"rect的中心点坐标是："</span> + rect.centerPoint.toString)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> circle = <span class="keyword">new</span> <span class="type">GeoCircle</span>(p4, <span class="number">15</span>)</span><br><span class="line">  println(<span class="string">"circle的中心点坐标是："</span> + p4.toString)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter8.<span class="type">ShapeTest</span> </span><br><span class="line">rect的中心点坐标是：x坐标为：<span class="number">11.0</span>, y坐标为：<span class="number">20.0</span></span><br><span class="line">circle的中心点坐标是：x坐标为：<span class="number">10.0</span>, y坐标为：<span class="number">15.0</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">20</span> s, completed <span class="type">Apr</span> <span class="number">28</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">14</span>:<span class="number">18</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>提供一个 Square 类，扩展自 java.awt.Rectangle并且有三个构造器：一个以给定的端点和宽带构造正方形，一个以(0, 0)为端点和给定的宽度构造正方形，一个以(0, 0)为端点、0为宽度构造正方形。</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"><span class="comment">//为了避免与前面作业当中同名类的干扰，重命名</span></span><br><span class="line"><span class="keyword">import</span> java.awt.{<span class="type">Point</span> =&gt; <span class="type">JavaPoint</span>}</span><br><span class="line"><span class="keyword">import</span> java.awt.{<span class="type">Rectangle</span> =&gt; <span class="type">JavaRectangle</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Square</span> <span class="keyword">extends</span> <span class="title">JavaRectangle</span></span>{</span><br><span class="line">  <span class="comment">//以下变量为 java.awt.Rectange类当中已经定义的变量，且类型为 Int</span></span><br><span class="line">  <span class="keyword">this</span>.height = <span class="number">0</span></span><br><span class="line">  <span class="keyword">this</span>.width = <span class="number">0</span></span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">0</span></span><br><span class="line">  <span class="keyword">this</span>.y = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">this</span></span>(p: <span class="type">JavaPoint</span>, w: <span class="type">Int</span>){</span><br><span class="line">    <span class="keyword">this</span>()</span><br><span class="line">    <span class="keyword">this</span>.height = w</span><br><span class="line">    <span class="keyword">this</span>.width = w</span><br><span class="line">    <span class="keyword">this</span>.x = p.x</span><br><span class="line">    <span class="keyword">this</span>.y = p.y</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">this</span></span>(width: <span class="type">Int</span>){</span><br><span class="line">    <span class="keyword">this</span>(<span class="keyword">new</span> <span class="type">JavaPoint</span>(<span class="number">0</span>, <span class="number">0</span>), width)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">SqureTest</span> <span class="keyword">extends</span> <span class="title">App</span></span>{</span><br><span class="line">  <span class="keyword">val</span> rect1 = <span class="keyword">new</span> <span class="type">Square</span>()</span><br><span class="line">  <span class="keyword">val</span> rect2 = <span class="keyword">new</span> <span class="type">Square</span>(<span class="number">15</span>)</span><br><span class="line">  <span class="keyword">val</span> rect3 = <span class="keyword">new</span> <span class="type">Square</span>(<span class="keyword">new</span> <span class="type">JavaPoint</span>(<span class="number">2</span>, <span class="number">3</span>), <span class="number">25</span>)</span><br><span class="line">  println(rect1)</span><br><span class="line">  println(rect2)</span><br><span class="line">  println(rect3)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter8.<span class="type">SqureTest</span> </span><br><span class="line">excercises.chapter8.<span class="type">Square</span>[x=<span class="number">0</span>,y=<span class="number">0</span>,width=<span class="number">0</span>,height=<span class="number">0</span>]</span><br><span class="line">excercises.chapter8.<span class="type">Square</span>[x=<span class="number">0</span>,y=<span class="number">0</span>,width=<span class="number">15</span>,height=<span class="number">15</span>]</span><br><span class="line">excercises.chapter8.<span class="type">Square</span>[x=<span class="number">2</span>,y=<span class="number">3</span>,width=<span class="number">25</span>,height=<span class="number">25</span>]</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">Apr</span> <span class="number">28</span>, <span class="number">2019</span> <span class="number">5</span>:<span class="number">26</span>:<span class="number">57</span> <span class="type">PM</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>编译8.6节中的 Person 和 SecretAgent 类并使用 javap 分析类文件。总共多少 name 的 getter 方法？他们分别取什么值？（提示：可以用-c 和-private 选项）</p>
+<p>原程序代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter8</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> (<span class="params"> val name: <span class="type">String</span> </span>) </span>{</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">toString=getClass</span>.<span class="title">getName</span> <span class="title">+</span> "<span class="title">name=</span>" <span class="title">+</span> <span class="title">name</span> <span class="title">+</span> "]"</span></span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SecretAgent</span> (<span class="params">codename: <span class="type">String</span></span>) <span class="keyword">extends</span> <span class="title">Person</span> (<span class="params">codename</span>) </span>{</span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">val</span> name = <span class="string">"secret"</span> <span class="comment">// 不想暴露真名…</span></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">val</span> toString = <span class="string">"secret"</span> <span class="comment">// …或类名</span></span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>将代码编译以后用 javap -p 查看结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">⇒  javap -p excercises.chapter8.<span class="type">Person</span> </span><br><span class="line"><span class="type">Compiled</span> from <span class="string">"Person.scala"</span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">excercises</span>.<span class="title">chapter8</span>.<span class="title">Person</span> </span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> java.lang.<span class="type">String</span> name;</span><br><span class="line">  public java.lang.<span class="type">String</span> name();</span><br><span class="line">  public java.lang.<span class="type">String</span> toString();</span><br><span class="line">  public excercises.chapter8.<span class="type">Person</span>(java.lang.<span class="type">String</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">⇒  javap -p excercises.chapter8.<span class="type">SecretAgent</span> </span><br><span class="line"><span class="type">Compiled</span> from <span class="string">"Person.scala"</span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">excercises</span>.<span class="title">chapter8</span>.<span class="title">SecretAgent</span> <span class="keyword">extends</span> <span class="title">excercises</span>.<span class="title">chapter8</span>.<span class="title">Person</span> </span>{</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> java.lang.<span class="type">String</span> name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> java.lang.<span class="type">String</span> toString;</span><br><span class="line">  public java.lang.<span class="type">String</span> name();</span><br><span class="line">  public java.lang.<span class="type">String</span> toString();</span><br><span class="line">  public excercises.chapter8.<span class="type">SecretAgent</span>(java.lang.<span class="type">String</span>);</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>很明显，两个类中都有 name()方法，但是子类的方法重载了父类的方法。</p>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>在8.10节的 Creature 类中，将 val range 替换成一个 def。如果你在 Ant 子类中也用 def 的话会有什么效果？如果在子类中使用 val 又会有什么效果？为什么？</p>
+<p>def覆写def，子类的env可以正确初始化。而用val覆写def，env会被初始化成0长度。这个跟val覆写val的道理是一样的。父类和子类同时存在私有的同名变量range和相同的range的getter，但是父类构造函数先被调用，却在其中调用子类的getter。因为父类 的getter已被子类覆写。子类的range因为此时还没初始化，所以返回了0，而且因为是 val变量，一旦被初始化以后，子类的 range 无法继续修改。父类构造函数，错误地使用0来初始化了env。这种行为本身就是个坑，但是也提供了非常大的灵活性。面向对象的Template设计模式就依赖这种行为实现的，所以还是多多善用为妙。</p>
+<p>回答参考以下链接：</p>
+<p><a href="https://www.cnblogs.com/sunddenly/p/4441491.html">Scala学习(八)练习</a></p>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>文件scala/collection/immutable/Stack.scala包含如下定义：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span>[<span class="type">A</span>] <span class="title">protected</span> (<span class="params">protected val elems: <span class="type">List</span>[<span class="type">A</span>]</span>)</span></span><br></pre></td></tr></table></figure>
+<p>请解释 protected 关键字的含义。（提示：回顾我们在第5章关于私有构造器的讨论）</p>
+<p>前一个 protected 是指主构造器的权限， 即默认情况下，是不能以传入 elems 的方式创建 Stack 对象的，只能通过辅助构造器来构造 Stack 对象。elems的 protected 指的是这个参数只有该类的子类才能访问，这个访问的范围与 Java 中的有些不同，Java 的 protected 关键字除了子类，类本身以及同一个包内都可以访问。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/26/Scala-for-the-Impatient-Chapter-7-%E7%BB%83%E4%B9%A0/" rel="prev" title="Scala for the Impatient Chapter 7 练习">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 7 练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/04/29/Scala-for-the-Impatient-Chapter-9-%E7%BB%83%E4%B9%A0/" rel="next" title="Scala for the Impatient Chapter 9 练习">
+                  Scala for the Impatient Chapter 9 练习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

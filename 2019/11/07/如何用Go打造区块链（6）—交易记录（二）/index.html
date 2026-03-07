@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Proj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用Go打造区块链（6）—交易记录（二）">
+<meta property="og:url" content="https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Proj">
+<meta property="og:locale">
+<meta property="og:image" content="https://jeiwan.net/images/merkle-tree-diagram.png">
+<meta property="article:published_time" content="2019-11-07T17:46:52.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.872Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="go">
+<meta property="article:tag" content="hash">
+<meta property="article:tag" content="工作证明">
+<meta property="article:tag" content="交易">
+<meta property="article:tag" content="命令行">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jeiwan.net/images/merkle-tree-diagram.png">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/","path":"2019/11/07/如何用Go打造区块链（6）—交易记录（二）/","title":"如何用Go打造区块链（6）—交易记录（二）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何用Go打造区块链（6）—交易记录（二） | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D-introduction"><span class="nav-number">1.</span> <span class="nav-text"> 介绍 Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A5%96%E5%8A%B1-reward"><span class="nav-number">2.</span> <span class="nav-text"> 奖励 Reward</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AA%E8%8A%B1%E8%B4%B9%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%E8%BE%93%E5%87%BA%E9%9B%86-the-utxo-set"><span class="nav-number">3.</span> <span class="nav-text"> 未花费交易记录输出集 The UTXO Set</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#merkle-tree"><span class="nav-number">4.</span> <span class="nav-text"> Merkle Tree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#p2pkh"><span class="nav-number">5.</span> <span class="nav-text"> P2PKH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA-conclusion"><span class="nav-number">6.</span> <span class="nav-text"> 结论 Conclusion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5-links"><span class="nav-number">7.</span> <span class="nav-text"> 链接 Links:</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何用Go打造区块链（6）—交易记录（二） | Datacruiser's Blog">
+      <meta itemprop="description" content="由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Project](https://ethereum.org/)就是用go原生实现的。这一系列的文章是由[Ivan Kuznetsov](https://jeiwan.net/)所写，本人觉得是一个结合Go语言学习区块链技术的好资料，后面将用自己的语言翻译一遍，从第一篇开始，顺便对Go语言以及区块链有一个初步的认识。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何用Go打造区块链（6）—交易记录（二）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-11-07 17:46:52" itemprop="dateCreated datePublished" datetime="2019-11-07T17:46:52+00:00">2019-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%886%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/07/如何用Go打造区块链（6）—交易记录（二）/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">由于众所周知的原因，最近区块链又一次被推到了风口，下面转发几篇两年前翻译的首发于知乎关于如何用Go语言打造区块链的文章。Go语言是由google开发并于2009年发布的一种静态、强类型、编译型、并发型，并具有垃圾回收（GC）功能的编程语言，特别适用于分布式网络系统开发，而区块链（blockchain）本质上是一本在网络上分布存储的账本，这两者具有天然的匹配性，目前火热的[Ethereum Project](https://ethereum.org/)就是用go原生实现的。这一系列的文章是由[Ivan Kuznetsov](https://jeiwan.net/)所写，本人觉得是一个结合Go语言学习区块链技术的好资料，后面将用自己的语言翻译一遍，从第一篇开始，顺便对Go语言以及区块链有一个初步的认识。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="介绍-introduction"><a class="markdownIt-Anchor" href="#介绍-introduction"></a> 介绍 Introduction</h1>
+<p>在本系列文章的前面部分我说过区块链是一个分布式数据库。但那时候，我们决定暂时跳过“分布式”的部分我先专注于“数据库”部分。到目前为止，我们已经基本实现区块链作为一个数据库的所有部分。我们会覆盖一些前面部分跳过的一些机制，然后在下一部分我们会在区块链的分布式特性方面进行工作。</p>
+<p>前面的部分：</p>
+<ul>
+<li><a href="http://datacruiser.io/2019/10/28/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%881%EF%BC%89%E2%80%94%E5%9F%BA%E7%A1%80%E5%8E%9F%E5%9E%8B/">如何用Go打造区块链（1）—基础原型</a></li>
+<li><a href="http://datacruiser.io/2019/10/28/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%882%EF%BC%89%E2%80%94%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E%E6%9C%BA%E5%88%B6%EF%BC%88PoW%EF%BC%89/">如何用Go打造区块链（2）—工作证明机制（PoW）</a></li>
+<li><a href="http://datacruiser.io/2019/10/29/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%883%EF%BC%89%E2%80%94%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8F%8A%E5%91%BD%E4%BB%A4%E8%A1%8C%EF%BC%88CLI%EF%BC%89/">如何用Go打造区块链（3）—数据存储及命令行（CLI）</a></li>
+<li><a href="http://datacruiser.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%884%EF%BC%89%E2%80%94%E4%BA%A4%E6%98%93%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">如何用Go打造区块链（4）—交易记录（一）</a></li>
+<li><a href="http://datacruiser.io/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/">如何用Go打造区块链（5）—地址</a></li>
+</ul>
+<blockquote>
+<p>这部分主要介绍关键代码变动，因此这里解释所有的代码不是特别有意义。可以参考<a href="https://github.com/Jeiwan/blockchain_go/compare/part_5...part_6#files_bucket">这个页面</a>看与上一部分文章之间的代码变动。</p>
+</blockquote>
+<h1 id="奖励-reward"><a class="markdownIt-Anchor" href="#奖励-reward"></a> 奖励 Reward</h1>
+<p>在前面的文章当中跳过的一个小事情是挖矿的奖励。为了实现它的所有元素我们已经准备好了。</p>
+<p>奖励（reward）只是一个币基交易记录（coinbase transaction）。当以挖矿节点开始挖一个新的区块，从队列中取得交易记录并给区块预留一个币基交易记录。币基交易记录的唯一输出包含矿工（miner）的公钥哈希值。</p>
+<p>实现奖励只要通过更新一下 <code>send</code> 命令就可以：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cli *CLI)</span></span> send(from, to <span class="type">string</span>, amount <span class="type">int</span>) {</span><br><span class="line">    ...</span><br><span class="line">    bc := NewBlockchain()</span><br><span class="line">    UTXOSet := UTXOSet{bc}</span><br><span class="line">    <span class="keyword">defer</span> bc.db.Close()</span><br><span class="line"></span><br><span class="line">    tx := NewUTXOTransaction(from, to, amount, &amp;UTXOSet)</span><br><span class="line">    cbTx := NewCoinbaseTX(from, <span class="string">""</span>)</span><br><span class="line">    txs := []*Transaction{cbTx, tx}</span><br><span class="line"></span><br><span class="line">    newBlock := bc.MineBlock(txs)</span><br><span class="line">    fmt.Println(<span class="string">"Success!"</span>)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>在我们的实现当中，创建交易记录的人去挖新的区块，然后得到一个奖励。</p>
+<h1 id="未花费交易记录输出集-the-utxo-set"><a class="markdownIt-Anchor" href="#未花费交易记录输出集-the-utxo-set"></a> 未花费交易记录输出集 The UTXO Set</h1>
+<p>在<a href="http://datacruiser.io/2019/10/29/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%883%EF%BC%89%E2%80%94%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8F%8A%E5%91%BD%E4%BB%A4%E8%A1%8C%EF%BC%88CLI%EF%BC%89/">如何用Go打造区块链（3）—数据存储及命令行（CLI）</a>当中，我们研究了比特币内核将区块存储在数据库中的方式。区块存储在 <code>blocks </code>（区块）数据库当中，交易记录输出存储在 <code>chainstate </code>（链状态）数据库当中。让我再回顾一下 <code>chainstate </code>的结构：</p>
+<ul>
+<li>‘c’ + 32-byte transaction hash -&gt; unspent transaction output record for that transaction</li>
+<li>‘B’ -&gt; 32-byte block hash: the block hash up to which the database represents the unspent transaction outputs</li>
+</ul>
+<p>在那篇文章当中，我们已经实现了交易记录，但是我们并没有 <code>chainstate </code>来存储输出。这是我们即将打算要去做的。</p>
+<p><code>chainstate </code>不存储交易记录。反而，它存储叫做<code>UTXO set</code>的东西，或者叫未花费交易记录输出的集合。除此之外，它还存储“到代表未消费输出的数据库的区块哈希值”，因为我们不使用区块高度，我们暂时忽略它（但是我们将在下一篇文章中实现）。</p>
+<p>那么，为什么我们要有 <code>UTXO set</code>呢？</p>
+<p>看一下我们早先实现的 <code>Blockchain.FindUnspentTransactions </code>方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(bc *Blockchain)</span></span> FindUnspentTransactions(pubKeyHash []<span class="type">byte</span>) []Transaction {</span><br><span class="line">    ...</span><br><span class="line">    bci := bc.Iterator()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> {</span><br><span class="line">        block := bci.Next()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _, tx := <span class="keyword">range</span> block.Transactions {</span><br><span class="line">            ...</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(block.PrevBlockHash) == <span class="number">0</span> {</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这个函数寻找有未消费输出的交易记录。因为交易记录存储在区块当中，它遍历每一个区块然后检查其中的每一个交易记录。截止2017年9月18日，在比特币当中一共有485, 860个区块，所有的数据库大约占用140+Gb的容量。这意味着你必须运行一个完整的节点来验证交易记录。同时，验证交易记录需要遍历很多区块。</p>
+<p>这个问题的解决方案是引入一个只存储未消费输出的索引值，这就是<code>UTXO set</code>所做的事情：这是一个从所有区块链交易记录（通过遍历区块，是的，但是只做一次）构建的快速缓存，随后会被用于计算余额和验证新的交易记录。截止2017年9月份，<code>UTXO set</code>差不多2.7Gb。</p>
+<p>好了，让我们想想我们需要做什么来实现<code>UTXO set</code>。目前，下面的方法用于寻找交易记录：</p>
+<ul>
+<li><code>Blockchain.FindUnspentTransactions</code> – 寻找含未消费输出的交易记录的主函数。在这个函数当中我们遍历所有的区块。</li>
+<li><code>Blockchain.FindSpendableOutputs</code> – 当一个新的交易记录被创建时，这个函数会被使用。如果要找到足够数量的持有满足需求的足额输出的话。会用到<code>Blockchain.FindUnspentTransactions</code>.</li>
+<li><code>Blockchain.FindUTXO</code> – 为一个特定的公钥哈希寻找未花费输出，用于获取余额。会用到 <code>Blockchain.FindUnspentTransactions</code>.</li>
+<li><code>Blockchain.FindTransaction </code>– 通过ID 在区块链中找到一个交易记录。它会遍历所有的区块，直到找到满足要求的交易记录。</li>
+</ul>
+<p>正如你所看到的，所有的方法都需要遍历数据库中的区块。但是目前我们还不能对全部进行优化，但是<code>UTXO set </code>并不存储所有的交易记录，而只是那些有未消费输出的。这样，在 <code>Blockchain.FindTransaction </code>中无法使用。</p>
+<p>这样，我们想要下列方法：</p>
+<ul>
+<li><code>Blockchain.FindUTXO</code> – 通过遍历区块寻找所有的未消费输出</li>
+<li><code>UTXOSet.Reindex</code> — 用 <code>FindUTXO</code> 来寻找未消费输出，然后将他们存储在一个数据库当中，这是缓存发生的地方</li>
+<li><code>UTXOSet.FindSpendableOutputs</code> – 与 <code>Blockchain.FindSpendableOutputs</code> 类似, 不过使用 <code>UTXO set</code></li>
+<li><code>UTXOSet.FindUTXO </code> – 与 <code>Blockchain.FindUTXO</code> 类似, 不过使用 <code>UTXO set</code></li>
+<li><code>Blockchain.FindTransaction </code>保持不变</li>
+</ul>
+<p>这样，两个最频繁使用的函数将会从现在开始使用缓存！让我们开始编码吧！</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> UTXOSet <span class="keyword">struct</span> {</span><br><span class="line">    Blockchain *Blockchain</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>我们将使用同一个数据库，不过将<code>UTXO set </code>存储在另外一个不同的 <code>bucket </code>当中。<code>UTXOSet </code>将与 <code>Blockchain </code>相结合。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u UTXOSet)</span></span> Reindex() {</span><br><span class="line">    db := u.Blockchain.db</span><br><span class="line">    bucketName := []<span class="type">byte</span>(utxoBucket)</span><br><span class="line"></span><br><span class="line">    err := db.Update(<span class="function"><span class="keyword">func</span><span class="params">(tx *bolt.Tx)</span></span> <span class="type">error</span> {</span><br><span class="line">        err := tx.DeleteBucket(bucketName)</span><br><span class="line">        _, err = tx.CreateBucket(bucketName)</span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    UTXO := u.Blockchain.FindUTXO()</span><br><span class="line"></span><br><span class="line">    err = db.Update(<span class="function"><span class="keyword">func</span><span class="params">(tx *bolt.Tx)</span></span> <span class="type">error</span> {</span><br><span class="line">        b := tx.Bucket(bucketName)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> txID, outs := <span class="keyword">range</span> UTXO {</span><br><span class="line">            key, err := hex.DecodeString(txID)</span><br><span class="line">            err = b.Put(key, outs.Serialize())</span><br><span class="line">        }</span><br><span class="line">    })</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这个方法将创建并初始化 <code>UTXO set</code>。首先，移除已经存在的 <code>bucket</code>，然后从区块链当中获得所有的未消费输出，最后将输出保存到 <code>bucket </code>当中。</p>
+<p><code>Blockchain.FindUTXO </code>和 <code>Blockchain.FindUnspentTransactions </code>几乎完全一样, 但是现在它返回一个含 <code>TransactionID → TransactionOutputs </code>对的图（map）。</p>
+<p>现在，<code>UTXO set </code>可以用来发送比特币了：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u UTXOSet)</span></span> FindSpendableOutputs(pubkeyHash []<span class="type">byte</span>, amount <span class="type">int</span>) (<span class="type">int</span>, <span class="keyword">map</span>[<span class="type">string</span>][]<span class="type">int</span>) {</span><br><span class="line">    unspentOutputs := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>][]<span class="type">int</span>)</span><br><span class="line">    accumulated := <span class="number">0</span></span><br><span class="line">    db := u.Blockchain.db</span><br><span class="line"></span><br><span class="line">    err := db.View(<span class="function"><span class="keyword">func</span><span class="params">(tx *bolt.Tx)</span></span> <span class="type">error</span> {</span><br><span class="line">        b := tx.Bucket([]<span class="type">byte</span>(utxoBucket))</span><br><span class="line">        c := b.Cursor()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> k, v := c.First(); k != <span class="literal">nil</span>; k, v = c.Next() {</span><br><span class="line">            txID := hex.EncodeToString(k)</span><br><span class="line">            outs := DeserializeOutputs(v)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> outIdx, out := <span class="keyword">range</span> outs.Outputs {</span><br><span class="line">                <span class="keyword">if</span> out.IsLockedWithKey(pubkeyHash) &amp;&amp; accumulated &lt; amount {</span><br><span class="line">                    accumulated += out.Value</span><br><span class="line">                    unspentOutputs[txID] = <span class="built_in">append</span>(unspentOutputs[txID], outIdx)</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> accumulated, unspentOutputs</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>或者检查余额：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u UTXOSet)</span></span> FindUTXO(pubKeyHash []<span class="type">byte</span>) []TXOutput {</span><br><span class="line">    <span class="keyword">var</span> UTXOs []TXOutput</span><br><span class="line">    db := u.Blockchain.db</span><br><span class="line"></span><br><span class="line">    err := db.View(<span class="function"><span class="keyword">func</span><span class="params">(tx *bolt.Tx)</span></span> <span class="type">error</span> {</span><br><span class="line">        b := tx.Bucket([]<span class="type">byte</span>(utxoBucket))</span><br><span class="line">        c := b.Cursor()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> k, v := c.First(); k != <span class="literal">nil</span>; k, v = c.Next() {</span><br><span class="line">            outs := DeserializeOutputs(v)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> _, out := <span class="keyword">range</span> outs.Outputs {</span><br><span class="line">                <span class="keyword">if</span> out.IsLockedWithKey(pubKeyHash) {</span><br><span class="line">                    UTXOs = <span class="built_in">append</span>(UTXOs, out)</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    })</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> UTXOs</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这些都是与<code>Blockchain </code>相关的略微修改过的版本。原先的那些 <code>Blockchain </code>方法已经不需要了。</p>
+<p>有了<code>UTXO set </code>以后意味着我们的数据（交易记录）现在分块存储：实际的交易记录存储在区块链中，未消费输出存储在 <code>UTXO set</code>中。这样的分离需要有可靠的同步机制，因为我们要<code>UTXO set </code>能够一直更新并存储最新交易记录的输出。但是我们也不愿意每次一个新的区块被挖出来就重新建立一次索引，因为我们要避免频繁的区块链扫描。所以，我们还需要一个更新 <code>UTXO set </code>的机制。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u UTXOSet)</span></span> Update(block *Block) {</span><br><span class="line">    db := u.Blockchain.db</span><br><span class="line"></span><br><span class="line">    err := db.Update(<span class="function"><span class="keyword">func</span><span class="params">(tx *bolt.Tx)</span></span> <span class="type">error</span> {</span><br><span class="line">        b := tx.Bucket([]<span class="type">byte</span>(utxoBucket))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _, tx := <span class="keyword">range</span> block.Transactions {</span><br><span class="line">            <span class="keyword">if</span> tx.IsCoinbase() == <span class="literal">false</span> {</span><br><span class="line">                <span class="keyword">for</span> _, vin := <span class="keyword">range</span> tx.Vin {</span><br><span class="line">                    updatedOuts := TXOutputs{}</span><br><span class="line">                    outsBytes := b.Get(vin.Txid)</span><br><span class="line">                    outs := DeserializeOutputs(outsBytes)</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> outIdx, out := <span class="keyword">range</span> outs.Outputs {</span><br><span class="line">                        <span class="keyword">if</span> outIdx != vin.Vout {</span><br><span class="line">                            updatedOuts.Outputs = <span class="built_in">append</span>(updatedOuts.Outputs, out)</span><br><span class="line">                        }</span><br><span class="line">                    }</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> <span class="built_in">len</span>(updatedOuts.Outputs) == <span class="number">0</span> {</span><br><span class="line">                        err := b.Delete(vin.Txid)</span><br><span class="line">                    } <span class="keyword">else</span> {</span><br><span class="line">                        err := b.Put(vin.Txid, updatedOuts.Serialize())</span><br><span class="line">                    }</span><br><span class="line"></span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            newOutputs := TXOutputs{}</span><br><span class="line">            <span class="keyword">for</span> _, out := <span class="keyword">range</span> tx.Vout {</span><br><span class="line">                newOutputs.Outputs = <span class="built_in">append</span>(newOutputs.Outputs, out)</span><br><span class="line">            }</span><br><span class="line"></span><br><span class="line">            err := b.Put(tx.ID, newOutputs.Serialize())</span><br><span class="line">        }</span><br><span class="line">    })</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>这个方法看起来非常复杂，但是它所干的事情却非常简单。当挖出一个新的区块，<code>UTXO set </code>应该相应地更新。更新意味着将已经花出去的移除，然后将新挖区块的未消费的加进去。加入一个交易记录的输出被移除的，不含任何输出，它本身也将会被移除。非常简单！</p>
+<p>现在让我们把 <code>UTXO set </code>用在需要的地方：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cli *CLI)</span></span> createBlockchain(address <span class="type">string</span>) {</span><br><span class="line">    ...</span><br><span class="line">    bc := CreateBlockchain(address)</span><br><span class="line">    <span class="keyword">defer</span> bc.db.Close()</span><br><span class="line"></span><br><span class="line">    UTXOSet := UTXOSet{bc}</span><br><span class="line">    UTXOSet.Reindex()</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>当一个新的区块链产生的时候对<code>UTXO set</code>重新索引（Reindex）。到目前为止，这是唯一要重新索引的地方，即便在这里看起来有些过分，因为在一个区块链刚刚被创建的时候，只有一个区块，一个交易记录，<code>Update </code>方法可以来代替 <code>Reindex()</code>。但是在不久的将来，我们需要重新索引机制。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(cli *CLI)</span></span> send(from, to <span class="type">string</span>, amount <span class="type">int</span>) {</span><br><span class="line">    ...</span><br><span class="line">    newBlock := bc.MineBlock(txs)</span><br><span class="line">    UTXOSet.Update(newBlock)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>在一个新的区块被挖出来以后更新了 <code>UTXO set</code>。</p>
+<p>让我们来检查它的工作情况。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ blockchain_go createblockchain -address <span class="number">1</span>JnMDSqVoHi4TEFXNw5wJ8skPsPf4LHkQ1</span><br><span class="line"><span class="number">00000086</span>a725e18ed7e9e06f1051651a4fc46a315a9d298e59e57aeacbe0bf73</span><br><span class="line"></span><br><span class="line">Done!</span><br><span class="line"></span><br><span class="line">$ blockchain_go send -from <span class="number">1</span>JnMDSqVoHi4TEFXNw5wJ8skPsPf4LHkQ1 -to <span class="number">12</span>DkLzLQ4B3gnQt62EPRJGZ38n3zF4Hzt5 -amount <span class="number">6</span></span><br><span class="line"><span class="number">0000001</span>f75cb3a5033aeecbf6a8d378e15b25d026fb0a665c7721a5bb0faa21b</span><br><span class="line"></span><br><span class="line">Success!</span><br><span class="line"></span><br><span class="line">$ blockchain_go send -from <span class="number">1</span>JnMDSqVoHi4TEFXNw5wJ8skPsPf4LHkQ1 -to <span class="number">12</span>ncZhA5mFTTnTmHq1aTPYBri4jAK8TacL -amount <span class="number">4</span></span><br><span class="line"><span class="number">000000</span>cc51e665d53c78af5e65774a72fc7b864140a8224bf4e7709d8e0fa433</span><br><span class="line"></span><br><span class="line">Success!</span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">1</span>JnMDSqVoHi4TEFXNw5wJ8skPsPf4LHkQ1</span><br><span class="line">Balance of <span class="string">'1F4MbuqjcuJGymjcuYQMUVYB37AWKkSLif'</span>: <span class="number">20</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">12</span>DkLzLQ4B3gnQt62EPRJGZ38n3zF4Hzt5</span><br><span class="line">Balance of <span class="string">'1XWu6nitBWe6J6v6MXmd5rhdP7dZsExbx'</span>: <span class="number">6</span></span><br><span class="line"></span><br><span class="line">$ blockchain_go getbalance -address <span class="number">12</span>ncZhA5mFTTnTmHq1aTPYBri4jAK8TacL</span><br><span class="line">Balance of <span class="string">'13UASQpCR8Nr41PojH8Bz4K6cmTCqweskL'</span>: <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>非常好！<code>1JnMDSqVoHi4TEFXNw5wJ8skPsPf4LHkQ1 </code>地址3次收到奖励：</p>
+<ul>
+<li>第一次来自对创始区块（genesis blocks）的挖矿</li>
+<li>第二次来自对以下区块的挖矿：<code>0000001f75cb3a5033aeecbf6a8d378e15b25d026fb0a665c7721a5bb0faa21b</code>.</li>
+<li>第三次来自对以下区块的挖矿：<code>000000cc51e665d53c78af5e65774a72fc7b864140a8224bf4e7709d8e0fa433</code>.</li>
+</ul>
+<h1 id="merkle-tree"><a class="markdownIt-Anchor" href="#merkle-tree"></a> Merkle Tree</h1>
+<p>在这篇文章当中还有一个优化选项我还想要讨论以下的。</p>
+<p>正如前面所言，完整的比特币数据库（区块链）大约占140Gb 的磁盘空间。因为比特币的分布式存储的特性，网络中的每一个节点都要独立且要自我实现，比如每个节点都要存储一份整个区块链的完整拷贝。随着很多人开始使用比特币，这条规则变得越来越难以坚持：每个人都运行一个完整的节点不太可能。并且，因为节点是网络的成熟的参与者，它们有责任：它们必须验证交易记录和区块。更进一步，它们与其它节点交流并下载新的节点也需要一定的带宽需求。</p>
+<p>在中本聪（Satoshi Nakamoto）发布的<a href="https://bitcoin.org/bitcoin.pdf">白皮书</a>当中，有一个对应的解决方案：简单支付验证（Simplified Payment Verification：SPV）。<code>SPV </code>是一个轻量的比特币节点，不下载整个区块链，也不对所有的区块和交易记录进行验证。相应的，它在区块中寻找交易记录（验证支付）然后链接到一个完整节点仅取得需要的数据。这样的机制允许有很多的轻量钱包节点而只运行一个完整的节点。</p>
+<p>为了<code>SPV </code>的可行性，需要一种不需要下载整个区块就能够确认一个区块是否含有交易记录的机制。这也正是 <code>Merkle tree </code>所要扮演的角色。</p>
+<p>比特币用 <code>Merkle trees </code>来获得交易记录哈希值，这个哈希值保存在区块头部数据当中并在PoW 系统当中会被考虑。直到现在，我们只是将每个区块中的每个交易记录的哈希值组合在一起然后再使用 <code>SHA-256</code>，只是取得区块交易记录唯一证明的好方式，但是却没有 <code>Merkle trees </code>的一些好处。</p>
+<p>让我们看一个 <code>Merkle tree</code>：</p>
+<p><img src="https://jeiwan.net/images/merkle-tree-diagram.png" alt></p>
+<p>每一个区块构建一个 <code>Merkle tree</code>，它从叶子（tree的底部）开始，每一个叶子就是一个交易记录的哈希（比特币采用 双 SHA-256 计算哈希值）。叶子的数量必须是偶数，但是并不是每一个区块都包含偶数个的交易记录。在奇数个交易记录的情况下，最后一个交易记录会被复制（只是在 Merkle tree中复制，并不是在区块当中！）。</p>
+<p>从下往上走，叶子一对一对地分组，它们的哈希值被组合到一起，并产生一个新的哈希值来代替组合后的哈希。新的哈希组成新的树的节点。这个过程不断重复直到剩下仅有的一个节点，称之为树的根。树根的哈希就被用来作为所有交易记录的唯一表征，保存在区块头部数据当中，并在PoW 系统当中使用。</p>
+<p><code>Merkle trees</code> 的好处是一个节点可以在不下载整个区块的情况下验证特定交易记录的身份。一个交易记录哈希，一个 <code>Merkle </code>树根哈希，然后一个<code>Merkle </code>的路径就够了。</p>
+<p>最后，让我们来写代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MerkleTree <span class="keyword">struct</span> {</span><br><span class="line">    RootNode *MerkleNode</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MerkleNode <span class="keyword">struct</span> {</span><br><span class="line">    Left  *MerkleNode</span><br><span class="line">    Right *MerkleNode</span><br><span class="line">    Data  []<span class="type">byte</span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>我们从一个结构体开始。每一个<code> MerkleNode</code> 保存着数据还到其分支的链接。</p>
+<p><code>MerkleTree</code> 实际上是链接到下一个节点的根节点，它们就这样依次与更多的节点相连。</p>
+<p>让我们先创建一个新的节点：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMerkleNode</span><span class="params">(left, right *MerkleNode, data []<span class="type">byte</span>)</span></span> *MerkleNode {</span><br><span class="line">    mNode := MerkleNode{}</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> left == <span class="literal">nil</span> &amp;&amp; right == <span class="literal">nil</span> {</span><br><span class="line">        hash := sha256.Sum256(data)</span><br><span class="line">        mNode.Data = hash[:]</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        prevHashes := <span class="built_in">append</span>(left.Data, right.Data...)</span><br><span class="line">        hash := sha256.Sum256(prevHashes)</span><br><span class="line">        mNode.Data = hash[:]</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    mNode.Left = left</span><br><span class="line">    mNode.Right = right</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &amp;mNode</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>每一个节点包含一些数据。当一个节点是一片叶子，数据将从外面传入（在我们的案例中是一个序列化的交易记录）。当一个节点链接到其它节点时，它将获取它们的数据然后组合组合并对数据进行哈希计算。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMerkleTree</span><span class="params">(data [][]<span class="type">byte</span>)</span></span> *MerkleTree {</span><br><span class="line">    <span class="keyword">var</span> nodes []MerkleNode</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(data)%<span class="number">2</span> != <span class="number">0</span> {</span><br><span class="line">        data = <span class="built_in">append</span>(data, data[<span class="built_in">len</span>(data)<span class="number">-1</span>])</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, datum := <span class="keyword">range</span> data {</span><br><span class="line">        node := NewMerkleNode(<span class="literal">nil</span>, <span class="literal">nil</span>, datum)</span><br><span class="line">        nodes = <span class="built_in">append</span>(nodes, *node)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(data)/<span class="number">2</span>; i++ {</span><br><span class="line">        <span class="keyword">var</span> newLevel []MerkleNode</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="built_in">len</span>(nodes); j += <span class="number">2</span> {</span><br><span class="line">            node := NewMerkleNode(&amp;nodes[j], &amp;nodes[j+<span class="number">1</span>], <span class="literal">nil</span>)</span><br><span class="line">            newLevel = <span class="built_in">append</span>(newLevel, *node)</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        nodes = newLevel</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    mTree := MerkleTree{&amp;nodes[<span class="number">0</span>]}</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &amp;mTree</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>当一个新的树被创建出来以后，首先要确保的是它有偶数片树叶。在这之后，数据（序列化交易记录的数组）将被转化为树叶，然后树从这些树叶开始生长。</p>
+<p>现在，让我们修改 <code>Block.HashTransactions</code>，它被用在PoW 系统当中获取交易记录哈希值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(b *Block)</span></span> HashTransactions() []<span class="type">byte</span> {</span><br><span class="line">    <span class="keyword">var</span> transactions [][]<span class="type">byte</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, tx := <span class="keyword">range</span> b.Transactions {</span><br><span class="line">        transactions = <span class="built_in">append</span>(transactions, tx.Serialize())</span><br><span class="line">    }</span><br><span class="line">    mTree := NewMerkleTree(transactions)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> mTree.RootNode.Data</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>首先，交易记录被序列化（采用 <code>encoding/gob </code>包），然后让他们来构建一个 <code>Merkle tree</code>。树根会用来作为区块的交易记录的唯一识别特征。</p>
+<h1 id="p2pkh"><a class="markdownIt-Anchor" href="#p2pkh"></a> P2PKH</h1>
+<p>还有一个事情我想要再详细讨论一下。</p>
+<p>你还记得，在比特币当中有一个 脚本（Script）编程语言，用于交易记录输出的锁定；然后交易记录输入提供数据来对它进行解锁。这个语言本身非常简单，在这个语言当中编程知识一个数据和操作符的序列。看下面这个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span> <span class="number">2</span> OP_ADD <span class="number">7</span> OP_EQUAL</span><br></pre></td></tr></table></figure>
+<p>5，2，和7是数据。<code>OP_ADD</code> 和<code>OP_EQUAL</code> 是操作符。 <code>Script</code> 代码从左往右执行：每一段数据放入栈中（stack），后面的操作符作用于栈顶的数据。<code>Script</code> 的✅知识一个简单的FILO （先进后出）内存存储器：栈中的第一个数据最后被取用，后面来的的元素放到前面数据之前。</p>
+<p>让我们分步执行前面的脚本：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Stack: empty. Script: <span class="number">5</span> <span class="number">2</span> OP_ADD <span class="number">7</span> OP_EQUAL.</span><br><span class="line">Stack: <span class="number">5.</span> Script: <span class="number">2</span> OP_ADD <span class="number">7</span> OP_EQUAL.</span><br><span class="line">Stack: <span class="number">5</span> <span class="number">2.</span> Script: OP_ADD <span class="number">7</span> OP_EQUAL.</span><br><span class="line">Stack: <span class="number">7.</span> Script: <span class="number">7</span> OP_EQUAL.</span><br><span class="line">Stack: <span class="number">7</span> <span class="number">7.</span> Script: OP_EQUAL.</span><br><span class="line">Stack: <span class="literal">true</span>. Script: empty.</span><br></pre></td></tr></table></figure>
+<p><code>OP_ADD</code> 从堆中取得两个元素，将他们相加，然后将结果放入堆中。<code>OP_EQUAL</code> 从堆中取得两个数据然后进行比较：假如它们相等就将<code>true</code>放入堆中；否则放入<code> false</code>. 一段脚本的执行结果是堆顶元素的值：在我们的案例中，它是真值（true），这意味着脚本成功的执行完成了。</p>
+<p>现在让我们看看在比特币中执行支付的脚本：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;signature&gt; &lt;pubKey&gt; OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br></pre></td></tr></table></figure>
+<p>这段脚本叫做 <code>Pay to Public Key Hash (P2PKH)</code>，在比特币中这是最常用的一段脚本。它按照指令向一个公钥哈希进行支付，并用一个特定的公钥锁定比特币。这是比特币支付的核心：没有账户，没有账户之间的资金转移；只有一段检查输入的签名和公钥是匹配的脚本。</p>
+<p>脚本分两部分进行存储：</p>
+<ul>
+<li>第一部分,<code> &lt;signature&gt; &lt;pubKey&gt;</code>, 存储在输入的<code> ScriptSig</code> 字段</li>
+<li>第二部分, <code>OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</code> 存储在输出的 <code>ScriptPubKey</code> 字段<br>
+这样，它的输出定义了解锁逻辑，输入提供用于解锁输出的数据，让我们的执行这段脚本：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Stack: empty</span><br><span class="line">Script: &lt;signature&gt; &lt;pubKey&gt; OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">Stack: &lt;signature&gt;</span><br><span class="line">Script: &lt;pubKey&gt; OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">Stack: &lt;signature&gt; &lt;pubKey&gt;</span><br><span class="line">Script: OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">Stack: &lt;signature&gt; &lt;pubKey&gt; &lt;pubKey&gt;</span><br><span class="line">Script: OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">Stack: &lt;signature&gt; &lt;pubKey&gt; &lt;pubKeyHash&gt;</span><br><span class="line">Script: &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">Stack: &lt;signature&gt; &lt;pubKey&gt; &lt;pubKeyHash&gt; &lt;pubKeyHash&gt;</span><br><span class="line">Script: OP_EQUALVERIFY OP_CHECKSIG</span><br><span class="line">Stack: &lt;signature&gt; &lt;pubKey&gt;</span><br><span class="line">Script: OP_CHECKSIG</span><br><span class="line">Stack: <span class="literal">true</span> or <span class="literal">false</span>. Script: empty.</span><br></pre></td></tr></table></figure>
+<p><code>OP_DUP </code>复制栈顶的元素。<code>OP_HASH160 </code>获得栈顶的元素用<code>RIPEMD160 </code>算法对它进行哈希运算；结算结果重新放回栈中。</p>
+<p><code>OP_EQUALVERIFY </code>比较连个堆顶的元素，如果两者不相等，结束脚本。<code>OP_CHECKSIG </code>通过对交易记录进行哈希计算以及<code>&lt;signature&gt; </code>和 <code>&lt;pubKey&gt;</code>数据验证一个交易记录的签名。后面的操作符非常复杂：首先不完整复制一份交易记录，求取哈希值（因为它是一个签名过的交易记录的哈希），然后用输入的<code>&lt;signature&gt; </code>和 <code>&lt;pubKey&gt; </code>验证签名是正确的。</p>
+<p>有这样的脚本语言给比特币成为一个智能合约平台也创造了条件：脚本语言让其它的支付方案变得可能，不再是单一的比特币。</p>
+<h1 id="结论-conclusion"><a class="markdownIt-Anchor" href="#结论-conclusion"></a> 结论 Conclusion</h1>
+<p>然后就这样！我们已经基本实现了基于区块链的数字货币的所有特性。我们有区块链、地址、挖矿、还有交易记录。但是还有一个给这些机制以生命并让比特币成为一个全球系统：共识机制（consensus）。在下一篇文章当中，我们将开始开始实现区块链的“分布式”（decengtralized）部分。</p>
+<p>敬请继续关注！</p>
+<h1 id="链接-links"><a class="markdownIt-Anchor" href="#链接-links"></a> 链接 Links:</h1>
+<ul>
+<li><a href="https://github.com/Jeiwan/blockchain_go/tree/part_6">Full source codes</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2):_Data_Storage#The_UTXO_set_.28chainstate_leveldb.29">The UTXO Set</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Protocol_documentation#Merkle_Trees">Merkle Tree</a></li>
+<li><a href="https://en.bitcoin.it/wiki/Script">Script</a></li>
+<li><a href="https://github.com/sipa/bitcoin/commit/450cbb0944cd20a06ce806e6679a1f4c83c50db2">“Ultraprune” Bitcoin Core commit</a></li>
+<li><a href="https://statoshi.info/dashboard/db/unspent-transaction-output-set">UTXO set statistics</a></li>
+<li><a href="https://medium.com/@maraoz/smart-contracts-and-bitcoin-a5d61011d9b1">Smart contracts and Bitcoin</a></li>
+<li><a href="https://medium.com/@jonaldfyookball/why-every-bitcoin-user-should-understand-spv-security-520d1d45e0b9">Why every Bitcoin user should understand “SPV security”</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"># 分布式</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/go/" rel="tag"># go</a>
+              <a href="/tags/hash/" rel="tag"># hash</a>
+              <a href="/tags/%E5%B7%A5%E4%BD%9C%E8%AF%81%E6%98%8E/" rel="tag"># 工作证明</a>
+              <a href="/tags/%E4%BA%A4%E6%98%93/" rel="tag"># 交易</a>
+              <a href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag"># 命令行</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/06/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%885%EF%BC%89%E2%80%94%E5%9C%B0%E5%9D%80/" rel="prev" title="如何用Go打造区块链（5）—地址">
+                  <i class="fa fa-angle-left"></i> 如何用Go打造区块链（5）—地址
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/11/07/%E5%A6%82%E4%BD%95%E7%94%A8Go%E6%89%93%E9%80%A0%E5%8C%BA%E5%9D%97%E9%93%BE%EF%BC%887%EF%BC%89%E2%80%94%E7%BD%91%E7%BB%9C/" rel="next" title="如何用Go打造区块链（7）—网络">
+                  如何用Go打造区块链（7）—网络 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

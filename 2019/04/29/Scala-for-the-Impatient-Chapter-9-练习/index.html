@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="《Scala for the Impatient》第九章练习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala for the Impatient Chapter 9 练习">
+<meta property="og:url" content="https://datacruiser.github.io/2019/04/29/Scala-for-the-Impatient-Chapter-9-%E7%BB%83%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="《Scala for the Impatient》第九章练习。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-29T13:26:45.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.870Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Scala for the Impatient">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2019/04/29/Scala-for-the-Impatient-Chapter-9-%E7%BB%83%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2019/04/29/Scala-for-the-Impatient-Chapter-9-%E7%BB%83%E4%B9%A0/","path":"2019/04/29/Scala-for-the-Impatient-Chapter-9-练习/","title":"Scala for the Impatient Chapter 9 练习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Scala for the Impatient Chapter 9 练习 | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC1%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text"> 第1题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC2%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text"> 第2题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC3%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text"> 第3题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC4%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text"> 第4题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC5%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text"> 第5题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC6%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text"> 第6题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC7%E9%A2%98"><span class="nav-number">7.</span> <span class="nav-text"> 第7题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC8%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text"> 第8题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC9%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text"> 第9题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC10%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text"> 第10题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2019/04/29/Scala-for-the-Impatient-Chapter-9-%E7%BB%83%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Scala for the Impatient Chapter 9 练习 | Datacruiser's Blog">
+      <meta itemprop="description" content="《Scala for the Impatient》第九章练习。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala for the Impatient Chapter 9 练习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-29 13:26:45" itemprop="dateCreated datePublished" datetime="2019-04-29T13:26:45+00:00">2019-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Scala/" itemprop="url" rel="index"><span itemprop="name">Scala</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/04/29/Scala-for-the-Impatient-Chapter-9-%E7%BB%83%E4%B9%A0/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/29/Scala-for-the-Impatient-Chapter-9-练习/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">《Scala for the Impatient》第九章练习。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="第1题"><a class="markdownIt-Anchor" href="#第1题"></a> 第1题</h4>
+<p>编写一小段 Scala 代码，将某个文件中的行倒转顺序（将最后一行作为第一行，以此类推）</p>
+<p>首先创建文件 File.txt:</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">world</span><br><span class="line">test</span><br><span class="line">Scala</span><br><span class="line">Hadoop</span><br><span class="line">Big Date</span><br><span class="line">Java</span><br></pre></td></tr></table></figure>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.{<span class="type">File</span>, <span class="type">PrintWriter</span>}</span><br><span class="line"><span class="keyword">import</span> scala.io.{<span class="type">BufferedSource</span>, <span class="type">Source</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ReverseLines</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> fileName: <span class="type">String</span> = <span class="string">"File.txt"</span></span><br><span class="line">  <span class="keyword">val</span> reverseFileName: <span class="type">String</span> = <span class="string">"ReverseFile.txt"</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> source: <span class="type">BufferedSource</span> = <span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + fileName, <span class="string">"UTF-8"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">lazy</span> <span class="keyword">val</span> reSource: <span class="type">BufferedSource</span> = <span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + reverseFileName, <span class="string">"UTF-8"</span>)</span><br><span class="line">  <span class="keyword">lazy</span> <span class="keyword">val</span> pw: <span class="type">PrintWriter</span> = <span class="keyword">new</span> <span class="type">PrintWriter</span>(path + <span class="string">"/"</span> + reverseFileName)</span><br><span class="line"></span><br><span class="line"><span class="comment">//  val reversedLinesTest: Array[String] = source.getLines.toArray.reverse</span></span><br><span class="line"><span class="comment">//  println(fileName + "文件内容如下：")</span></span><br><span class="line"><span class="comment">//  reversedLinesTest.foreach (line =&gt; println(line))</span></span><br><span class="line"><span class="comment">//  reversedLinesTest.foreach (line =&gt; pw.write(line + "\n"))</span></span><br><span class="line"><span class="comment">//  pw.close()</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> linesIterator: <span class="type">Iterator</span>[<span class="type">String</span>] = source.getLines()</span><br><span class="line">  <span class="keyword">val</span> linesRecord: <span class="type">Array</span>[<span class="type">String</span>] = linesIterator.toArray</span><br><span class="line">  <span class="keyword">val</span> reversedLines: <span class="type">Array</span>[<span class="type">String</span>] = linesRecord.reverse</span><br><span class="line"></span><br><span class="line">  reversedLines.foreach (line =&gt; pw.write(line + <span class="string">"\n"</span>))</span><br><span class="line">  pw.close()</span><br><span class="line"></span><br><span class="line">  println(fileName + <span class="string">"文件内容如下："</span>)</span><br><span class="line">  linesRecord.foreach (line =&gt; println(line))</span><br><span class="line"></span><br><span class="line">  println(reverseFileName + <span class="string">"文件内容如下："</span>)</span><br><span class="line">  reSource.getLines.foreach (line =&gt; println(line))</span><br><span class="line"></span><br><span class="line">  reSource.close()</span><br><span class="line">  source.close()</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">ReverseLines</span> </span><br><span class="line"><span class="type">File</span>.txt文件内容如下：</span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line">test</span><br><span class="line"><span class="type">Scala</span></span><br><span class="line"><span class="type">Hadoop</span></span><br><span class="line"><span class="type">Big</span> <span class="type">Date</span></span><br><span class="line"><span class="type">Java</span></span><br><span class="line"><span class="type">ReverseFile</span>.txt文件内容如下：</span><br><span class="line"><span class="type">Java</span></span><br><span class="line"><span class="type">Big</span> <span class="type">Date</span></span><br><span class="line"><span class="type">Hadoop</span></span><br><span class="line"><span class="type">Scala</span></span><br><span class="line">test</span><br><span class="line">world</span><br><span class="line">hello</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">Apr</span> <span class="number">29</span>, <span class="number">2019</span> <span class="number">4</span>:<span class="number">02</span>:<span class="number">13</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<p>这里面有几个坑，首先，迭代器只能够被遍历一次，因此为了保存数据的中间结果，以便于后续对比，下面三行代码：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> linesIterator: <span class="type">Iterator</span>[<span class="type">String</span>] = source.getLines()</span><br><span class="line"><span class="keyword">val</span> linesRecord: <span class="type">Array</span>[<span class="type">String</span>] = linesIterator.toArray</span><br><span class="line"><span class="keyword">val</span> reversedLines: <span class="type">Array</span>[<span class="type">String</span>] = linesRecord.reverse</span><br></pre></td></tr></table></figure>
+<p>不宜写成一行：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> reversedLinesTest: <span class="type">Array</span>[<span class="type">String</span>] = source.getLines.toArray.reverse</span><br></pre></td></tr></table></figure>
+<p>这样可以保存行序倒转后的文本，但是在用<code>source.getlines</code>去遍历的时候已经为空。</p>
+<h4 id="第2题"><a class="markdownIt-Anchor" href="#第2题"></a> 第2题</h4>
+<p>编写 Scala 程序，从一个带有制表符的文件读取内容，将每个制表符替换成一组空格，使得制表符隔开的 n 列仍然保持纵向对齐，并将结果写入同一个文件。</p>
+<p>根据题意编写代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"><span class="keyword">import</span> java.io.{<span class="type">File</span>, <span class="type">PrintWriter</span>}</span><br><span class="line"><span class="keyword">import</span> scala.io.{<span class="type">BufferedSource</span>, <span class="type">Source</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TabToSpace</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> fileName: <span class="type">String</span> = <span class="string">"TabSpace.txt"</span></span><br><span class="line">  <span class="keyword">val</span> source: <span class="type">BufferedSource</span> = <span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + fileName, <span class="string">"UTF-8"</span>)</span><br><span class="line">  <span class="keyword">val</span> linesIterator: <span class="type">Iterator</span>[<span class="type">String</span>] = source.getLines()</span><br><span class="line">  <span class="keyword">lazy</span> <span class="keyword">val</span> tabIterator: <span class="type">Iterator</span>[<span class="type">String</span>] = <span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + fileName, <span class="string">"UTF-8"</span>).getLines()</span><br><span class="line">  <span class="keyword">lazy</span> <span class="keyword">val</span> pw: <span class="type">PrintWriter</span> = <span class="keyword">new</span> <span class="type">PrintWriter</span>(path + <span class="string">"/"</span> + fileName)</span><br><span class="line">  <span class="keyword">val</span> linesRecord: <span class="type">Array</span>[<span class="type">String</span>] = linesIterator.toArray</span><br><span class="line"></span><br><span class="line">  println(fileName + <span class="string">"文件内容如下："</span>)</span><br><span class="line">  linesRecord.foreach (line =&gt; println(line))</span><br><span class="line"></span><br><span class="line">  linesRecord.foreach (line =&gt; pw.write(line.replaceAll(<span class="string">"\t"</span>, <span class="string">" "</span>) + <span class="string">"\n"</span>))</span><br><span class="line">  pw.close()</span><br><span class="line"></span><br><span class="line">  println(<span class="string">"替换后"</span> + fileName + <span class="string">"文件内容如下："</span>)</span><br><span class="line">  tabIterator.foreach (line =&gt; println(line))</span><br><span class="line">  source.close()</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">TabToSpace</span> </span><br><span class="line"><span class="type">TabSpace</span>.txt文件内容如下：</span><br><span class="line">a	b	c	d	e	f	g	h</span><br><span class="line">i	j	k	l	m	n	o	p</span><br><span class="line">q	r	s	t	u	v	w	x</span><br><span class="line">y	z</span><br><span class="line"><span class="type">A</span>	<span class="type">B</span>	<span class="type">D</span>	<span class="type">D</span>	<span class="type">E</span>	<span class="type">F</span>	<span class="type">G</span>	<span class="type">H</span></span><br><span class="line"><span class="type">I</span>	<span class="type">J</span>	<span class="type">K</span>	<span class="type">L</span>	<span class="type">M</span>	<span class="type">N</span>	<span class="type">O</span>	<span class="type">P</span></span><br><span class="line"><span class="type">Q</span>	<span class="type">R</span>	<span class="type">S</span>	<span class="type">T</span>	<span class="type">U</span>	<span class="type">V</span>	<span class="type">W</span>	<span class="type">X</span></span><br><span class="line"><span class="type">Y</span>	<span class="type">Z</span></span><br><span class="line">替换后<span class="type">TabSpace</span>.txt文件内容如下：</span><br><span class="line">a b c d e f g h</span><br><span class="line">i j k l m n o p</span><br><span class="line">q r s t u v w x</span><br><span class="line">y z</span><br><span class="line"><span class="type">A</span> <span class="type">B</span> <span class="type">D</span> <span class="type">D</span> <span class="type">E</span> <span class="type">F</span> <span class="type">G</span> <span class="type">H</span></span><br><span class="line"><span class="type">I</span> <span class="type">J</span> <span class="type">K</span> <span class="type">L</span> <span class="type">M</span> <span class="type">N</span> <span class="type">O</span> <span class="type">P</span></span><br><span class="line"><span class="type">Q</span> <span class="type">R</span> <span class="type">S</span> <span class="type">T</span> <span class="type">U</span> <span class="type">V</span> <span class="type">W</span> <span class="type">X</span></span><br><span class="line"><span class="type">Y</span> <span class="type">Z</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">Apr</span> <span class="number">29</span>, <span class="number">2019</span> <span class="number">6</span>:<span class="number">39</span>:<span class="number">53</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<p>比较坑的一点是有些 IDE 对于 tab 键并不在文本中记录为 tab 字符，需要进行设置，另外，在 vim 当中可以如下设置显示 tab 字符。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:set list TAB</span><br></pre></td></tr></table></figure>
+<h4 id="第3题"><a class="markdownIt-Anchor" href="#第3题"></a> 第3题</h4>
+<p>编写一小段 Scala 代码，从一个文件读取内容并把所有字符数大于12的单词打印到控制台。如果你能够用单行代码完成会有奖励。</p>
+<p>首先编写 CheckString.txt文件内容如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">aefwefweghgwge</span><br><span class="line">ghwoeghwegwe</span><br><span class="line">gwohegowehgowehtiwhtwht</span><br><span class="line">gwohgowehtheoqthgnan</span><br><span class="line">laohaq gwtweohghwy</span><br><span class="line">howhgewongnyey</span><br><span class="line">ghee</span><br><span class="line">goengyta;</span><br><span class="line">lgeneyt[nslagqn</span><br><span class="line">nongeo</span><br><span class="line">gneriewgny</span><br><span class="line">jgwoehwtnyh</span><br><span class="line">hgowenckanekganwyqyq</span><br><span class="line">klgeny</span><br></pre></td></tr></table></figure>
+<p>然后编写代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"><span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">CheckString</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> fileName: <span class="type">String</span> = <span class="string">"CheckString.txt"</span></span><br><span class="line">  println(fileName + <span class="string">"文件中长度大于12的字符串为："</span>)</span><br><span class="line">  <span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + fileName, <span class="string">"UTF-8"</span>).mkString.split(<span class="string">"\\s+"</span>).foreach( str =&gt; <span class="keyword">if</span>(str.length() &gt; <span class="number">12</span>) println(str))</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">CheckString</span> </span><br><span class="line"><span class="type">CheckString</span>.txt文件中长度大于<span class="number">12</span>的字符串为：</span><br><span class="line">aefwefweghgwge</span><br><span class="line">gwohegowehgowehtiwhtwht</span><br><span class="line">gwohgowehtheoqthgnan</span><br><span class="line">howhgewongnyey</span><br><span class="line">lgeneyt[nslagqn</span><br><span class="line">hgowenckanekganwyqyq</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">6</span> s, completed <span class="type">Apr</span> <span class="number">30</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">38</span>:<span class="number">49</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第4题"><a class="markdownIt-Anchor" href="#第4题"></a> 第4题</h4>
+<p>编写 Scala 程序，从包含浮点数的文本文件读取内容，打印出文件中所有浮点数之和、平均值、最大值和最小值。</p>
+<p>根据题意，编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ReadFloatNumber</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> floatPattern =<span class="string">"[-+]?[0-9]*\\.?[0-9]+"</span>.r <span class="comment">//浮点数正则匹配模式</span></span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> fileName: <span class="type">String</span> = <span class="string">"FloatNumber.txt"</span></span><br><span class="line"><span class="comment">//  def parseDouble(s: String) = {s.toDouble}</span></span><br><span class="line"><span class="comment">//  def paresDoubleArr(strArr: Array[String]) = {</span></span><br><span class="line"><span class="comment">//    strArr foreach println</span></span><br><span class="line"><span class="comment">//    val numberArr = new ArrayBuffer[Double](strArr.length)</span></span><br><span class="line"><span class="comment">//    numberArr foreach println</span></span><br><span class="line"><span class="comment">//    for(i &lt;- 0 until strArr.length){</span></span><br><span class="line"><span class="comment">//      numberArr(i) = parseDouble(strArr(i))</span></span><br><span class="line"><span class="comment">//    }</span></span><br><span class="line"><span class="comment">//    numberArr.toArray</span></span><br><span class="line"><span class="comment">//  }</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> fileStr = io.<span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + fileName).mkString</span><br><span class="line">  <span class="keyword">val</span> strArray = floatPattern.findAllIn(fileStr).toArray</span><br><span class="line">  <span class="keyword">val</span> len = strArray.length</span><br><span class="line">  println(<span class="string">"文本中浮点数个数: "</span> + len)</span><br><span class="line">  strArray foreach println</span><br><span class="line">  <span class="keyword">val</span> numberArray = <span class="keyword">for</span>(s &lt;- strArray) <span class="keyword">yield</span> s.toDouble <span class="comment">//将String 的字符串转化为 Double 的字符串，以便于后面的函数调用</span></span><br><span class="line">  println(<span class="string">"文本中浮点数总和："</span> + numberArray.sum)</span><br><span class="line">  println(<span class="string">"文本中浮点数的平均值: "</span> + numberArray.sum / len)</span><br><span class="line">  println(<span class="string">"文本中浮点数的最大值: "</span> + numberArray.max)</span><br><span class="line">  println(<span class="string">"文本中浮点数的最小值: "</span> + numberArray.min)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">ReadFloatNumber</span> </span><br><span class="line">文本中浮点数个数: <span class="number">11</span></span><br><span class="line">+<span class="number">15.5</span></span><br><span class="line"><span class="number">17.0</span></span><br><span class="line"><span class="number">1888.18</span></span><br><span class="line"><span class="number">-15.0</span></span><br><span class="line"><span class="number">-1</span></span><br><span class="line"><span class="number">-15.9</span></span><br><span class="line"><span class="number">1989898</span></span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="number">111</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">144</span></span><br><span class="line">文本中浮点数总和：<span class="number">1992067.78</span></span><br><span class="line">文本中浮点数的平均值: <span class="number">181097.07090909092</span></span><br><span class="line">文本中浮点数的最大值: <span class="number">1989898.0</span></span><br><span class="line">文本中浮点数的最小值: <span class="number">-15.9</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">May</span> <span class="number">2</span>, <span class="number">2019</span> <span class="number">8</span>:<span class="number">40</span>:<span class="number">38</span> <span class="type">AM</span></span><br></pre></td></tr></table></figure>
+<p>需要特别指出的一点是，在代码的26行，新建的一个变量<code>numberArray</code>用来存储<code> Double</code>类型的数组，这样可以在后面方便地调用<code> sum</code>、<code>max</code>以及<code> min</code>等函数。</p>
+<h4 id="第5题"><a class="markdownIt-Anchor" href="#第5题"></a> 第5题</h4>
+<p>编写 Scala 程序，向文件中写入2的 n 次方及其倒数，指数 n 从0到20。对齐各列：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">原数</th>
+<th style="text-align:center">倒数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">0.5</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0.25</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.{<span class="type">File</span>, <span class="type">PrintWriter</span>}</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">IndexWriter</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> indexWriter = <span class="keyword">new</span> <span class="type">PrintWriter</span>(path + <span class="string">"/"</span> + <span class="string">"Index.txt"</span>)</span><br><span class="line">  <span class="keyword">for</span>(n &lt;- <span class="number">0</span> to <span class="number">20</span>){</span><br><span class="line">    <span class="keyword">val</span> index = <span class="type">BigDecimal</span>(<span class="number">2</span>).pow(n)</span><br><span class="line">    indexWriter.write(index.toString())</span><br><span class="line">    indexWriter.write(<span class="string">"\t\t\t\t"</span>)</span><br><span class="line">    indexWriter.write((<span class="number">1</span> / index).toString())</span><br><span class="line">    indexWriter.write(<span class="string">"\n"</span>)</span><br><span class="line">  }</span><br><span class="line">  indexWriter.close()</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>最后，<code>Index.txt</code>文件的内容如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>				<span class="number">1</span></span><br><span class="line"><span class="number">2</span>				<span class="number">0.5</span></span><br><span class="line"><span class="number">4</span>				<span class="number">0.25</span></span><br><span class="line"><span class="number">8</span>				<span class="number">0.125</span></span><br><span class="line"><span class="number">16</span>				<span class="number">0.0625</span></span><br><span class="line"><span class="number">32</span>				<span class="number">0.03125</span></span><br><span class="line"><span class="number">64</span>				<span class="number">0.015625</span></span><br><span class="line"><span class="number">128</span>				<span class="number">0.0078125</span></span><br><span class="line"><span class="number">256</span>				<span class="number">0.00390625</span></span><br><span class="line"><span class="number">512</span>				<span class="number">0.001953125</span></span><br><span class="line"><span class="number">1024</span>				<span class="number">0.0009765625</span></span><br><span class="line"><span class="number">2048</span>				<span class="number">0.00048828125</span></span><br><span class="line"><span class="number">4096</span>				<span class="number">0.000244140625</span></span><br><span class="line"><span class="number">8192</span>				<span class="number">0.0001220703125</span></span><br><span class="line"><span class="number">16384</span>				<span class="number">0.00006103515625</span></span><br><span class="line"><span class="number">32768</span>				<span class="number">0.000030517578125</span></span><br><span class="line"><span class="number">65536</span>				<span class="number">0.0000152587890625</span></span><br><span class="line"><span class="number">131072</span>				<span class="number">0.00000762939453125</span></span><br><span class="line"><span class="number">262144</span>				<span class="number">0.000003814697265625</span></span><br><span class="line"><span class="number">524288</span>				<span class="number">0.0000019073486328125</span></span><br><span class="line"><span class="number">1048576</span>				<span class="number">9.5367431640625E-7</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="第6题"><a class="markdownIt-Anchor" href="#第6题"></a> 第6题</h4>
+<p>编写正则表达式，匹配 Java 或 C++程度代码中类似"like this, maybe with " or \"这样的带引号的字符串。编写 Scala 程序将某个源文件中所有类似的字符串打印出来。</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">RegExp</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> pattern =<span class="string">"""\\\"""</span><span class="string">".r</span></span><br><span class="line"><span class="string">  val dir = new File("</span>src/main/scala/excercises/chapter9<span class="string">")</span></span><br><span class="line"><span class="string">  val path: String = dir.getAbsolutePath()</span></span><br><span class="line"><span class="string">  val fileName: String = "</span><span class="type">Regexp</span>.<span class="string">txt"</span></span><br><span class="line"><span class="string">  val fileStr = io.Source.fromFile(path + "</span>/<span class="string">" + fileName).mkString</span></span><br><span class="line"><span class="string">//  fileStr foreach println</span></span><br><span class="line"><span class="string">  pattern.findAllIn(fileStr).foreach(println)</span></span><br><span class="line"><span class="string">}</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>Regexp.txt</code>文件的内容如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wewerwerthwhrtwnb</span><br><span class="line"><span class="string">"like this, maybe with \"</span></span><br><span class="line"><span class="string">\\"</span></span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">RegExp</span> </span><br><span class="line">\<span class="string">"</span></span><br><span class="line"><span class="string">\"</span></span><br><span class="line"><span class="string">[success] Total time: 3 s, completed May 2, 2019 2:59:13 PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第7题"><a class="markdownIt-Anchor" href="#第7题"></a> 第7题</h4>
+<p>编写 Scala 程序，从文本文件读取内容，并打印出所有非浮点数的词法单元。要求使用正则表达式。</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">NonFloat</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> nonFloatPattern = <span class="string">"""[^((\d+\.){0,1}\d+)^\s+]+"""</span>.r <span class="comment">//非浮点数正则匹配模式</span></span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> fileName: <span class="type">String</span> = <span class="string">"FloatNumber.txt"</span></span><br><span class="line">  <span class="comment">//  def parseDouble(s: String) = {s.toDouble}</span></span><br><span class="line">  <span class="comment">//  def paresDoubleArr(strArr: Array[String]) = {</span></span><br><span class="line">  <span class="comment">//    strArr foreach println</span></span><br><span class="line">  <span class="comment">//    val numberArr = new ArrayBuffer[Double](strArr.length)</span></span><br><span class="line">  <span class="comment">//    numberArr foreach println</span></span><br><span class="line">  <span class="comment">//    for(i &lt;- 0 until strArr.length){</span></span><br><span class="line">  <span class="comment">//      numberArr(i) = parseDouble(strArr(i))</span></span><br><span class="line">  <span class="comment">//    }</span></span><br><span class="line">  <span class="comment">//    numberArr.toArray</span></span><br><span class="line">  <span class="comment">//  }</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> fileStr = io.<span class="type">Source</span>.fromFile(path + <span class="string">"/"</span> + fileName).mkString</span><br><span class="line">  <span class="keyword">val</span> strArray = nonFloatPattern.findAllIn(fileStr).toArray</span><br><span class="line">  strArray foreach println</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">NonFloat</span> </span><br><span class="line">scala</span><br><span class="line"><span class="type">Java</span></span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line">-</span><br><span class="line"><span class="type">Hadoop</span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">4</span> s, completed <span class="type">May</span> <span class="number">2</span>, <span class="number">2019</span> <span class="number">10</span>:<span class="number">44</span>:<span class="number">31</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第8题"><a class="markdownIt-Anchor" href="#第8题"></a> 第8题</h4>
+<p>编写 Scala 程序，打印出某个网页中所有 img 标签的 src 属性。使用正则表达式和分组。</p>
+<p>根据题意编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">WebPrinter</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> html = io.<span class="type">Source</span>.fromURL(<span class="string">"http://www.google.com"</span>, <span class="string">"UTF-8"</span>).mkString</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> srcPattern = <span class="string">"""(?is)&lt;\s*img[^&gt;]*src\s*=\s*['"\s]*([^'"]+)['"\s]*[^&gt;]*&gt;"""</span>.r</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(srcPattern(s) &lt;- srcPattern findAllIn html) println(s)</span><br><span class="line"></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">info] <span class="type">Running</span> excercises.chapter9.<span class="type">WebPrinter</span> </span><br><span class="line">/images/branding/googlelogo/<span class="number">1</span>x/googlelogo_white_background_color_272x92dp.png</span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">5</span> s, completed <span class="type">May</span> <span class="number">2</span>, <span class="number">2019</span> <span class="number">10</span>:<span class="number">53</span>:<span class="number">52</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<h4 id="第9题"><a class="markdownIt-Anchor" href="#第9题"></a> 第9题</h4>
+<p>编写 Scala 程序，盘点给定目录机器子目录中总共有多个以.class为扩展名的文件。</p>
+<p>借助9.7节提供的遍历目录的代码段，编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">ClassFileCount</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="keyword">val</span> path = <span class="string">"."</span></span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(path)</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">subdirs</span></span>(dir:<span class="type">File</span>):<span class="type">Iterator</span>[<span class="type">File</span>] = {</span><br><span class="line">    <span class="keyword">val</span> children = dir.listFiles().filter(_.getName.endsWith(<span class="string">"class"</span>))</span><br><span class="line">    children.toIterator ++ dir.listFiles().filter(_.isDirectory).toIterator.flatMap(subdirs _)</span><br><span class="line">  }</span><br><span class="line">  println(<span class="string">"本项目根目录项目一共有："</span> + subdirs(dir).length + <span class="string">"个以 class 结尾的文件。"</span>)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">ClassFileCount</span> </span><br><span class="line">本项目根目录项目一共有：<span class="number">157</span>个以 <span class="class"><span class="keyword">class</span> <span class="title">结尾的文件。</span></span></span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">27</span> s, completed <span class="type">May</span> <span class="number">2</span>, <span class="number">2019</span> <span class="number">11</span>:<span class="number">16</span>:<span class="number">26</span> <span class="type">PM</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="第10题"><a class="markdownIt-Anchor" href="#第10题"></a> 第10题</h4>
+<p>扩展那个可序列化的 Person 类，让它能够以一个集合保存某个人的朋友信息。构造出一些 Person 对象，让他们中的一些人成为朋友，然后将 Array[Person]保存到文件。将这个数组从文件中重新读出来，检验朋友关系是否完好。</p>
+<p>根据题意，编码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> excercises.chapter9</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">ArrayBuffer</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">SerializablePerson</span> <span class="keyword">extends</span> <span class="title">App</span> </span>{</span><br><span class="line">  <span class="meta">@SerialVersionUID</span>(<span class="number">42</span>L) <span class="class"><span class="keyword">class</span> <span class="title">Person</span>(<span class="params">val name: <span class="type">String</span></span>) <span class="keyword">extends</span> <span class="title">Serializable</span> </span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> friends = <span class="keyword">new</span> <span class="type">ArrayBuffer</span>[<span class="type">Person</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addFriend</span></span>(p: <span class="type">Person</span>) {friends += p}</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isFriend</span></span>(p: <span class="type">Person</span>) = friends.contains(p)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> <span class="type">Paul</span> = <span class="keyword">new</span> <span class="type">Person</span>(<span class="string">"Paul"</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">Pierre</span> = <span class="keyword">new</span> <span class="type">Person</span>(<span class="string">"Pierre"</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">Simon</span> = <span class="keyword">new</span> <span class="type">Person</span>(<span class="string">"Simon"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="type">Paul</span>.addFriend(<span class="type">Pierre</span>)</span><br><span class="line">  <span class="type">Pierre</span>.addFriend(<span class="type">Paul</span>)</span><br><span class="line">  <span class="type">Simon</span>.addFriend(<span class="type">Paul</span>)</span><br><span class="line">  <span class="type">Simon</span>.addFriend(<span class="type">Pierre</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> persons = <span class="type">Array</span>(<span class="type">Paul</span>, <span class="type">Pierre</span>, <span class="type">Simon</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">import</span> java.io._</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> dir = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"src/main/scala/excercises/chapter9"</span>)</span><br><span class="line">  <span class="keyword">val</span> path: <span class="type">String</span> = dir.getAbsolutePath()</span><br><span class="line">  <span class="keyword">val</span> fileName: <span class="type">String</span> = <span class="string">"test.obj"</span></span><br><span class="line">  <span class="keyword">val</span> out = <span class="keyword">new</span> <span class="type">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="type">FileOutputStream</span>(path + <span class="string">"/"</span> + fileName))</span><br><span class="line">  out.writeObject(persons)</span><br><span class="line">  out.close()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> in = <span class="keyword">new</span> <span class="type">ObjectInputStream</span>(<span class="keyword">new</span> <span class="type">FileInputStream</span>(path + <span class="string">"/"</span> + fileName))</span><br><span class="line">  <span class="keyword">val</span> test = in.readObject().asInstanceOf[<span class="type">Array</span>[<span class="type">Person</span>]]</span><br><span class="line">  assert(test(<span class="number">2</span>).isFriend(test(<span class="number">0</span>)) == <span class="literal">true</span>)</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>测试结果如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[info] <span class="type">Running</span> excercises.chapter9.<span class="type">SerializablePerson</span> </span><br><span class="line">[success] <span class="type">Total</span> time: <span class="number">2</span> s, completed <span class="type">May</span> <span class="number">3</span>, <span class="number">2019</span> <span class="number">3</span>:<span class="number">29</span>:<span class="number">40</span> <span class="type">PM</span></span><br></pre></td></tr></table></figure>
+<p>需要说明的是，被反序列化出来的 test 对象其实是一个 Array[Person]的以 Person 对象的数组。本段代码最后采用 assert()函数测试反序列化出来的内容是否与序列化之前的内容是否一致。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+              <a href="/tags/Scala-for-the-Impatient/" rel="tag"># Scala for the Impatient</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/27/Scala-for-the-Impatient-Chapter-8-%E7%BB%83%E4%B9%A0/" rel="prev" title="Scala for the Impatient Chapter 8 练习">
+                  <i class="fa fa-angle-left"></i> Scala for the Impatient Chapter 8 练习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/08/Scala-for-the-Impatient-Chapter-10-%E7%BB%83%E4%B9%A0/" rel="next" title="Scala for the Impatient Chapter 10 练习">
+                  Scala for the Impatient Chapter 10 练习 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

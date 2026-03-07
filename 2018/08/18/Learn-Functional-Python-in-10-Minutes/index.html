@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"datacruiser.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":false,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一篇基于python的函数式编程入门文章。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learn Functional Python in 10 Minutes">
+<meta property="og:url" content="https://datacruiser.github.io/2018/08/18/Learn-Functional-Python-in-10-Minutes/index.html">
+<meta property="og:site_name" content="Datacruiser&#39;s Blog">
+<meta property="og:description" content="一篇基于python的函数式编程入门文章。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-08-18T23:10:47.000Z">
+<meta property="article:modified_time" content="2026-03-07T11:58:27.864Z">
+<meta property="article:author" content="Datacruiser">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="函数式编程">
+<meta property="article:tag" content="入门">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://datacruiser.github.io/2018/08/18/Learn-Functional-Python-in-10-Minutes/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://datacruiser.github.io/2018/08/18/Learn-Functional-Python-in-10-Minutes/","path":"2018/08/18/Learn-Functional-Python-in-10-Minutes/","title":"Learn Functional Python in 10 Minutes"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Learn Functional Python in 10 Minutes | Datacruiser's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="Datacruiser's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Datacruiser's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">数海拾荒</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E6%96%87%E9%93%BE%E6%8E%A5%E5%A6%82%E4%B8%8B"><span class="nav-number">1.</span> <span class="nav-text"> 原文链接如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text"> 函数式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map"><span class="nav-number">3.</span> <span class="nav-text"> Map</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text"> Lambda 表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduce"><span class="nav-number">5.</span> <span class="nav-text"> Reduce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter"><span class="nav-number">6.</span> <span class="nav-text"> Filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="nav-number">7.</span> <span class="nav-text"> 高阶函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%A8%E5%88%86%E5%BA%94%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text"> 部分应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%B9%B6%E4%B8%8D%E6%98%AFpythonic"><span class="nav-number">9.</span> <span class="nav-text"> 函数式编程并不是Pythonic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list-comprehensions"><span class="nav-number">10.</span> <span class="nav-text"> List comprehensions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ohter-comprehensions"><span class="nav-number">11.</span> <span class="nav-text"> Ohter comprehensions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">12.</span> <span class="nav-text"> 结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Datacruiser"
+      src="https://i.imgur.com/qsQpBoA.jpg">
+  <p class="site-author-name" itemprop="name">Datacruiser</p>
+  <div class="site-description" itemprop="description">Achieving what I want in light of what is true.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">163</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/datacruiser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/realphy" title="Zhihu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;realphy" rel="noopener me" target="_blank"><i class="fa fa-users fa-fw"></i>Zhihu</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://x.com/datacruiser" title="X → https:&#x2F;&#x2F;x.com&#x2F;datacruiser" rel="noopener me" target="_blank"><i class="fab fa-x-twitter fa-fw"></i>X</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="Back to top">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://datacruiser.github.io/2018/08/18/Learn-Functional-Python-in-10-Minutes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/qsQpBoA.jpg">
+      <meta itemprop="name" content="Datacruiser">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Datacruiser's Blog">
+      <meta itemprop="description" content="Achieving what I want in light of what is true.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Learn Functional Python in 10 Minutes | Datacruiser's Blog">
+      <meta itemprop="description" content="一篇基于python的函数式编程入门文章。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Learn Functional Python in 10 Minutes
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-08-18 23:10:47" itemprop="dateCreated datePublished" datetime="2018-08-18T23:10:47+00:00">2018-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">函数式编程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/08/18/Learn-Functional-Python-in-10-Minutes/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/18/Learn-Functional-Python-in-10-Minutes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">一篇基于python的函数式编程入门文章。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>最近在学习<code>python</code>，对<strong>函数式编程</strong>特别感兴趣，当然，这并不是<code>python</code>的专利，不过最近确实看到一遍文章正好以<code>python</code>为例来讲解<strong>函数式编程</strong>，特把它翻译过来与大家分享。</p>
+<h2 id="原文链接如下"><a class="markdownIt-Anchor" href="#原文链接如下"></a> 原文链接如下：</h2>
+<ul>
+<li><a href="https://hackernoon.com/learn-functional-python-in-10-minutes-to-2d1651dece6f">Learn Functional Python in 10 Minutes</a></li>
+</ul>
+<p>在这篇文章当中，你将会学习什么是<strong>函数式编程</strong>以及如果用<code>python</code>进行实现。你也会学习列表领域能力以及其它形式的领悟能力。</p>
+<h2 id="函数式编程"><a class="markdownIt-Anchor" href="#函数式编程"></a> 函数式编程</h2>
+<p>在命令式的编程范式当中，你通过告诉计算机一系列需要执行的任务并在计算机执行以后以完成你的目的。当执行任务的时候，状态可能会发生改变。比如，假设你原先将A赋值为5，然后你改变A的数值。你会有很多变量，并且变量内部的值也会发生改变。</p>
+<p>**在一个函数式编程范式当中，你并不告诉计算机要干什么，而是告诉它是干什么的。**什么是一个数字的最大公因子，什么是从1到N的乘积，等等。</p>
+<p>正因为如此，变量不能变化。当时设置好了一个变量，它将永远保持那样的方式（注意下，在纯粹的函数式编程语言当中通常不称之为变量）。因此，在函数式编程范式当中，函数不会有<em>副作用</em>。函数的副作用是指函数修改了一些函数作用范围外的东西。让我来看一个典型<code>python</code>的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">som_func</span>():</span><br><span class="line">	<span class="keyword">global</span> a</span><br><span class="line">	a = <span class="number">5</span></span><br><span class="line">some_func()</span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
+<p>这段代码的输出是5.在函数式编程范式当中，改变变量的值是不容许的事情，同样影响在函数作用域之外的变量也是不被容许的。函数唯一可以做的事情是做一些计算然后以结果的形式返回。</p>
+<p>现在你可能会想：“无变量，无副作用？为什么这样是好的呢？”这是个非常好的问题，非常少的默认人多这个。</p>
+<p>如果一个函数用同样的参数调用两次，应该确保返回同样的结果。如果你学习了<a href="https://medium.com/brandons-computer-science-notes/a-primer-on-functions-9a51c1e9de80"><em>数学函数</em></a>，你会了解这种机制的好处。这个叫做<a href="https://medium.com/brandons-computer-science-notes/a-primer-on-functions-9a51c1e9de80"><em>参考透明（referengtial transparency）</em></a>，因为函数没有副作用，如果你构建一个用来计算的程序，你可以提供程序的运算速度。如果程序知道func(2)等于3，我们可以将这个结果保存到一个表格当中。当我们已经知道函数运行结果的时候，这样可以防止重新运行同样的函数。</p>
+<p>典型的，在函数式编程当中，我们不使用循环。我们采用递归。递归是一个数学上的概念，通常，它意味着“自己调用自己”。在一个递归的函数当中，函数重复地以子函数的形式调用自己。这里有一个非常的<code>python</code>编写的递归函数的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_recursive</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="comment"># Base case: 1! = 1</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Recursive case: n! = n * (n-1)!</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> n * factorial_recursive(n-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>一些编程语言也非常<strong>懒惰</strong>。这意味着他们不计算或者干其它任何事情直到最后一秒。如果你写一些代码用来计算<code>2 + 2</code>，一个函数式的程序将只有当你实际需要使用这个结果的时候才会去进行计算。我们将很快来解释<code>python</code>的懒惰性。</p>
+<h2 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h2>
+<p>要理解map，让我们首先看看什么是可迭代的。可迭代的就是任何你可以迭代的东西（翻译起来好拗口……）。典型的有列表（list）和数组（array），不过<code>python</code>有很多不同可迭代的类型。你甚至可以通过实现一些神奇的方法创建自己的可迭代的对象。一个神奇的方法像一个可以让你的对象更加<strong>Pythonic</strong>的API。你需要实现两个神奇方法来使得一个对象是可迭代的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Counter</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, low, high</span>):</span><br><span class="line">        <span class="comment"># set class attributes inside the magic method __init__</span></span><br><span class="line">        <span class="comment"># for "inistalise"</span></span><br><span class="line">        <span class="variable language_">self</span>.current = low</span><br><span class="line">        <span class="variable language_">self</span>.high = high</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># first magic method to make this object iterable</span></span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__next__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># second magic method</span></span><br><span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.current &gt; <span class="variable language_">self</span>.high:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>.current += <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.current - <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>第一个神奇方法，“__iter__”或者dunder iter（双下划线开头的iter）返回可迭代的对象，这个经常在循环的开头使用。Dunder下一个返回下一个对象。</p>
+<p>让我们进入一个快捷终端会话来验证一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> Counter(<span class="number">3</span>, <span class="number">8</span>):</span><br><span class="line">	<span class="built_in">print</span>(c)</span><br></pre></td></tr></table></figure>
+<p>这段代码将会打印：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br></pre></td></tr></table></figure>
+<p>在<code>python</code>里面，一个迭代器是指只有__iter__方法的对象。这意味着你可以访问这个对象的位置，但是不能迭代遍历这个对象。一些对象会有__next__方法而没有__iter__方法，比如sets（将会在文章后面的内容中讲到）。对于本文，我们假设我们所接触到的每个对象都是一个可迭代的对象。</p>
+<p>到目前为止，我们知道一个可迭代的对象是怎么样的，让我们回到map函数。map函数允许我们将一个函数作用于一个可迭代对象当中没一个元素。通常我们要将一个函数作用于列表中的每一个元素，并且我们知道对于大部分可迭代对象都是可能的。Map函数有两个输入，一个是需要作用的函数，另外一个是可迭代的对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>(function, iterable)</span><br></pre></td></tr></table></figure>
+<p>让我们假设我们有一个包含以下数字的列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>然后我们需要将每一个数字进行平方处理，我们可以编写代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">5</span>]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">square</span>(<span class="params">num</span>):</span><br><span class="line">	<span class="keyword">return</span> num * num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">map</span>(square, x)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>python</code>当中的函数式函数是懒惰的。加入我们没有包括“list()”函数，map将返回保存对应迭代对象的定义类型数据，而不是list本身。我们需要显式地告诉<code>python</code>将这些转换为list为我们所用。</p>
+<p>如果突然从非懒惰模式切换到懒惰模式会有点怪异，如果你更多地以函数式进行思考最终会习惯这种懒惰模式。</p>
+<p>现在可以很好的很好地写一个常规的“square(num)”函数，但是看起来离正常工作还差一点，我们必须定义完整的函数仅仅为了在 map用一次？当然，我们可以通过lambda表达式在map当中定义函数。</p>
+<h2 id="lambda-表达式"><a class="markdownIt-Anchor" href="#lambda-表达式"></a> Lambda 表达式</h2>
+<p>一个lambda表达式是一个单行函数。举个例子，这个lambda表达式将对它的输入进行平方操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">square = <span class="keyword">lambda</span> x: x * x</span><br></pre></td></tr></table></figure>
+<p>现在让我们运行一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>square(<span class="number">3</span>)</span><br><span class="line"><span class="number">9</span> </span><br></pre></td></tr></table></figure>
+<p>我听到你内心肯定在问。“Brandon，哪里是参数？这是怎么一回事？这看起来一定都不像一个函数？”</p>
+<p>确实，这看起来有些迷惑人，不过可以解释。来让我们给变量“square”赋一些值。这部分如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">lambda</span> x:</span><br></pre></td></tr></table></figure>
+<p>告诉<code>python</code>这是一个lambda函数，并且输入被称作x。任何在冒号之后的都是你要对输入进行操作的内容，并且将这部分操作的内容自动返回。</p>
+<p>因此，为了简化我们的平方程序到一行代码，我们可以这样做：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> num: num * num, x)))</span><br></pre></td></tr></table></figure>
+<p>因此，在一个lambda表达式当中，所有的参数在左边，然后你要对这些参数进行的操作在右边。这看起来有点复杂，谁也无法否认。事实是那样子编码以致于仅让其他函数式程序员阅读已经成为一种确定的让人满足的事情。并且，将一个函数简化到一行看起来也特别酷。</p>
+<h2 id="reduce"><a class="markdownIt-Anchor" href="#reduce"></a> Reduce</h2>
+<p>Reduce函数将一个可迭代的对象转变成一个元素。通常你将一个计算作用于一个列表然后将它<strong>reduce</strong>到一个数字。Reduce看起来是这个样子的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reduce(function, <span class="built_in">list</span>)</span><br></pre></td></tr></table></figure>
+<p>我们可以（并且经常如此）使用lambda表达式作为函数。</p>
+<p>一个列表的阶乘是将任意一个单一的数字相乘。为了达到这样的目的，你将编码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">product = <span class="number">1</span></span><br><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> x:</span><br><span class="line">	product = product * num</span><br></pre></td></tr></table></figure>
+<p>但是通过reduce我们可以这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"></span><br><span class="line">product = reduce((<span class="keyword">lambda</span> x, y: x * y), [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+<p>得到同样的阶乘结果。代码更加简洁，加入函数式编程的知识代码更为有序。</p>
+<h2 id="filter"><a class="markdownIt-Anchor" href="#filter"></a> Filter</h2>
+<p>filter函数传入一个迭代对象作为参数并将这个迭代对象当中所有那些你不要的东西滤去。</p>
+<p>通常，filter传入一个函数和一个列表。将这个函数作用于列表当中的任意一个元素加入函数返回True，不做任何事情。加入返回False，将这个元素从列表当中删除。</p>
+<p>语法看起来这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">filter</span>(function, <span class="built_in">list</span>)</span><br></pre></td></tr></table></figure>
+<p>让我们看一个简单的例子，不使用filter我们这样编码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">range</span>(-<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line">new_list = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> x:</span><br><span class="line">	<span class="keyword">if</span> num &lt; <span class="number">0</span>:</span><br><span class="line">		new_list.append(num)</span><br></pre></td></tr></table></figure>
+<p>通过filter，编码是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">range</span>(-<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line">all_less_than_zero = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> num: num &lt; <span class="number">0</span>, x))</span><br></pre></td></tr></table></figure>
+<h2 id="高阶函数"><a class="markdownIt-Anchor" href="#高阶函数"></a> 高阶函数</h2>
+<p>高阶函数可以传入函数作为参数并返回函数。一个简单的例子看起来是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">summation</span>(<span class="params">nums</span>):</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">sum</span>(nums)</span><br><span class="line">	</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">action</span>(<span class="params">func, numbers</span>):</span><br><span class="line">	<span class="keyword">return</span> func(numbers)</span><br><span class="line">	</span><br><span class="line"><span class="built_in">print</span>(action(summations, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output is 6</span></span><br></pre></td></tr></table></figure>
+<p>或者一个更简单关于二次定义的例子，“返回函数”，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">rtnBrandon</span>():</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"brandon"</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rtnJohn</span>():</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"john"</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rtnPerson</span>():</span><br><span class="line">	age = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">"What's your age?"</span>))</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> age == <span class="number">21</span>:</span><br><span class="line">		<span class="keyword">return</span> rtnBrandon()</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> rtnJohn()</span><br></pre></td></tr></table></figure>
+<p>你早先应该知道我提到函数式编程语言没有变量是怎么说的吗？确实，高阶函数可以将这个事情变得更为简单。你不需要储存一个变量如果你所要做的是将数据通过函数的通道进行传递。</p>
+<p><code>Python</code>中的所有函数都是第一类对象。第一类对象定义为具有1项或者多项以下特征：</p>
+<ul>
+<li>
+<p>运行时（runtime）创建</p>
+</li>
+<li>
+<p>将变量或者元素赋值在一个数据结构当中</p>
+</li>
+<li>
+<p>作为一个参数传递给一个函数</p>
+</li>
+<li>
+<p>作为函数的结果返回</p>
+</li>
+</ul>
+<p>因此，所有<code>Python</code>中的函数都是第一类且可以作为高阶函数使用。</p>
+<h2 id="部分应用"><a class="markdownIt-Anchor" href="#部分应用"></a> 部分应用</h2>
+<p>部分应用（又叫做闭包）更为复杂，但是超级酷。你可以调用一个函数，但不提供它所需要的全部参数。让我们通过一个例子看看这个过程。我们要创建一个函数需要传入两个参数，一个base和一个exponet，然后返回base的exponent次方。如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">power</span>(<span class="params">base, exponent</span>):</span><br><span class="line">	<span class="keyword">return</span> base ** exponent</span><br></pre></td></tr></table></figure>
+<p>现在我们想要有一个专用的平方函数，通过使用power函数得到一个数字的平方：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">square</span>(<span class="params">base</span>):</span><br><span class="line">	<span class="keyword">return</span> power(base, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>这个可以工作，但是如果需要3次方的函数呢？或者一个需要进行4次方运算的函数呢？我们能够一直那样子写吗？当然，你是可以的。但是程序员都是懒惰的。如果你一遍又一遍地重复一件事情，这就意味着有一个更快的方式加速速度而不用去做重复的事情。我们可以采用部分应用的方式。让我看一个采用部分应用的square函数的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line">square = partial(power, exponent = <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(square(<span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># output is 4</span></span><br></pre></td></tr></table></figure>
+<p>这样是不是很酷！我们可以通过告诉<code>Python</code>第二个参数是什么，只用一个参数调用需要两个参数的函数。</p>
+<p>我们也可以使用一个循环，来产生一个乘方函数来实现从3次到1000次的计算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line">powers = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">1001</span>):</span><br><span class="line">	powers.append(partial(power, exponent = x))</span><br><span class="line">	</span><br><span class="line"><span class="built_in">print</span>(powers[<span class="number">0</span>](<span class="number">3</span>))</span><br><span class="line"><span class="comment"># output is 9</span></span><br></pre></td></tr></table></figure>
+<h2 id="函数式编程并不是pythonic"><a class="markdownIt-Anchor" href="#函数式编程并不是pythonic"></a> 函数式编程并不是Pythonic</h2>
+<p>你可能已经注意到了，我们想要在函数式编程当中做的大部分事情都会围绕着列表。除了reduce函数和部分应用，所有其他我们看到的函数都会产生列表。<strong>Guido</strong>（<code>Python</code>的发明者）不喜欢<code>Python</code>当中的函数式编程的成分，因为<code>Python</code>已经有自己的生成列表的方式。</p>
+<p>假如你在<code>Python</code>的命令行环境当中输入“import this”，你会得到如下提示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> this</span><br><span class="line"></span><br><span class="line">The Zen of Python, by Tim Peters</span><br><span class="line">Beautiful <span class="keyword">is</span> better than ugly.</span><br><span class="line">Explicit <span class="keyword">is</span> better than implicit.</span><br><span class="line">Simple <span class="keyword">is</span> better than <span class="built_in">complex</span>.</span><br><span class="line">Complex <span class="keyword">is</span> better than complicated.</span><br><span class="line">Flat <span class="keyword">is</span> better than nested.</span><br><span class="line">Sparse <span class="keyword">is</span> better than dense.</span><br><span class="line">Readability counts.</span><br><span class="line">Special cases aren’t special enough to <span class="keyword">break</span> the rules.</span><br><span class="line">Although practicality beats purity.</span><br><span class="line">Errors should never <span class="keyword">pass</span> silently.</span><br><span class="line">Unless explicitly silenced.</span><br><span class="line">In the face of ambiguity, refuse the temptation to guess.</span><br><span class="line">There should be one — <span class="keyword">and</span> preferably only one — obvious way to do it.</span><br><span class="line">Although that way may <span class="keyword">not</span> be obvious at first unless you’re Dutch.</span><br><span class="line">Now <span class="keyword">is</span> better than never.</span><br><span class="line">Although never <span class="keyword">is</span> often better than *right* now.</span><br><span class="line">If the implementation <span class="keyword">is</span> hard to explain, it’s a bad idea.</span><br><span class="line">If the implementation <span class="keyword">is</span> easy to explain, it may be a good idea.</span><br><span class="line">Namespaces are one honking great idea — let’s do more of those!</span><br></pre></td></tr></table></figure>
+<p>这就是<strong>Python之禅</strong>。这是关于任何要成为Pythonic的诗。我们想要关联的部分如下：</p>
+<blockquote>
+<p>There should be one-and preferably only one - obivous way to do it.</p>
+</blockquote>
+<p>在<code>Python</code>当中，map &amp; reduce可以做list comprehension（后面讨论）同样的事情。这个打破了<strong>Python之禅</strong>的一条规则，于是这部分的函数式编程看起来不是那么的‘pythonic’。</p>
+<p>另外一个需要讨论的点是Lambda。在<code>Python</code>当中，一个lambda函数是一个常规的函数。Lambda是语法糖。以下两者实际上是等价的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">foo = <span class="keyword">lambda</span> a: <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>(<span class="params">a</span>):</span><br><span class="line">	<span class="keyword">return</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>理论上，一个常规的函数可以干任何lambda函数能做的事情，但是反过来却不行。一个lambda函数并不能干一个常规函数可以做的任何事情。</p>
+<p>这就是一个小争论关于为什么函数式编程不能很好地匹配整个<code>Python</code>生态系统。你应该注意到我早先提到的list comprehensions，现在我们将着重讨论它。</p>
+<h2 id="list-comprehensions"><a class="markdownIt-Anchor" href="#list-comprehensions"></a> List comprehensions</h2>
+<p>早些时候，我提到任何map或者filter能够做的事情，你都可以用list comprehension来实现。这部分内容我们将好好学习一下list comprehension。</p>
+<p>一个list comprehension是<code>Python</code>产生列表的一种方式，语法如下：举例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[function <span class="keyword">for</span> item <span class="keyword">in</span> iterable]</span><br></pre></td></tr></table></figure>
+<p>然后然我对一个列表当中的每一个数字进行平方操作，举例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>([x * x <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+<p>ok, 现在我们能够看到我们如何将一个函数作用于一个列表当中的每一个元素。如果是应用filter我们会怎么做呢？看下面这段之前出现过的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">range</span>(-<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">all_less_than_zero = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> num: num &lt; <span class="number">0</span>, x))</span><br><span class="line"><span class="built_in">print</span>(all_less_than_zero)</span><br></pre></td></tr></table></figure>
+<p>我们可以转换成list comprehension：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">range</span>(-<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">all_less_than_zero = [num <span class="keyword">for</span> num <span class="keyword">in</span> x <span class="keyword">if</span> num &lt; <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>List comprehensions支持这样的if表达式。你不再需要将上百万个函数作用于一些东西然后得到你所想要的。事实上，假如你试着做一些改变让列表看起来更加清晰和简单，那么使用list comprehension是一个不错的选择。</p>
+<p>那么如果你想要平方所有列表中小于0的数呢？采用lambda，map和filter你会这么写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">range</span>(-<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">all_less_than_zero = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> num: num * num, <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> num: num &lt; <span class="number">0</span>, x))))</span><br></pre></td></tr></table></figure>
+<p>那样看起来相当冗长并且有些复杂。如果用list comprehension只需要这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="built_in">range</span>(-<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">all_less_than_zero = [num * num <span class="keyword">for</span> num <span class="keyword">in</span> x <span class="keyword">if</span> num &lt; <span class="number">0</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>list comprehension只是对于列表的处理有好处。Map和filter可以在任何可迭代对象上面工作，但是那有如何呢？我们也可以用任何comprehension来处理其它所遇到的可迭代对象。</p>
+<h2 id="ohter-comprehensions"><a class="markdownIt-Anchor" href="#ohter-comprehensions"></a> Ohter comprehensions</h2>
+<p>你可以针对任何可迭代对象的comprehension</p>
+<p>可以通过使用comprehension产生任何可迭代对象。从Python 2.7开始，你甚至可以产生一个词典（hashmap）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Taken from page 70 chapter 3 of Fluent Python by Luciano Ramalho</span></span><br><span class="line"></span><br><span class="line">DIAL_CODES = [</span><br><span class="line">    (<span class="number">86</span>, <span class="string">'China'</span>),</span><br><span class="line">    (<span class="number">91</span>, <span class="string">'India'</span>),</span><br><span class="line">    (<span class="number">1</span>, <span class="string">'United States'</span>),</span><br><span class="line">    (<span class="number">62</span>, <span class="string">'Indonesia'</span>),</span><br><span class="line">    (<span class="number">55</span>, <span class="string">'Brazil'</span>),</span><br><span class="line">    (<span class="number">92</span>, <span class="string">'Pakistan'</span>),</span><br><span class="line">    (<span class="number">880</span>, <span class="string">'Bangladesh'</span>),</span><br><span class="line">    (<span class="number">234</span>, <span class="string">'Nigeria'</span>),</span><br><span class="line">    (<span class="number">7</span>, <span class="string">'Russia'</span>),</span><br><span class="line">    (<span class="number">81</span>, <span class="string">'Japan'</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>country_code = {country: code <span class="keyword">for</span> code, country <span class="keyword">in</span> DIAL_CODES}</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>country_code</span><br><span class="line">{<span class="string">'Brazil'</span>: <span class="number">55</span>, <span class="string">'Indonesia'</span>: <span class="number">62</span>, <span class="string">'Pakistan'</span>: <span class="number">92</span>, <span class="string">'Russia'</span>: <span class="number">7</span>, <span class="string">'China'</span>: <span class="number">86</span>, <span class="string">'United States'</span>: <span class="number">1</span>, <span class="string">'Japan'</span>: <span class="number">81</span>, <span class="string">'India'</span>: <span class="number">91</span>, <span class="string">'Nigeria'</span>: <span class="number">234</span>, <span class="string">'Bangladesh'</span>: <span class="number">880</span>}</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>{code: country.upper() <span class="keyword">for</span> country, code <span class="keyword">in</span> country_code.items() <span class="keyword">if</span> code &lt; <span class="number">66</span>}</span><br><span class="line">{<span class="number">1</span>: <span class="string">'UNITED STATES'</span>, <span class="number">7</span>: <span class="string">'RUSSIA'</span>, <span class="number">62</span>: <span class="string">'INDONESIA'</span>, <span class="number">55</span>: <span class="string">'BRAZIL'</span>}</span><br></pre></td></tr></table></figure>
+<p>假如这是一个可迭代对象，那他就可以被产生。让我们最后看一个关于集合（sets）的例子。如果你不懂什么是一个集合，你可以看我的<a href="https://medium.com/brandons-computer-science-notes/a-primer-on-functions-9a51c1e9de80">另外一篇文章</a>。TLDR是：</p>
+<ul>
+<li>
+<p>集合是元素的列表，且在这个列表当中没有重复出现两次的元素</p>
+</li>
+<li>
+<p>集合当中的排序无关紧要</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># take from page 87, chapter 3 of Fluent Python by Luciano Ramalho</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> unicodedata <span class="keyword">import</span> name</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>{<span class="built_in">chr</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">32</span>, <span class="number">256</span>) <span class="keyword">if</span> <span class="string">'SIGN'</span> <span class="keyword">in</span> name(<span class="built_in">chr</span>(i), <span class="string">''</span>)}</span><br><span class="line">{<span class="string">'×'</span>, <span class="string">'¥'</span>, <span class="string">'°'</span>, <span class="string">'£'</span>, <span class="string">'©'</span>, <span class="string">'#'</span>, <span class="string">'¬'</span>, <span class="string">'%'</span>, <span class="string">'µ'</span>, <span class="string">'&gt;'</span>, <span class="string">'¤'</span>, <span class="string">'±'</span>, <span class="string">'¶'</span>, <span class="string">'§'</span>, <span class="string">'&lt;'</span>, <span class="string">'='</span>, <span class="string">'®'</span>, <span class="string">'$'</span>, <span class="string">'÷'</span>, <span class="string">'¢'</span>, <span class="string">'+'</span>}</span><br></pre></td></tr></table></figure>
+<p>你应该已经发现集合具有和词典一样的花括号。<code>Python</code>确实非常智能。它会根据你是否提供额外的值来判断你编写的是dictionary comprehension还是set comprehension。如果你要了解comprehension更多，可以看一下这个<a href="http://treyhunner.com/2015/12/python-list-comprehensions-now-in-color/">可视化导则</a>。如果你想要了解comprehension和生成器更多，可以看<a href="https://medium.freecodecamp.org/python-list-comprehensions-vs-generator-expressions-cef70ccb49db">这篇文章</a>。</p>
+<h2 id="结论"><a class="markdownIt-Anchor" href="#结论"></a> 结论</h2>
+<p>函数式编程是优雅而纯洁的。函数式代码可以非常简洁，也可能会非常复杂。一些<code>Python</code>核心程序员不喜欢函数式编程范式。你应该用你想用的，用解决工作所适合的最好的工具。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"># 翻译</a>
+              <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" rel="tag"># 函数式编程</a>
+              <a href="/tags/%E5%85%A5%E9%97%A8/" rel="tag"># 入门</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/02/25/credit-scorecard-practise-using-R/" rel="prev" title="生产环境下的信用评分卡实践（R语言）">
+                  <i class="fa fa-angle-left"></i> 生产环境下的信用评分卡实践（R语言）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/08/23/How-to-think-in-graphs-Anillustrative-introduction-to-Graph-Theory-and-its-applications/" rel="next" title="How to think in graphs: Anillustrative introduction to Graph Theory and its applications">
+                  How to think in graphs: Anillustrative introduction to Graph Theory and its applications <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2017 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Datacruiser</span>
+  </div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"datacruiser","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
