@@ -40,9 +40,7 @@ favicon:
   safari_pinned_tab: /images/logo.svg
 
 # Custom Logo
-custom_logo:
-  enabled: false
-  image:
+custom_logo: false
 
 
 # ---------------------------------------------------------------
@@ -85,8 +83,7 @@ site_state: true
 social:
   GitHub: https://github.com/datacruiser || fab fa-github
   Zhihu: https://www.zhihu.com/people/realphy || fa fa-users
-  Weibo: https://weibo.com/jijiwhywhy || fab fa-weibo
-  E-Mail: mailto:phy.zju@gmail.com || fa fa-envelope
+  X: https://x.com/datacruiser || fab fa-x-twitter
 
 social_icons:
   enable: true
@@ -231,13 +228,13 @@ pace:
 
 # ---------------------------------------------------------------
 # Math Formulas Render Support
-# Using MathJax for math equations
+# Server-side rendering via hexo-filter-mathjax
 # ---------------------------------------------------------------
 
 math:
   every_page: false
   mathjax:
-    enable: true
+    enable: false
     tags: none
   katex:
     enable: false
@@ -310,3 +307,12 @@ vendors:
 css: css
 js: js
 images: images
+
+
+# ---------------------------------------------------------------
+# Custom Settings
+# ---------------------------------------------------------------
+
+# Custom styles for better math rendering
+custom_file_path:
+  style: source/_data/styles.styl

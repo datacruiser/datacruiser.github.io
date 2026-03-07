@@ -1,0 +1,176 @@
+// MathJax SVG rendering fixes for Hexo + NexT theme
+// Comprehensive fixes for square roots, fractions, and aligned environments
+
+// ============================================
+// 1. General SVG Container Fixes
+// ============================================
+
+// Ensure SVG containers don't clip any elements
+mjx-container[jax="SVG"] {
+  overflow: visible !important;
+  display: inline-block;
+}
+
+// Ensure SVG elements inside MathJax have proper overflow
+mjx-container[jax="SVG"] > svg {
+  overflow: visible !important;
+}
+
+// Ensure inline math doesn't clip
+mjx-container:not([display="true"]) {
+  overflow: visible !important;
+}
+
+// Additional fix for MathJax SVG clipping
+.MathJax svg {
+  overflow: visible !important;
+}
+
+// ============================================
+// 2. Square Root (msqrt) Fixes
+// ============================================
+
+// Fix for msqrt node - ensure radical symbol displays completely
+g[data-mml-node="msqrt"] {
+  overflow: visible;
+}
+
+// Fix the vinculum (horizontal bar) in square roots
+g[data-mml-node="msqrt"] > rect {
+  shape-rendering: crispEdges;
+  stroke: currentColor;
+  stroke-width: 0;
+}
+
+// Add padding to prevent clipping of radical symbols
+g[data-mml-node="msqrt"] > svg {
+  overflow: visible;
+}
+
+// Fix vinculum (horizontal bar) display in square roots
+g[data-mml-node="msqrt"] path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+// Specific fix for sqrt vinculum alignment
+g[data-mml-node="msqrt"] {
+  transform-origin: center center;
+}
+
+// Fix for complex nested sqrt expressions
+g[data-mml-node="msqrt"] g[data-mml-node="msqrt"] {
+  overflow: visible;
+}
+
+// ============================================
+// 3. Fraction (mfrac) Fixes
+// ============================================
+
+// Fix fraction bars rendering
+g[data-mml-node="mfrac"] {
+  overflow: visible;
+}
+
+// Ensure fraction bar (line) displays correctly
+g[data-mml-node="mfrac"] > line {
+  stroke: currentColor;
+  stroke-width: 70;
+  stroke-linecap: butt;
+}
+
+// Fix numerator and denominator positioning
+g[data-mml-node="mfrac"] > g {
+  overflow: visible;
+}
+
+// ============================================
+// 4. Aligned Environment (mtable) Fixes
+// ============================================
+
+// Fix aligned environment (mtable) rendering
+g[data-mml-node="mtable"] {
+  overflow: visible;
+}
+
+// Ensure table rows display correctly
+g[data-mml-node="mtr"] {
+  overflow: visible;
+}
+
+// Ensure table cells display correctly
+g[data-mml-node="mtd"] {
+  overflow: visible;
+}
+
+// Fix alignment in table cells
+g[data-mml-node="mtd"] {
+  text-align: left;
+}
+
+// ============================================
+// 5. Display Math Fixes
+// ============================================
+
+// Ensure display math has proper display
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+// Ensure the SVG in display math is properly sized
+mjx-container[jax="SVG"][display="true"] > svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+// Ensure SVG role img doesn't clip
+mjx-container[jax="SVG"] svg[role="img"] {
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+// ============================================
+// 6. Additional Fixes for Complex Formulas
+// ============================================
+
+// Fix for subscript and superscript
+g[data-mml-node="msub"],
+g[data-mml-node="msup"],
+g[data-mml-node="msubsup"] {
+  overflow: visible;
+}
+
+// Fix for parentheses and brackets
+g[data-mml-node="mo"] {
+  overflow: visible;
+}
+
+// Fix for text nodes in math
+g[data-mml-node="mtext"] {
+  overflow: visible;
+}
+
+// ============================================
+// 7. Theme-Specific Overrides
+// ============================================
+
+// Override any theme CSS that might interfere
+.post-body mjx-container[jax="SVG"] {
+  overflow: visible !important;
+}
+
+.post-body mjx-container[jax="SVG"] svg {
+  overflow: visible !important;
+}
+
+// Fix for dark mode if enabled
+@media (prefers-color-scheme: dark) {
+  g[data-mml-node="msqrt"] > rect,
+  g[data-mml-node="mfrac"] > line {
+    stroke: currentColor;
+  }
+}
