@@ -252,11 +252,16 @@ c <- as.data.frame(varimpt)
 ### 逻辑回归
 
 逻辑回归(logistic regression)在信用评分卡开发中起到核心作用。逻辑回归通过sigmoid函数 $y=1/(1+e^{-z})$ 将线性回归模型 $z=\boldsymbol{w}^T\boldsymbol{x}+b$ 产生的预测值转换为一个接近0或1的拟合值 $\widehat{y}$ ：
-$$\begin{eqnarray} \widehat{y}&=&\frac{1}{1+e^{-z}} =&\frac{1}{1+e^{-(\boldsymbol{w}^T\boldsymbol{x}+b)}} \end{eqnarray}$$
+$$\widehat{y} = \frac{1}{1+e^{-z}} = \frac{1}{1+e^{-(\boldsymbol{w}^T\boldsymbol{x}+b)}}$$
 上式的 $\widehat{y}$ 可视为事件发生的概率 $p(y=1|\boldsymbol{x})$ ，变换后得到： $$\ln\frac{p}{1-p}=z=\boldsymbol{w}^T\boldsymbol{x}+b$$ 其中， $p/(1-p)$ 为比率(odds)，即违约概率与正常概率的比值。 $\ln{p/(1-p)}$ 为logit函数，即比率的自然对数。因此，逻辑回归实际上是用比率的自然对数作为因变量的线性回归模型。
 
 ### 逻辑回归代价函数(cost function)
-单个样本的损失函数(loss function): $$\ell(\widehat{y},y)=-(y\ln{\widehat{y}} + (1-y)\ln{(1-\widehat{y})})$$ 对于整个训练集的代价函数(cost function): $$\begin{eqnarray} J(\boldsymbol{w},b)&=&\frac{1}{m}\sum_i{\ell(\widehat{y}^{(i)},y^{(i)})} \&=&-\frac{1}{m}\sum_i{[y^{(i)}\ln{\widehat{y}^{(i)}}+(1-y^{(i)})\ln{(1-\widehat{y}^{(i)})}]} \end{eqnarray}$$ 其中, $\hat{y}$ 为拟合值, $y$ 为实际标签, $m$ 为样本数量
+单个样本的损失函数(loss function): $$\ell(\widehat{y},y)=-(y\ln{\widehat{y}} + (1-y)\ln{(1-\widehat{y})})$$
+
+对于整个训练集的代价函数(cost function):
+$$J(\boldsymbol{w},b) = \frac{1}{m}\sum_i{\ell(\widehat{y}^{(i)},y^{(i)})} = -\frac{1}{m}\sum_i{[y^{(i)}\ln{\widehat{y}^{(i)}}+(1-y^{(i)})\ln{(1-\widehat{y}^{(i)})}]}$$
+
+其中, $\hat{y}$ 为拟合值, $y$ 为实际标签, $m$ 为样本数量
 
 使用`梯度下降(gradient descent)`, 找到合适的参数 $(\boldsymbol{w}, b)$ , 使得 $J(\boldsymbol{w},b)$ 尽可能小。
 
@@ -350,7 +355,10 @@ for (i in 2:length(reducecols)) {
 
 		- $B=PDO/\ln(2)$
 		- $A=points0+B\ln(odds0)$
-- 分值分配。将逻辑回归公式代入评分卡分值公式，可以得到 $$\begin{eqnarray} score &=& A-B\ln(odds) = A-B(\boldsymbol{w}^T\boldsymbol{x}+b) \ &=& (A-Bb) - Bw_1x_1 - Bw_2x_2 \cdots - Bw_mx_m \end{eqnarray}$$ 其中， $x_1\cdots x_m$ 为最终进入模型的自变量且已经转换为**WOE**值, $w_i$ 为逻辑回归的变量系数, $b$ 为逻辑回归的截距, $A, B$ 为上页求得的刻度因子。 $Bw_ix_i$ 为变量 $x_i$ 对应的评分， $(A-Bb)$ 为基础分(也可将基础分值平均分配给各个变量)。
+- 分值分配。将逻辑回归公式代入评分卡分值公式，可以得到：
+$$\begin{aligned} score &= A-B\ln(odds) = A-B(\boldsymbol{w}^T\boldsymbol{x}+b) \\ &= (A-Bb) - Bw_1x_1 - Bw_2x_2 - \cdots - Bw_mx_m \end{aligned}$$
+
+其中， $x_1\cdots x_m$ 为最终进入模型的自变量且已经转换为**WOE**值, $w_i$ 为逻辑回归的变量系数, $b$ 为逻辑回归的截距, $A, B$ 为上页求得的刻度因子。 $Bw_ix_i$ 为变量 $x_i$ 对应的评分， $(A-Bb)$ 为基础分(也可将基础分值平均分配给各个变量)。
 
 - **R**中代码实现：
 
